@@ -1,5 +1,17 @@
 pip install -r requirements.txt
 
+akun: pegawai
+199005142023052008
+kabupaten_wakatobi
+
+akun: kasubag
+budi
+budi
+
+akun: pimpinan
+agung
+agung
+
 python manage.py migrate
 python manage.py collectstatic
 /var/www/yourusername_pythonanywhere_com_wsgi.py

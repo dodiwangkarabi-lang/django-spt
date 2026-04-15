@@ -1,0 +1,13 @@
+<div class="p-6 max-w-7xl mx-auto">
+
+  <h1 class="text-2xl font-bold mb-6">
+    Dashboard
+  </h1>
+
+  {% if user.role == 'pegawai' %}
+    {% include "dashboard/partials/pegawai.html" %}
+  {% elif user.role == 'pimpinan' %}
+    {% include "dashboard/partials/pimpinan.html" %}
+  {% endif %}
+
+</div>

@@ -1,0 +1,105 @@
+<div class="p-6 bg-gray-100 min-h-screen">
+  <div class="max-w-6xl mx-auto bg-white rounded-2xl shadow p-6 space-y-6">
+
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 border-b pb-4">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-800">SPT Masuk</h1>
+        <p class="text-sm text-gray-500">Daftar pengajuan SPT yang perlu direview</p>
+      </div>
+
+      <!-- Search -->
+      <input 
+        type="text"
+        placeholder="Cari SPT..."
+        class="border rounded-lg px-3 py-2 w-full md:w-64 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+      >
+    </div>
+
+    <!-- Filter -->
+    <div class="flex gap-2 flex-wrap">
+      <button class="px-3 py-1 rounded-full bg-blue-600 text-white text-sm">Semua</button>
+      <button class="px-3 py-1 rounded-full bg-gray-200 text-gray-700 text-sm">Menunggu</button>
+      <button class="px-3 py-1 rounded-full bg-gray-200 text-gray-700 text-sm">Revisi</button>
+      <button class="px-3 py-1 rounded-full bg-gray-200 text-gray-700 text-sm">Disetujui</button>
+      <button class="px-3 py-1 rounded-full bg-gray-200 text-gray-700 text-sm">Ditolak</button>
+    </div>
+
+    <!-- Table -->
+    <div class="overflow-x-auto">
+      <table class="min-w-full text-sm text-left border rounded-lg overflow-hidden">
+        
+        <thead class="bg-gray-50 text-gray-600 uppercase text-xs">
+          <tr>
+            <th class="px-4 py-3">No</th>
+            <th class="px-4 py-3">Nomor SPT</th>
+            <th class="px-4 py-3">Tujuan</th>
+            <th class="px-4 py-3">Tanggal</th>
+            <th class="px-4 py-3">Pengaju</th>
+            <th class="px-4 py-3">Status</th>
+            <th class="px-4 py-3 text-center">Aksi</th>
+          </tr>
+        </thead>
+
+        <tbody class="divide-y">
+
+          <!-- Row -->
+          <tr class="hover:bg-gray-50">
+            <td class="px-4 py-3">1</td>
+            <td class="px-4 py-3 font-medium text-gray-800">SPT-001/2026</td>
+            <td class="px-4 py-3">Seminar Nasional</td>
+            <td class="px-4 py-3">10 Apr 2026</td>
+            <td class="px-4 py-3">Dodiman</td>
+
+            <!-- Status -->
+            <td class="px-4 py-3">
+              <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700">
+                Menunggu
+              </span>
+            </td>
+
+            <!-- Aksi -->
+            <td class="px-4 py-3 text-center space-x-2">
+              <a href="#" class="text-blue-600 hover:underline">Detail</a>
+              <a href="#" class="text-green-600 hover:underline">Review</a>
+            </td>
+          </tr>
+
+          <!-- Row -->
+          <tr class="hover:bg-gray-50">
+            <td class="px-4 py-3">2</td>
+            <td class="px-4 py-3 font-medium text-gray-800">SPT-002/2026</td>
+            <td class="px-4 py-3">Workshop IT</td>
+            <td class="px-4 py-3">12 Apr 2026</td>
+            <td class="px-4 py-3">Ahmad</td>
+
+            <td class="px-4 py-3">
+              <span class="px-2 py-1 text-xs rounded-full bg-red-100 text-red-700">
+                Revisi
+              </span>
+            </td>
+
+            <td class="px-4 py-3 text-center space-x-2">
+              <a href="#" class="text-blue-600 hover:underline">Detail</a>
+              <a href="#" class="text-green-600 hover:underline">Review</a>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="flex justify-between items-center pt-4 border-t">
+      <p class="text-sm text-gray-500">Menampilkan 1-10 dari 50 data</p>
+
+      <div class="flex gap-2">
+        <button class="px-3 py-1 border rounded-lg text-sm hover:bg-gray-100">Prev</button>
+        <button class="px-3 py-1 border rounded-lg text-sm bg-blue-600 text-white">1</button>
+        <button class="px-3 py-1 border rounded-lg text-sm hover:bg-gray-100">2</button>
+        <button class="px-3 py-1 border rounded-lg text-sm hover:bg-gray-100">Next</button>
+      </div>
+    </div>
+
+  </div>
+</div>

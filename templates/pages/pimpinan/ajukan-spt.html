@@ -1,0 +1,33 @@
+{% extends "layouts/base.html" %} 
+
+{% block navbar %}
+{% endblock %}
+
+{% block content %}
+<div class="flex h-screen bg-gray-100">
+    
+<!-- SIDEBAR PEGAWAI -->
+  {% include "pages/pegawai/partials/sidebar.html" %}
+
+
+<div class="bg-white rounded-xl shadow p-6 mx-auto w-full max-w-2xl">
+
+
+  <!-- Header -->
+  <div class="mb-6">
+    <h2 class="text-2xl font-bold text-gray-800">Ajukan SPT</h2>
+    <p class="text-sm text-gray-500">Isi data pengajuan SPT dengan lengkap</p>
+  </div>
+
+  {% include "pages/pegawai/partials/spt-form.html" %}
+
+  
+</div>
+
+
+</div>
+
+{% endblock %}
+
+
+

@@ -1,0 +1,116 @@
+<div class="bg-white rounded-xl shadow p-6">
+
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-4">
+    <h2 class="text-xl font-bold text-gray-800">Daftar SPT</h2>
+
+    <!-- <a href="#"
+       class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700">
+      + Ajukan SPT
+    </a> -->
+  </div>
+
+  <!-- Filter -->
+  <div class="flex flex-wrap gap-3 mb-4">
+
+    <input type="text"
+           placeholder="Cari SPT..."
+           class="border rounded-lg px-3 py-2 text-sm w-64 focus:outline-none focus:ring-2 focus:ring-blue-400">
+
+    <select class="border rounded-lg px-3 py-2 text-sm">
+      <option>Semua Status</option>
+      <option>Draft</option>
+      <option>Review</option>
+      <option>Disetujui</option>
+      <option>Ditolak</option>
+      <option>Selesai</option>
+    </select>
+
+    <input type="date"
+           class="border rounded-lg px-3 py-2 text-sm">
+
+  </div>
+
+  <!-- Table -->
+  <div class="overflow-x-auto">
+
+    <table class="min-w-full text-sm text-left">
+
+      <thead class="bg-gray-100 text-gray-700">
+        <tr>
+          <th class="px-4 py-3">No</th>
+          <th class="px-4 py-3">Judul</th>
+          <th class="px-4 py-3">Tanggal Pengajuan</th>
+          <th class="px-4 py-3">Status</th>
+          <th class="px-4 py-3 text-center">Aksi</th>
+        </tr>
+      </thead>
+
+      <tbody class="divide-y">
+        {% for spt in spt_list %}
+        <!-- Row 1 -->
+        <tr class="hover:bg-gray-50">
+          <td class="px-4 py-3">{{ spt.nomor_spt }}</td>
+          <td class="px-4 py-3">{{ spt.judul }}</td>
+          <td class="px-4 py-3">{{ spt.created_at|date:"d F Y" }}</td>
+
+          <td class="px-4 py-3">
+            {% if spt.status == "draft" %}
+            <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700">
+              {{ spt.status }}
+            </span>
+            {% elif spt.status == "diajukan" %}
+            <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">
+              {{ spt.status }}
+            </span>
+            {% elif spt.status == "disetujui" %}
+            <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">
+              Disetujui
+            </span>
+            {% elif spt.status == "ditolak" %}
+            <span class="px-2 py-1 text-xs rounded-full bg-red-100 text-red-700">
+              Ditolak
+            </span>
+            {% elif spt.status == "selesai" %}
+            <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">
+              Selesai
+            </span>
+            {% elif spt.status == "revisi" %}
+            <span class="px-2 py-1 text-xs rounded-full bg-red-100 text-red-700">
+              Revisi
+            </span>
+            {% else %}
+            <span class="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-700">
+              {{ spt.status }}
+            </span>
+            {% endif %}
+          </td>
+
+
+          <td class="px-4 py-3 text-center space-x-2">
+
+            <a href="{% url detail_url spt.id %}"
+               class="text-blue-600 hover:underline text-sm">
+              Detail
+            </a>
+
+            {% if spt.status == "disetujui_final" %}
+            <a href="{% url upload_url spt.id %}"
+               class="text-blue-600 hover:underline text-sm">
+              upload dokumen
+            </a>
+            {% endif %}
+
+            
+
+          </td>
+        </tr>
+        {% endfor %}
+
+        
+
+      </tbody>
+    </table>
+
+  </div>
+</div>

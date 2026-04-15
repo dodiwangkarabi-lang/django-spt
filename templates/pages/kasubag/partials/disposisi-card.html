@@ -1,0 +1,71 @@
+<div class="bg-white border border-gray-200 rounded-xl shadow-sm p-4 hover:shadow-md transition">
+
+  <!-- Header -->
+  <div class="flex justify-between items-start">
+    <div>
+      <h3 class="text-sm font-semibold text-gray-800">
+        SPT: {{ disposisi.spt.nomor_spt }}
+      </h3>
+      <p class="text-xs text-gray-500">
+        {{ disposisi.created_at|date:"d M Y H:i" }}
+      </p>
+    </div>
+
+    <!-- Status Badge -->
+    {% if disposisi.status == 'diajukan' %}
+      <span class="px-2 py-1 text-xs rounded bg-yellow-100 text-yellow-700">
+        Diajukan
+      </span>
+    {% elif disposisi.status == 'disetujui' %}
+      <span class="px-2 py-1 text-xs rounded bg-green-100 text-green-700">
+        Disetujui
+      </span>
+    {% elif disposisi.status == 'ditolak' %}
+      <span class="px-2 py-1 text-xs rounded bg-red-100 text-red-700">
+        Ditolak
+      </span>
+    {% endif %}
+  </div>
+
+  <!-- Body -->
+  <div class="mt-3 space-y-1 text-sm text-gray-700">
+    <p>
+      <span class="font-medium">Dari:</span>
+      {{ disposisi.dari_user.username }}
+    </p>
+
+    <p>
+      <span class="font-medium">Ke:</span>
+      {{ disposisi.ke_user.username }}
+    </p>
+
+    {% if disposisi.catatan %}
+    <p class="text-gray-600 mt-2">
+      <span class="font-medium">Catatan:</span>
+      {{ disposisi.catatan }}
+    </p>
+    {% endif %}
+  </div>
+
+  <!-- Footer / Actions -->
+  <div class="mt-4 flex justify-end gap-2">
+
+    <a href="{% url 'spt:disposisi_detail' disposisi.id %}"
+       class="px-3 py-1 text-xs rounded bg-blue-50 text-blue-600 hover:bg-blue-100">
+      Detail
+    </a>
+
+    {% if disposisi.status == 'diajukan' %}
+      <a href="{% url 'spt:disposisi_approve' disposisi.id %}"
+         class="px-3 py-1 text-xs rounded bg-green-50 text-green-600 hover:bg-green-100">
+        Approve
+      </a>
+
+      <a href="{% url 'spt:disposisi_tolak' disposisi.id %}"
+         class="px-3 py-1 text-xs rounded bg-red-50 text-red-600 hover:bg-red-100">
+        Tolak
+      </a>
+    {% endif %}
+
+  </div>
+</div>

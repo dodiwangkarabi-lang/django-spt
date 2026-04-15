@@ -1,0 +1,128 @@
+<div class="p-6 bg-gray-100 min-h-screen">
+  <div class="max-w-2xl mx-auto bg-white rounded-2xl shadow p-6 space-y-6">
+
+    <!-- Header -->
+    <div class="border-b pb-4">
+      <h1 class="text-2xl font-bold text-gray-800">Tanda Tangan SPT</h1>
+      <p class="text-sm text-gray-500">Finalisasi dokumen oleh pimpinan</p>
+    </div>
+
+    <!-- Info SPT -->
+    <div class="bg-gray-50 p-4 rounded-lg text-sm">
+      <p><span class="font-semibold">Nomor:</span> SPT-001/2026</p>
+      <p><span class="font-semibold">Tujuan:</span> Seminar Nasional</p>
+    </div>
+
+    <!-- Pilihan Metode -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-2">
+        Metode Tanda Tangan
+      </label>
+
+      <div class="flex gap-4 text-sm">
+        <label class="flex items-center gap-2">
+          <input type="radio" name="ttd_type" value="nama" checked>
+          Ketik Nama
+        </label>
+
+        <label class="flex items-center gap-2">
+          <input type="radio" name="ttd_type" value="upload">
+          Upload Gambar
+        </label>
+
+        <label class="flex items-center gap-2">
+          <input type="radio" name="ttd_type" value="draw">
+          Gambar Langsung
+        </label>
+      </div>
+    </div>
+
+    <!-- Input Nama -->
+    <div>
+      <label class="block text-sm text-gray-700 mb-1">Nama Lengkap</label>
+      <input 
+        type="text"
+        name="ttd_nama"
+        placeholder="Nama pimpinan"
+        class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+      >
+    </div>
+
+    <!-- Upload -->
+    <div>
+      <label class="block text-sm text-gray-700 mb-1">Upload TTD</label>
+      <input 
+        type="file"
+        name="ttd_file"
+        class="w-full border rounded-lg p-2 bg-white"
+      >
+    </div>
+
+    <!-- Canvas (TTD Digital) -->
+    <div>
+      <label class="block text-sm text-gray-700 mb-2">Tanda Tangan Digital</label>
+      
+      <div class="border rounded-lg bg-white p-2">
+        <canvas id="signature-pad" class="w-full h-40 border"></canvas>
+      </div>
+
+      <div class="flex justify-end mt-2">
+        <button 
+          type="button"
+          onclick="clearCanvas()"
+          class="text-sm text-red-600 hover:underline"
+        >
+          Hapus
+        </button>
+      </div>
+    </div>
+
+    <!-- Konfirmasi -->
+    <div class="bg-yellow-50 p-3 rounded-lg text-sm text-yellow-700">
+      Pastikan tanda tangan sudah benar sebelum menyimpan. Data tidak dapat diubah setelah finalisasi.
+    </div>
+
+    <!-- Aksi -->
+    <div class="flex justify-end gap-3 pt-4 border-t">
+      <button 
+        class="px-4 py-2 border rounded-lg text-gray-600 hover:bg-gray-100"
+      >
+        Batal
+      </button>
+
+      <button 
+        class="px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+      >
+        Simpan & Finalisasi
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- Script sederhana canvas -->
+<script>
+  const canvas = document.getElementById("signature-pad");
+  const ctx = canvas.getContext("2d");
+  let drawing = false;
+
+  canvas.addEventListener("mousedown", () => drawing = true);
+  canvas.addEventListener("mouseup", () => drawing = false);
+  canvas.addEventListener("mousemove", draw);
+
+  function draw(e) {
+    if (!drawing) return;
+    ctx.lineWidth = 2;
+    ctx.lineCap = "round";
+    ctx.strokeStyle = "#000";
+
+    ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(e.offsetX, e.offsetY);
+  }
+
+  function clearCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+</script>

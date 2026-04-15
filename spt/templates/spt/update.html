@@ -1,0 +1,124 @@
+{% extends "layouts/base.html" %} {% block content %}
+<div>
+    <form method="POST" enctype="multipart/form-data"
+      x-data="formsetHandler({{ formset.total_form_count }})">
+    {% csrf_token %}
+
+    <!-- 🔷 FORM SPT -->
+    <div class="mb-4">
+        {{ form.as_p }}
+    </div>
+
+    <!-- 🔷 MANAGEMENT FORM -->
+    {{ formset.management_form }}
+
+    <!-- 🔷 FORMSET -->
+    <div id="formset-container" class="space-y-3">
+
+        {% for f in formset %}
+        <div class="border p-4 rounded-lg relative">
+
+            <!-- 🔥 WAJIB untuk edit -->
+            {{ f.id }}
+
+            <!-- FILE LAMA -->
+            {% if f.instance.file %}
+                <p class="text-sm text-gray-600 mb-2">
+                    File sekarang:
+                    <a href="{{ f.instance.file.url }}" target="_blank"
+                       class="text-blue-500 underline">
+                        Lihat file
+                    </a>
+                </p>
+            {% endif %}
+
+            <!-- INPUT FILE -->
+            {{ f.file }}
+
+            <!-- KETERANGAN -->
+            {{ f.keterangan }}
+
+            <!-- DELETE -->
+            <label class="text-red-500 text-sm flex items-center gap-2 mt-2">
+                {{ f.DELETE }} Hapus
+            </label>
+        </div>
+        {% endfor %}
+
+        <!-- 🔷 FORM BARU (DYNAMIC) -->
+        <template x-for="(form, index) in extraForms" :key="index">
+            <div class="border p-4 rounded-lg">
+
+                <input type="hidden"
+                       :name="`form-${totalForms + index}-id`">
+
+                <!-- FILE -->
+                <input type="file"
+                       :name="`form-${totalForms + index}-file`"
+                       class="block w-full mb-2">
+
+                <!-- KETERANGAN -->
+                <input type="text"
+                       :name="`form-${totalForms + index}-keterangan`"
+                       placeholder="Keterangan"
+                       class="w-full border rounded px-2 py-1 mb-2">
+
+                <!-- REMOVE -->
+                <button type="button"
+                        @click="removeExtra(index)"
+                        class="text-red-500 text-sm">
+                    Hapus
+                </button>
+            </div>
+        </template>
+    </div>
+
+    <!-- 🔷 BUTTON TAMBAH -->
+    <button type="button"
+            @click="addForm()"
+            class="bg-green-500 text-white px-4 py-2 rounded-lg mt-3">
+        + Tambah Lampiran
+    </button>
+
+    <!-- 🔷 SUBMIT -->
+    <div class="mt-4">
+        <button type="submit"
+                class="bg-blue-600 text-white px-6 py-2 rounded-lg">
+            Update
+        </button>
+
+        <a href=""
+           class="ml-2 px-6 py-2 rounded-lg border">
+            Batal
+        </a>
+    </div>
+</form>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script>
+function formsetHandler(initialForms) {
+    return {
+        totalForms: initialForms,
+        extraForms: [],
+
+        addForm() {
+            this.extraForms.push({})
+            this.updateTotal()
+        },
+
+        removeExtra(index) {
+            this.extraForms.splice(index, 1)
+            this.updateTotal()
+        },
+
+        updateTotal() {
+            const total = this.totalForms + this.extraForms.length
+            document.querySelector('[name="form-TOTAL_FORMS"]').value = total
+        }
+    }
+}
+</script>
+{% endblock %}

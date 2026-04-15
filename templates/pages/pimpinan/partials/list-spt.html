@@ -1,0 +1,150 @@
+<div class="bg-white rounded-xl shadow p-6">
+
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-4">
+    <h2 class="text-xl font-bold text-gray-800">SPT Saya</h2>
+
+    <a href="#"
+       class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700">
+      + Ajukan SPT
+    </a>
+  </div>
+
+  <!-- Filter -->
+  <div class="flex flex-wrap gap-3 mb-4">
+
+    <input type="text"
+           placeholder="Cari SPT..."
+           class="border rounded-lg px-3 py-2 text-sm w-64 focus:outline-none focus:ring-2 focus:ring-blue-400">
+
+    <select class="border rounded-lg px-3 py-2 text-sm">
+      <option>Semua Status</option>
+      <option>Draft</option>
+      <option>Review</option>
+      <option>Disetujui</option>
+      <option>Ditolak</option>
+      <option>Selesai</option>
+    </select>
+
+    <input type="date"
+           class="border rounded-lg px-3 py-2 text-sm">
+
+  </div>
+
+  <!-- Table -->
+  <div class="overflow-x-auto">
+
+    <table class="min-w-full text-sm text-left">
+
+      <thead class="bg-gray-100 text-gray-700">
+        <tr>
+          <th class="px-4 py-3">No</th>
+          <th class="px-4 py-3">Tujuan</th>
+          <th class="px-4 py-3">Tanggal</th>
+          <th class="px-4 py-3">Status</th>
+          <th class="px-4 py-3">Progress</th>
+          <th class="px-4 py-3 text-center">Aksi</th>
+        </tr>
+      </thead>
+
+      <tbody class="divide-y">
+
+        <!-- Row 1 -->
+        <tr class="hover:bg-gray-50">
+          <td class="px-4 py-3">1</td>
+          <td class="px-4 py-3">Rapat Dinas</td>
+          <td class="px-4 py-3">2026-04-01</td>
+
+          <td class="px-4 py-3">
+            <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700">
+              Review
+            </span>
+          </td>
+
+          <td class="px-4 py-3">
+            <div class="w-full bg-gray-200 rounded-full h-2">
+              <div class="bg-yellow-500 h-2 rounded-full w-1/2"></div>
+            </div>
+          </td>
+
+          <td class="px-4 py-3 text-center space-x-2">
+
+            <a href="#"
+               class="text-blue-600 hover:underline text-sm">
+              Detail
+            </a>
+
+            <a href="#"
+               class="text-green-600 hover:underline text-sm">
+              Upload
+            </a>
+
+          </td>
+        </tr>
+
+        <!-- Row 2 -->
+        <tr class="hover:bg-gray-50">
+          <td class="px-4 py-3">2</td>
+          <td class="px-4 py-3">Survey Lapangan</td>
+          <td class="px-4 py-3">2026-03-28</td>
+
+          <td class="px-4 py-3">
+            <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">
+              Disetujui
+            </span>
+          </td>
+
+          <td class="px-4 py-3">
+            <div class="w-full bg-gray-200 rounded-full h-2">
+              <div class="bg-green-500 h-2 rounded-full w-full"></div>
+            </div>
+          </td>
+
+          <td class="px-4 py-3 text-center space-x-2">
+
+            <a href="#"
+               class="text-blue-600 hover:underline text-sm">
+              Detail
+            </a>
+
+          </td>
+        </tr>
+
+        <!-- Row 3 -->
+        <tr class="hover:bg-gray-50">
+          <td class="px-4 py-3">3</td>
+          <td class="px-4 py-3">Pelatihan Internal</td>
+          <td class="px-4 py-3">2026-03-20</td>
+
+          <td class="px-4 py-3">
+            <span class="px-2 py-1 text-xs rounded-full bg-red-100 text-red-700">
+              Ditolak
+            </span>
+          </td>
+
+          <td class="px-4 py-3">
+            <div class="w-full bg-gray-200 rounded-full h-2">
+              <div class="bg-red-500 h-2 rounded-full w-1/4"></div>
+            </div>
+          </td>
+
+          <td class="px-4 py-3 text-center space-x-2">
+
+            <a href="#"
+               class="text-blue-600 hover:underline text-sm">
+              Detail
+            </a>
+
+            <a href="#"
+               class="text-yellow-600 hover:underline text-sm">
+              Revisi
+            </a>
+
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+
+  </div>
+</div>

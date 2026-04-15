@@ -1,0 +1,35 @@
+{% extends "layouts/base.html" %} {% block content %}
+
+
+<div class="space-y-6">
+
+  <!-- STAT -->
+  <div class="grid grid-cols-3 gap-4">
+    <div class="bg-white p-4 rounded-xl shadow">
+      <p class="text-sm text-gray-500">SPT Saya</p>
+      <h2 class="text-xl font-bold">{{ total_spt }}</h2>
+    </div>
+
+    <div class="bg-yellow-100 p-4 rounded-xl">
+      <p>Diajukan</p>
+      <h2 class="font-bold">{{ diajukan }}</h2>
+    </div>
+
+    <div class="bg-green-100 p-4 rounded-xl">
+      <p>Selesai</p>
+      <h2 class="font-bold">{{ selesai }}</h2>
+    </div>
+  </div>
+
+  {% include "pages/pegawai/partials/spt-tabel.html" %}
+  {% include "partials/list-spt.html" %}
+
+</div>
+
+
+<div class="space-y-6 my-4 pt-2">
+
+  {% include "partials/mengajukan-spt.html" %}
+</div>
+
+{% endblock %}

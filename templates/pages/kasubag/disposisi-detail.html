@@ -1,0 +1,22 @@
+{% extends "layouts/base.html" %} 
+
+{% block navbar %}
+{% endblock %}
+
+{% block content %}
+<div class="flex h-screen bg-gray-100">
+    
+<!-- SIDEBAR PEGAWAI -->
+  {% include "pages/kasubag/partials/sidebar.html" %}
+
+  <!-- MAIN CONTENT -->
+  <main class="flex-1 p-6">
+      <!-- <h2 class="text-2xl font-bold text-gray-800">Dashboard Kasubag</h2> -->
+      <!-- <p class="text-gray-600">Selamat datang di sistem SPT</p> -->
+      {% include "pages/kasubag/partials/disposisi-detail.html" %}
+
+  </main>
+
+</div>
+
+{% endblock %}

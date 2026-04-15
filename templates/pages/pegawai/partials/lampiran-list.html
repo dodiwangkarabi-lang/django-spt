@@ -1,0 +1,26 @@
+<div>
+    {% for lampiran in lampiran_list %}
+    <div class="bg-gray-50 p-4 rounded-lg flex justify-between items-center">
+        <span class="text-gray-700">{{ forloop.counter }}. {{ lampiran.file.name|cut:'lampiran_spt/' }}</span>
+        
+        <div class="flex items-center gap-3">
+            <a href="{{ lampiran.file.url }}" class="text-blue-600 hover:underline">Download</a>
+
+            {% if mode == "edit" %}
+            <!-- DELETE -->
+            <form method="post" action="{% url 'spt_delete_lampiran' lampiran.id %}">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ next_url_delete }}">
+                <button 
+                    type="submit"
+                    class="text-red-600 hover:underline"
+                    onclick="return confirm('Hapus dokumen ini?')"
+                >
+                    Hapus
+                </button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>

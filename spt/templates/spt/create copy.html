@@ -1,0 +1,84 @@
+{% extends "layouts/base.html" %} {% block content %}
+<div>
+  <form method="POST" enctype="multipart/form-data" x-data="formsetHandler()">
+    {% csrf_token %}
+
+    <!-- FORM A -->
+    {{ form.as_p }}
+
+    <!-- MANAGEMENT FORM -->
+    {{ formset.management_form }}
+
+    <!-- FORMSET -->
+    <div id="formset-container">
+      <template x-for="(form, index) in forms" :key="index">
+        <div class="border p-4 rounded-lg mb-2">
+          <!-- FILE -->
+          <input
+            type="file"
+            :name="`form-${index}-file`"
+            class="block w-full mb-2"
+          />
+
+          <!-- KETERANGAN -->
+          <input
+            type="text"
+            :name="`form-${index}-keterangan`"
+            placeholder="Keterangan"
+            class="w-full border rounded px-2 py-1 mb-2"
+          />
+
+          <!-- DELETE -->
+          <button
+            type="button"
+            @click="removeForm(index)"
+            class="text-red-500 text-sm"
+          >
+            Hapus
+          </button>
+        </div>
+      </template>
+    </div>
+
+    <!-- BUTTON TAMBAH -->
+    <button
+      type="button"
+      @click="addForm()"
+      class="bg-green-500 text-white px-4 py-2 rounded-lg mt-2"
+    >
+      + Tambah File
+    </button>
+
+    <!-- SUBMIT -->
+    <button
+      type="submit"
+      class="bg-blue-600 text-white px-6 py-2 rounded-lg mt-4"
+    >
+      Simpan
+    </button>
+  </form>
+</div>
+{% endblock %} {% block script %}
+<script>
+  function formsetHandler() {
+    return {
+      forms: [0], // minimal 1 form
+
+      addForm() {
+        this.forms.push(this.forms.length);
+        this.updateTotalForms();
+      },
+
+      removeForm(index) {
+        this.forms.splice(index, 1);
+        this.updateTotalForms();
+      },
+
+      updateTotalForms() {
+        document.querySelector('[name="form-TOTAL_FORMS"]').value =
+          this.forms.length;
+      },
+    };
+  }
+</script>
+{% endblock %}

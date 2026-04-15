@@ -1,0 +1,92 @@
+<div class="bg-white border rounded-xl p-4 shadow-sm w-1/2">
+
+  <!-- Header -->
+  <div class="flex items-center gap-3">
+    
+    <!-- Avatar -->
+    <div class="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 font-bold uppercase">
+      {{ request.user.profile.nama|first }}
+    </div>
+
+    <!-- Info user -->
+    <div class="flex-1">
+      <p class="text-sm font-semibold text-gray-800">
+        {{ request.user.profile.nama|default:request.user.username }}
+      </p>
+      <p class="text-xs text-gray-500">
+        {{ request.user.email|default:"-" }}
+      </p>
+      
+    </div>
+  </div>
+
+  <!-- Divider -->
+  <div class="my-3 border-t"></div>
+
+  <!-- Detail -->
+  <div class="space-y-2 text-sm text-gray-600">
+
+    
+
+    <div class="flex justify-between">
+      <span class="text-gray-500">Email</span>
+      <span class="font-medium truncate max-w-[180px]">
+        {{ request.user.email|default:"-" }}
+      </span>
+    </div>
+
+    <div class="flex justify-between">
+      <span class="text-gray-500">NIP</span>
+      <span class="font-medium truncate max-w-[180px]">
+        {{ request.user.profile.nip|default:"-" }}
+      </span>
+    </div>
+
+    <div class="flex justify-between">
+      <span class="text-gray-500">Nama</span>
+      <span class="font-medium truncate max-w-[180px]">
+        {{ request.user.profile.nama|default:"-" }}
+      </span>
+    </div>
+
+    <div class="flex justify-between">
+      <span class="text-gray-500">Jabatan</span>
+      <span class="font-medium truncate max-w-[180px]">
+        {{ request.user.profile.jabatan|default:"-" }}
+      </span>
+    </div>
+
+    <div class="flex justify-between">
+      <span class="text-gray-500">Pangkat</span>
+      <span class="font-medium truncate max-w-[180px]">
+        {{ request.user.profile.pangkat|default:"-" }}
+      </span>
+    </div>
+
+    
+
+  </div>
+
+  <!-- Action -->
+<div class="mt-4 flex gap-2">
+
+  <!-- Edit Profil -->
+  <a href="{% url 'edit_profile' %}"
+   class="inline-flex items-center justify-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-600">
+
+  <ion-icon name="create-outline"></ion-icon>
+  Ganti Password
+</a>
+
+  <!-- Logout -->
+  <!-- <a onclick="return confirm('Apakah anda ingin logout?')"
+     href="#"
+     class="flex-1 flex items-center justify-center gap-2 bg-red-500 text-white py-2 rounded-lg text-sm hover:bg-red-600">
+
+    <ion-icon name="log-out-outline"></ion-icon>
+    Logout
+  </a> -->
+
+</div>
+
+</div>

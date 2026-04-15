@@ -1,0 +1,72 @@
+{% extends "layouts/base.html" %} 
+
+{% block navbar %}
+{% endblock %}
+
+{% block content %}
+
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+  <div class="w-full max-w-md bg-white rounded-2xl shadow p-6 space-y-6">
+
+    <!-- Header -->
+    <div class="text-center">
+      <h1 class="text-2xl font-bold text-gray-800">Login</h1>
+      <p class="text-sm text-gray-500">Masuk ke sistem SPT</p>
+    </div>
+
+    <!-- Form -->
+    <form method="POST" action="{% url 'accounts_login' %}" class="space-y-4">
+        {% csrf_token %}
+      
+      <!-- Username -->
+      <div>
+        <label class="block text-sm text-gray-700 mb-1">Username</label>
+        <input 
+          type="text"
+          name="username"
+          placeholder="Masukkan username"
+          class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        >
+      </div>
+
+      <!-- Password -->
+      <div>
+        <label class="block text-sm text-gray-700 mb-1">Password</label>
+        <input 
+          type="password"
+          name="password"
+          placeholder="Masukkan password"
+          class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        >
+      </div>
+
+      <!-- Remember -->
+      <div class="flex items-center justify-between text-sm">
+        <!-- <label class="flex items-center gap-2">
+          <input type="checkbox" name="remember">
+          Ingat saya
+        </label> -->
+
+        <!-- <a href="#" class="text-blue-600 hover:underline">Lupa password?</a> -->
+      </div>
+
+      <!-- Button -->
+      <button 
+        type="submit"
+        class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
+      >
+        Login
+      </button>
+
+    </form>
+
+    <!-- Register Link -->
+    <!-- <p class="text-sm text-center text-gray-500">
+      Belum punya akun?
+      <a href="#" class="text-blue-600 hover:underline">Daftar</a>
+    </p> -->
+
+  </div>
+</div>
+
+{% endblock %}

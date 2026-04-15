@@ -1,0 +1,68 @@
+{% extends "layouts/base.html" %} 
+
+{% block navbar %}
+{% endblock %}
+
+{% block content %}
+
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+  <div class="w-full max-w-md bg-white rounded-2xl shadow p-6 space-y-6">
+
+    <!-- Header -->
+    <div class="text-center">
+      <h1 class="text-2xl font-bold text-gray-800">Login</h1>
+      <p class="text-sm text-gray-500">Masuk ke sistem SPT</p>
+    </div>
+
+    <!-- ERROR MESSAGE -->
+    {% if error %}
+      <div class="bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-lg text-sm">
+        <ul class="list-disc pl-5 space-y-1">
+          
+            <li>{{ error }}</li>
+          
+        </ul>
+      </div>
+    {% endif %}
+
+    <!-- Form -->
+    <form method="POST" action="{% url 'accounts_login' %}" class="space-y-4">
+      {% csrf_token %}
+      
+      <!-- Username -->
+      <div>
+        <label class="block text-sm text-gray-700 mb-1">Username</label>
+        <input 
+          type="text"
+          name="username"
+          placeholder="Masukkan username"
+          value="{{ request.POST.username }}"
+          class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        >
+      </div>
+
+      <!-- Password -->
+      <div>
+        <label class="block text-sm text-gray-700 mb-1">Password</label>
+        <input 
+          type="password"
+          name="password"
+          placeholder="Masukkan password"
+          class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        >
+      </div>
+
+      <!-- Button -->
+      <button 
+        type="submit"
+        class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
+      >
+        Login
+      </button>
+
+    </form>
+
+  </div>
+</div>
+
+{% endblock %}

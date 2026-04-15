@@ -1,0 +1,74 @@
+{% extends "layouts/base.html" %} {% block content %}
+<div>
+  <!-- templates/spt/form.html -->
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div>
+        <label>Judul SPT</label><br>
+        <input type="text" name="judul" required>
+    </div>
+
+    <div>
+        <label>Deskripsi</label><br>
+        <textarea name="deskripsi"></textarea>
+    </div>
+
+    <!-- Lampiran -->
+    <div x-data="lampiranForm()">
+        <label>Lampiran</label>
+
+        <template x-for="(item, index) in files" :key="item.id">
+            <div style="margin-bottom: 10px;">
+                
+                <input type="file"
+                       name="lampiran"
+                       accept="application/pdf"
+                       @change="validate($event, index)">
+
+                <span style="color:red;" x-text="item.error"></span>
+
+                <button type="button" @click="remove(index)">
+                    Hapus
+                </button>
+            </div>
+        </template>
+
+        <button type="button" @click="add()">
+            + Tambah Lampiran
+        </button>
+    </div>
+
+    <br>
+
+    <button type="submit">Simpan</button>
+</form>
+</div>
+{% endblock %} {% block script %}
+<script>
+function lampiranForm() {
+    return {
+        counter: 1,
+        files: [
+            { id: 0, error: '' }
+        ],
+
+        add() {
+            this.files.push({
+                id: this.counter++,
+                error: ''
+            })
+        },
+
+        remove(index) {
+            this.files.splice(index, 1)
+
+            if (this.files.length === 0) {
+                this.add()
+            }
+        }
+    }
+}
+</script>
+{% endblock %}

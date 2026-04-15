@@ -1,0 +1,145 @@
+<div class="max-w-4xl mx-auto space-y-6">
+
+    <!-- HEADER -->
+    <div class="bg-white border rounded-xl p-5 shadow-sm">
+        <div class="flex justify-between items-start">
+
+            <div>
+                <h1 class="text-xl font-bold text-gray-800">
+                    📄 {{ disposisi.spt.judul }}
+                </h1>
+
+                <p class="text-sm text-gray-500 mt-1">
+                    Nomor SPT: {{ disposisi.spt.nomor_spt }}
+                </p>
+            </div>
+
+            <span class="px-3 py-1 text-xs rounded-full
+                {% if disposisi.status == 'diajukan' %}
+                    bg-yellow-100 text-yellow-700
+                {% elif disposisi.status == 'disetujui' %}
+                    bg-green-100 text-green-700
+                {% elif disposisi.status == 'ditolak' %}
+                    bg-red-100 text-red-700
+                {% else %}
+                    bg-gray-100 text-gray-700
+                {% endif %}
+            ">
+                {{ disposisi.status }}
+            </span>
+
+        </div>
+    </div>
+
+    <!-- INFO DISPOSISI -->
+    <div class="bg-white border rounded-xl p-5 shadow-sm space-y-3">
+
+        <div class="grid grid-cols-2 gap-4 text-sm">
+
+            <div>
+                <p class="text-gray-500">Dari</p>
+                <p class="font-medium">{{ disposisi.dari_user.username }}</p>
+            </div>
+
+            <div>
+                <p class="text-gray-500">Kepada</p>
+                <p class="font-medium">{{ disposisi.ke_user.username }}</p>
+            </div>
+
+            <div>
+                <p class="text-gray-500">Tanggal Masuk</p>
+                <p class="font-medium">{{ disposisi.created_at }}</p>
+            </div>
+
+            <div>
+                <p class="text-gray-500">Status</p>
+                <p class="font-medium">{{ disposisi.status }}</p>
+            </div>
+
+        </div>
+
+        {% if disposisi.catatan %}
+        <div class="mt-3">
+            <p class="text-gray-500 text-sm">Catatan</p>
+            <p class="text-gray-800">{{ disposisi.catatan }}</p>
+        </div>
+        {% endif %}
+
+    </div>
+
+    <!-- DETAIL SPT -->
+    <div class="bg-white border rounded-xl p-5 shadow-sm space-y-3">
+
+        <h2 class="font-semibold text-gray-800">
+            🧾 Detail SPT
+        </h2>
+
+        <div class="space-y-2 text-sm">
+
+            <div>
+                <p class="text-gray-500">Judul</p>
+                <p class="font-medium">{{ disposisi.spt.judul }}</p>
+            </div>
+
+            <div>
+                <p class="text-gray-500">Deskripsi</p>
+                <p class="text-gray-700">{{ disposisi.spt.deskripsi }}</p>
+            </div>
+
+            <!-- LAMPIRAN -->
+             {% if disposisi.spt.lampiran.all %}
+             <div>
+                <p class="text-gray-500">Lampiran</p>
+                {% for lampiran in disposisi.spt.lampiran.all %}
+                <p class="text-blue-700"> <strong>{{ forloop.counter }}</strong>  <a href="{{ lampiran.file.url }}">{{ lampiran.file.name }}</a></p>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    <!-- ACTION BUTTON -->
+    {% if disposisi.status == "diajukan" %}
+
+    <div class="bg-white border rounded-xl p-5 shadow-sm">
+
+        <h2 class="font-semibold text-gray-800 mb-3">
+            ⚡ Aksi
+        </h2>
+
+        <div class="flex gap-3">
+
+            <!-- APPROVE -->
+            <form method="post" action="{% url 'core_kasubag_approve' disposisi.id %}">
+                {% csrf_token %}
+                <button class="px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                    ✔ Buat Disposisi
+                </button>
+            </form>
+
+            <!-- REJECT -->
+            <form method="post" action="{% url 'core_kasubag_reject' disposisi.id %}">
+                {% csrf_token %}
+                <button class="px-5 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
+                    ✖ Tolak
+                </button>
+            </form>
+
+            <!-- REVISI -->
+            <form method="post" action="{% url 'core_kasubag_revisi' disposisi.id %}">
+                {% csrf_token %}
+                <input type="hidden" name="pegawai_id" value="{{ disposisi.dari_user.id }}">
+                <button class="px-5 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600">
+                    ↻ Revisi
+                </button>
+            </form>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+</div>

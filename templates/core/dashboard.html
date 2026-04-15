@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard SPT</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100">
+
+  {% extends "layouts/base.html" %}
+  
+  {% block head %}
+    <div class="bg-gray-100">
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  {% endblock %}
+
+  {% block content %}
+  <div class="p-6 max-w-7xl mx-auto">
+
+  <!-- HEADER -->
+  <h1 class="text-2xl font-bold text-gray-700 mb-6">
+    Dashboard SPT
+  </h1>
+
+  <!-- 📊 CARD STATISTIK -->
+  <div class="grid grid-cols-4 gap-4 mb-6">
+
+    <div class="bg-white p-4 rounded-xl shadow">
+      <p class="text-sm text-gray-500">Total SPT</p>
+      <h2 class="text-2xl font-bold">{{ total_spt }}</h2>
+    </div>
+
+    <div class="bg-yellow-100 p-4 rounded-xl">
+      <p class="text-sm">Diajukan</p>
+      <h2 class="text-xl font-bold">{{ diajukan }}</h2>
+    </div>
+
+    <div class="bg-green-100 p-4 rounded-xl">
+      <p class="text-sm">Disetujui</p>
+      <h2 class="text-xl font-bold">{{ disetujui }}</h2>
+    </div>
+
+    <div class="bg-red-100 p-4 rounded-xl">
+      <p class="text-sm">Ditolak</p>
+      <h2 class="text-xl font-bold">{{ ditolak }}</h2>
+    </div>
+
+  </div>
+
+  <!-- 📈 CHART -->
+  <div class="grid grid-cols-2 gap-6">
+
+    <!-- Pie Chart -->
+    <div class="bg-white p-4 rounded-xl shadow">
+      <h2 class="font-semibold mb-2">Status SPT</h2>
+      <canvas id="statusChart"></canvas>
+    </div>
+
+    <!-- Bar Chart -->
+    <div class="bg-white p-4 rounded-xl shadow">
+      <h2 class="font-semibold mb-2">SPT per Bulan</h2>
+      <canvas id="monthlyChart"></canvas>
+    </div>
+
+  </div>
+
+  <!-- 📋 TABEL TERBARU -->
+  <div class="bg-white mt-6 p-4 rounded-xl shadow">
+    <h2 class="font-semibold mb-3">SPT Terbaru</h2>
+
+    <table class="w-full text-sm">
+      <thead>
+        <tr class="text-left border-b">
+          <th class="py-2">Judul</th>
+          <th>Tujuan</th>
+          <th>Status</th>
+          <th>Tanggal</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for spt in spt_list %}
+        <tr class="border-b hover:bg-gray-50">
+          <td class="py-2">{{ spt.judul }}</td>
+          <td>{{ spt.tujuan }}</td>
+          <td>
+            <span class="
+              px-2 py-1 text-xs rounded
+              {% if spt.status == 'disetujui' %}
+                bg-green-100 text-green-700
+              {% elif spt.status == 'ditolak' %}
+                bg-red-100 text-red-700
+              {% else %}
+                bg-yellow-100 text-yellow-700
+              {% endif %}
+            ">
+              {{ spt.status }}
+            </span>
+          </td>
+          <td>{{ spt.tanggal_berangkat }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- 📊 CHART SCRIPT -->
+<script>
+  // Pie Chart
+  new Chart(document.getElementById("statusChart"), {
+    type: 'pie',
+    data: {
+      labels: ['Diajukan', 'Disetujui', 'Ditolak'],
+      datasets: [{
+        data: [{{ diajukan }}, {{ disetujui }}, {{ ditolak }}],
+      }]
+    }
+  });
+
+  // Bar Chart
+  new Chart(document.getElementById("monthlyChart"), {
+    type: 'bar',
+    data: {
+      labels: {{ bulan_labels|safe }},
+      datasets: [{
+        label: 'Jumlah SPT',
+        data: {{ bulan_data|safe }},
+      }]
+    }
+  });
+</script>
+  {% endblock %}

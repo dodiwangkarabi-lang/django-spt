@@ -1,0 +1,22 @@
+{% extends "layouts/base.html" %} 
+
+{% block navbar %}
+{% endblock %}
+
+{% block content %}
+<div class="flex h-screen bg-gray-100">
+    
+<!-- SIDEBAR PEGAWAI -->
+  {% include "pages/pegawai/partials/sidebar.html" %}
+
+  <!-- MAIN CONTENT -->
+  <main class="flex-1 p-6">
+      <div hx-get="{% url 'pegawai_spt_list_diterima_htmx' %}?init=1" hx-trigger="load">Loading...</div>
+
+      
+
+  </main>
+
+</div>
+
+{% endblock %}

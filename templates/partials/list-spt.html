@@ -1,0 +1,27 @@
+<!-- LIST -->
+  <div class="bg-white p-4 rounded-xl shadow">
+    <h2 class="font-semibold mb-3">SPT Saya</h2>
+
+    <table class="w-full text-sm">
+      <thead>
+        <tr class="border-b">
+          <th>Judul</th>
+          <th>Status</th>
+          <th>aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for spt in spt_list %}
+        <tr class="border-b">
+          <td>{{ spt.judul }}</td>
+          <td>
+            <span class="text-xs px-2 py-1 rounded bg-gray-100">
+              {{ spt.status }}
+            </span>
+          </td>
+          <td></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>

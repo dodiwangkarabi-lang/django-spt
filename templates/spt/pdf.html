@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .container {
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .title {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .subtitle {
+            font-size: 14px;
+        }
+
+        .line {
+            border-bottom: 1px solid black;
+            margin: 5px 0 15px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        td {
+            vertical-align: top;
+            padding: 3px;
+        }
+
+        .ttd {
+            margin-top: 50px;
+            width: 200px;
+            text-align: center;
+            float: right;
+        }
+
+        .ttd img {
+            height: 80px;
+        }
+
+        .clear {
+            clear: both;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="center">
+        <div class="title">SURAT PERINTAH TUGAS</div>
+        <div class="subtitle">Nomor: {{ spt.nomor_spt }}</div>
+    </div>
+
+    <div class="line"></div>
+
+    <!-- ISI -->
+    <p>Yang bertanda tangan di bawah ini:</p>
+
+    <table>
+        <tr>
+            <td width="30%">Nama</td>
+            <td>: {{ pimpinan.nama }}</td>
+        </tr>
+        <tr>
+            <td>Jabatan</td>
+            <td>: {{ pimpinan.jabatan }}</td>
+        </tr>
+    </table>
+
+    <p>Memberikan tugas kepada:</p>
+
+    <table>
+        <tr>
+            <td width="30%">Nama</td>
+            <td>: {{ spt.dibuat_oleh.profile.nama }}</td>
+        </tr>
+        <tr>
+            <td>NIP</td>
+            <td>: {{ spt.dibuat_oleh.profile.nip }}</td>
+        </tr>
+    </table>
+
+    <p>Untuk melaksanakan tugas berikut:</p>
+
+    <table border="1">
+        <tr>
+            <td>{{ spt.judul }}</td>
+        </tr>
+    </table>
+
+    <p>
+        Demikian surat tugas ini dibuat untuk dilaksanakan dengan penuh tanggung jawab.
+    </p>
+
+    <!-- TANDA TANGAN -->
+    <div class="ttd">
+        <p>{{ spt.tanggal_ttd|date:"d F Y" }}</p>
+        <p><strong>{{ spt.disetujui_oleh.jabatan }}</strong></p>
+
+        <!-- Gambar TTD -->
+        {% if spt.status == 'disetujui_final' %}
+            <p>{% now "d F Y" %}</p>
+            <img src="{{ pimpinan.ttd.url }}">
+            <p>{{ pimpinan.jabatan }}</p>
+        {% endif %}
+
+        <p><strong><u>{{ spt.disetujui_oleh.nama }}</u></strong></p>
+    </div>
+
+    <div class="clear"></div>
+
+</div>
+<script>
+    window.onload = function() {
+        window.print();
+    }
+</script>
+</body>
+</html>

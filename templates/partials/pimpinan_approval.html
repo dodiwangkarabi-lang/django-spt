@@ -1,0 +1,77 @@
+<div class="bg-white border rounded-xl p-5 mt-6 shadow-sm">
+
+  <!-- Header -->
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="text-lg font-semibold text-gray-700">
+      Persetujuan Pimpinan
+    </h2>
+
+    <!-- Status -->
+    <span class="
+      px-3 py-1 text-xs rounded-full
+      {% if spt.status == 'disetujui' %}
+        bg-green-100 text-green-700
+      {% elif spt.status == 'ditolak' %}
+        bg-red-100 text-red-700
+      {% else %}
+        bg-yellow-100 text-yellow-700
+      {% endif %}
+    ">
+      {{ spt.status|title }}
+    </span>
+  </div>
+
+  <!-- Info Singkat SPT -->
+  <div class="bg-gray-50 p-3 rounded-lg text-sm mb-4">
+    <p><b>Judul:</b> {{ spt.judul }}</p>
+    <p><b>Tujuan:</b> {{ spt.tujuan }}</p>
+    <p><b>Tempat:</b> {{ spt.tempat_tujuan }}</p>
+    <p><b>Tanggal:</b> {{ spt.tanggal_berangkat }} - {{ spt.tanggal_kembali }}</p>
+  </div>
+
+  <!-- Jika sudah diproses -->
+  {% if spt.status == 'disetujui' or spt.status == 'ditolak' %}
+    <div class="text-sm text-gray-600">
+      <p><b>Catatan Pimpinan:</b></p>
+      <p class="mt-1 italic">
+        {{ spt.catatan_pimpinan|default:"-" }}
+      </p>
+    </div>
+  {% else %}
+
+  <!-- Form Approval -->
+  <form id="formApproval" class="space-y-4">
+
+    <!-- Catatan -->
+    <div>
+      <label class="block text-sm font-medium text-gray-600">
+        Catatan (Opsional)
+      </label>
+      <textarea name="catatan"
+        rows="3"
+        class="w-full mt-1 px-3 py-2 border rounded-lg focus:ring focus:ring-blue-200"
+        placeholder="Tambahkan catatan..."></textarea>
+    </div>
+
+    <!-- Tombol -->
+    <div class="flex gap-3 pt-2">
+
+      <button type="button"
+        onclick="submitApproval('approve')"
+        class="flex-1 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition">
+        ✅ Setujui
+      </button>
+
+      <button type="button"
+        onclick="submitApproval('tolak')"
+        class="flex-1 bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition">
+        ❌ Tolak
+      </button>
+
+    </div>
+
+  </form>
+
+  {% endif %}
+
+</div>

@@ -1,0 +1,77 @@
+    <!-- Sidebar -->
+  <aside class="w-64 bg-white shadow-md flex flex-col">
+
+    <!-- Header -->
+    <div class="p-4 border-b">
+      <h1 class="text-xl font-bold text-gray-800">SIPT</h1>
+      <p class="text-sm text-gray-500">Pegawai</p>
+    </div>
+
+    <!-- Menu -->
+    <nav class="flex-1 p-4 space-y-2">
+
+      <a href="{% url 'core_pegawai_dashboard' %}"
+         class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100"
+      >
+        🏠 Dashboard
+      </a>
+
+      <a href="{% url 'core_spt_saya' %}"
+         class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100"
+      >
+        📄 Permohonan
+      </a>
+
+      <a href="{% url 'core_spt_diterima' %}"
+         class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100"
+      >
+        📄 SPT diterima
+      </a>
+
+      <a href="{% url 'core_ajukan_spt' %}"
+         class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+        ➕ Ajukan Permohonan
+      </a>
+
+      
+
+      <!-- <a href="#"
+         class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+        🔔 Notifikasi
+      </a> -->
+
+    </nav>
+
+    <!-- Footer user -->
+<div class="p-4 border-t">
+  
+  <div class="flex items-center gap-3 mb-3">
+    <div class="w-10 h-10 rounded-full bg-gray-300"></div>
+    <div>
+      <p class="text-sm font-semibold">{{ request.user.profile.nama }}</p>
+      <p class="text-xs text-gray-500">{{ request.user.email }}</p>
+    </div>
+  </div>
+
+  <!-- Link Profil -->
+  <a href="{% url 'accounts_profile' %}"
+     class="flex items-center gap-2 w-full text-sm text-gray-700 hover:bg-gray-100 px-3 py-2 rounded-lg mb-2">
+
+    <!-- Ionicon -->
+    <ion-icon name="person-circle-outline" class="text-lg"></ion-icon>
+    <span>Profil</span>
+  </a>
+
+  <!-- Logout -->
+  <a onclick="return confirm('Apakah anda ingin logout?')" 
+     href="{% url 'accounts_logout' %}">
+    <button class="w-full bg-red-500 text-white py-2 rounded-lg text-sm hover:bg-red-600 flex items-center justify-center gap-2">
+      
+      <ion-icon name="log-out-outline"></ion-icon>
+      logout
+    </button>
+  </a>
+
+</div>
+
+  </aside>

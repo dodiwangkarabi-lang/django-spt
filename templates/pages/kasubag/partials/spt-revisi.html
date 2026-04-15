@@ -1,0 +1,33 @@
+{% extends "layouts/base.html" %} 
+
+{% block navbar %}
+{% endblock %}
+
+{% block content %}
+<div class="flex h-screen bg-gray-100">
+    
+<!-- SIDEBAR PEGAWAI -->
+  {% include "pages/pegawai/partials/sidebar.html" %}
+
+  <!-- MAIN CONTENT -->
+  <main class="flex-1 p-6">
+      <h2 class="text-2xl font-bold text-gray-800">Dashboard Pegawai</h2>
+      <p class="text-gray-600">Selamat datang di sistem SPT</p>
+      
+      <div x-data="{ open: false }">
+
+          {% include "pages/kasugab/partials/permohonan-spt-form.html" with action_url='core_spt_revisi' %}
+            
+          {% include "pages/kasugab/partials/lampiran-modal.html" with spt_id=spt_form.instance.id next_url=request.path %}
+        
+      </div>
+
+  </main>
+
+</div>
+
+{% endblock %}
+
+{% block main %}
+    {% include }
+{% endblock %}

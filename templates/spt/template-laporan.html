@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Surat Perintah Tugas</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-white p-10 text-sm text-black">
+
+  <!-- HEADER -->
+  <div class="flex items-center gap-4 border-b pb-4">
+    <img src="logo.png" alt="Logo" class="w-16 h-16 object-contain">
+
+    <div class="flex-1 text-center">
+      <h1 class="text-lg font-bold uppercase">PEMERINTAH KABUPATEN TANAH BUMBU</h1>
+      <h2 class="text-base font-semibold uppercase">KECAMATAN SATUI</h2>
+      <p class="text-xs">
+        Jalan Provinsi Nomor 10 Km 167 Sinar Bulan Kode Pos 72175 <br/>
+        Telp (0512) 61043 - Email: kec_satui@yahoo.co.id
+      </p>
+    </div>
+  </div>
+
+  <!-- TITLE -->
+  <div class="text-center mt-6">
+    <h3 class="font-bold uppercase underline text-base">
+      SURAT PERINTAH TUGAS
+    </h3>
+    <p class="mt-1">Nomor: {{ spt.nomor_spt }}</p>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="mt-6 space-y-4">
+
+    <p>
+      Dasar Surat Edaran Badan Kepegawaian Daerah Kabupaten Tanah Bumbu, Nomor:
+      893.4/193-DIKLAT/BKD, Perihal Pelaksanaan Diklat Teknis Pengurus Barang dan
+      Penyimpan Barang, untuk itu diperintahkan kepada:
+    </p>
+
+    <!-- PERSON 1 -->
+<div class="text-sm leading-6">
+  <div class="flex">
+    <div class="w-6">1.</div>
+    <div class="w-28">Nama</div>
+    <div class="w-4">:</div>
+    <div class="flex-1">Maisaroh, S.ST</div>
+  </div>
+
+  <div class="flex">
+    <div class="w-6"></div>
+    <div class="w-28">NIP</div>
+    <div class="w-4">:</div>
+    <div class="flex-1">19750126 199903 2 007</div>
+  </div>
+
+  <div class="flex">
+    <div class="w-6"></div>
+    <div class="w-28">Jabatan</div>
+    <div class="w-4">:</div>
+    <div class="flex-1">Pengurus Barang SKPD Kecamatan Satui</div>
+  </div>
+</div>
+
+    <!-- PERSON 2 -->
+    <div>
+      <div class="grid grid-cols-[120px_10px_1fr]">
+        <div>2. Nama</div><div>:</div><div><b>Ridwan, S.Pd.I</b></div>
+        <div>NIP</div><div>:</div><div>19790620 200903 1 005</div>
+        <div>Jabatan</div><div>:</div><div>Penyimpan Barang SKPD Kecamatan Satui</div>
+      </div>
+    </div>
+
+    <!-- DETAILS -->
+    <div class="grid grid-cols-[200px_10px_1fr] mt-4">
+      <div>3. Tujuan</div><div>:</div><div>Batulicin</div>
+      <div>4. Maksud Perjalanan Dinas</div><div>:</div>
+      <div>Diklat Teknis Pengurus Barang dan Penyimpan Barang</div>
+      <div>5. Berangkat tanggal</div><div>:</div><div>10 Desember 2012</div>
+      <div>6. Kembali tanggal</div><div>:</div><div>13 Desember 2012</div>
+      <div>7. Lamanya</div><div>:</div><div>3 (tiga) hari</div>
+    </div>
+
+    <p class="mt-4">
+      Demikian surat perintah tugas ini diberikan untuk dipergunakan sebagaimana mestinya.
+    </p>
+
+  </div>
+
+  <!-- SIGNATURE -->
+  <div class="mt-10 flex justify-end">
+  <div class="text-left">
+    <p>Satui, 7 Desember 2012</p>
+    <p class="font-semibold">CAMAT SATUI</p>
+
+    <div class="h-16"></div>
+
+    <p class="font-bold underline">ERYANTO RAIS, SH, MM</p>
+    <p>Pembina</p>
+    <p>NIP. 19671209 199003 1 012</p>
+  </div>
+</div>
+
+</body>
+</html>

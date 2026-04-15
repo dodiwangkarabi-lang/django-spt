@@ -1,0 +1,67 @@
+<div class="bg-white border rounded-xl p-4 mt-6 shadow-sm">
+
+  <h2 class="text-lg font-semibold text-gray-700 mb-4">
+    Pelaksanaan Tugas
+  </h2>
+
+  <form id="formPelaksanaan" class="space-y-4">
+
+    <!-- Tanggal Realisasi -->
+    <div>
+      <label class="block text-sm font-medium text-gray-600">
+        Tanggal Pelaksanaan
+      </label>
+      <input type="date" name="tanggal"
+        class="w-full mt-1 px-3 py-2 border rounded-lg focus:ring focus:ring-blue-200">
+    </div>
+
+    <!-- Deskripsi -->
+    <div>
+      <label class="block text-sm font-medium text-gray-600">
+        Deskripsi Kegiatan
+      </label>
+      <textarea name="deskripsi"
+        rows="3"
+        class="w-full mt-1 px-3 py-2 border rounded-lg focus:ring focus:ring-blue-200"
+        placeholder="Jelaskan kegiatan yang dilakukan"></textarea>
+    </div>
+
+    <!-- Upload Laporan -->
+    <div>
+      <label class="block text-sm font-medium text-gray-600">
+        Upload Laporan / Bukti
+      </label>
+
+      <input type="file" name="file"
+        class="w-full mt-1 px-3 py-2 border rounded-lg bg-white">
+
+      <p class="text-xs text-gray-400 mt-1">
+        PDF / Gambar (maks 2MB)
+      </p>
+    </div>
+
+    <!-- Status -->
+    <div>
+      <label class="block text-sm font-medium text-gray-600">
+        Status Pelaksanaan
+      </label>
+
+      <select name="status"
+        class="w-full mt-1 px-3 py-2 border rounded-lg">
+        <option value="proses">Sedang Dilaksanakan</option>
+        <option value="selesai">Selesai</option>
+      </select>
+    </div>
+
+    <!-- Button -->
+    <div class="pt-2">
+      <button type="button"
+        onclick="submitPelaksanaan()"
+        class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
+        Simpan Pelaksanaan
+      </button>
+    </div>
+
+  </form>
+
+</div>

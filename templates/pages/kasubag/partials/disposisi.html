@@ -1,0 +1,116 @@
+<div class="p-6 bg-gray-100 min-h-screen">
+  <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow p-6 space-y-6">
+
+    <!-- Header -->
+    <div class="border-b pb-4">
+      <h1 class="text-2xl font-bold text-gray-800">Disposisi SPT</h1>
+      <p class="text-sm text-gray-500">Berikan instruksi tindak lanjut</p>
+    </div>
+
+    <!-- Info SPT -->
+    <div class="bg-gray-50 p-4 rounded-lg grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <p class="text-sm text-gray-500">Nomor SPT</p>
+        <p class="font-semibold text-gray-800">SPT-001/2026</p>
+      </div>
+
+      <div>
+        <p class="text-sm text-gray-500">Tujuan</p>
+        <p class="font-semibold text-gray-800">Seminar Nasional</p>
+      </div>
+
+      <div>
+        <p class="text-sm text-gray-500">Pengaju</p>
+        <p class="font-semibold text-gray-800">Dodiman</p>
+      </div>
+
+      <div>
+        <p class="text-sm text-gray-500">Tanggal</p>
+        <p class="font-semibold text-gray-800">10 April 2026</p>
+      </div>
+    </div>
+
+    <!-- Form Disposisi -->
+    <form method="POST" enctype="multipart/form-data" class="space-y-5">
+
+      <!-- Tujuan Disposisi -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+          Tujuan Disposisi
+        </label>
+        <select 
+          name="tujuan_disposisi"
+          class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        >
+          <option value="">-- Pilih Pegawai / Unit --</option>
+          <option value="pegawai1">Pegawai 1</option>
+          <option value="pegawai2">Pegawai 2</option>
+        </select>
+      </div>
+
+      <!-- Isi Disposisi -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+          Isi Disposisi
+        </label>
+        <textarea 
+          name="isi_disposisi"
+          rows="4"
+          placeholder="Tuliskan instruksi..."
+          class="w-full border rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        ></textarea>
+      </div>
+
+      <!-- Sifat Disposisi -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+          Sifat
+        </label>
+        <select 
+          name="sifat"
+          class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        >
+          <option value="biasa">Biasa</option>
+          <option value="penting">Penting</option>
+          <option value="segera">Segera</option>
+        </select>
+      </div>
+
+      <!-- Lampiran -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+          Lampiran (Opsional)
+        </label>
+        <input 
+          type="file" 
+          name="lampiran"
+          class="w-full border rounded-lg p-2 bg-white"
+        >
+      </div>
+
+      <!-- Info -->
+      <div class="bg-blue-50 p-3 rounded-lg text-sm text-blue-700">
+        Disposisi akan dikirim ke pihak terkait untuk ditindaklanjuti.
+      </div>
+
+      <!-- Aksi -->
+      <div class="flex justify-end gap-3 pt-4 border-t">
+        <button 
+          type="reset"
+          class="px-4 py-2 rounded-lg border text-gray-600 hover:bg-gray-100"
+        >
+          Reset
+        </button>
+
+        <button 
+          type="submit"
+          class="px-5 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700"
+        >
+          Kirim Disposisi
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>

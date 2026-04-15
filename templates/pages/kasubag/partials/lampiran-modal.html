@@ -1,0 +1,29 @@
+<template x-if="open">
+
+
+<!-- MODAL (DI LUAR FORM UTAMA) -->
+<div  class="fixed inset-0 bg-black/50 flex items-center justify-center">
+    <div class="bg-white p-4 rounded-lg w-full max-w-md">
+        
+        <h3 class="text-lg font-semibold mb-2">Tambah Lampiran</h3>
+
+        <!-- FORM TERPISAH -->
+        <form method="post" enctype="multipart/form-data" action="{% url 'spt_upload_lampiran' spt.id %}">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next_url }}">
+            <input type="file" accept=".pdf" name="file" class="mb-2">
+
+            <div>
+                <label for="keterangan">Keterangan</label>
+                <input type="text" name="keterangan" class="w-full mt-1 px-3 py-2 border rounded-lg focus:ring focus:ring-blue-200 outline-none">
+            </div>
+
+            <div class="flex justify-end gap-2">
+                <button type="button" @click="open = false">Batal</button>
+                <button type="submit" :disabled="!open">Simpan</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+</template>

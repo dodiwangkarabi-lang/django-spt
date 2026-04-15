@@ -1,0 +1,129 @@
+<div class="bg-white border rounded-xl p-5 mt-6 shadow-sm">
+
+  <h2 class="text-lg font-semibold text-gray-700 mb-4">
+    Pelaksanaan Tugas
+  </h2>
+
+  <!-- Jika belum disetujui -->
+  {% if spt.status != 'disetujui' %}
+    <div class="bg-red-50 text-red-600 p-3 rounded-lg text-sm">
+      SPT belum disetujui. Anda belum bisa melaksanakan tugas.
+    </div>
+  {% else %}
+
+  <!-- Form -->
+  <form id="formPelaksanaan" class="space-y-4">
+
+    <!-- Tanggal -->
+    <div>
+      <label class="block text-sm font-medium text-gray-600">
+        Tanggal Pelaksanaan
+      </label>
+      <input type="date" name="tanggal"
+        class="w-full mt-1 px-3 py-2 border rounded-lg focus:ring focus:ring-blue-200">
+    </div>
+
+    <!-- Deskripsi -->
+    <div>
+      <label class="block text-sm font-medium text-gray-600">
+        Deskripsi Kegiatan
+      </label>
+      <textarea name="deskripsi"
+        rows="3"
+        class="w-full mt-1 px-3 py-2 border rounded-lg focus:ring focus:ring-blue-200"
+        placeholder="Jelaskan kegiatan yang dilakukan..."></textarea>
+    </div>
+
+    <!-- Upload -->
+    <div>
+      <label class="block text-sm font-medium text-gray-600">
+        Upload Bukti / Laporan
+      </label>
+
+      <input 
+        type="file" 
+        name="file"
+        id="filePelaksanaan"
+        class="w-full mt-1 px-3 py-2 border rounded-lg bg-white">
+
+      <p id="fileName" class="text-xs text-gray-500 mt-1"></p>
+
+      <p class="text-xs text-gray-400 mt-1">
+        PDF / JPG / PNG (maks 2MB)
+      </p>
+    </div>
+
+    <!-- Status -->
+    <div>
+      <label class="block text-sm font-medium text-gray-600">
+        Status
+      </label>
+
+      <select name="status"
+        class="w-full mt-1 px-3 py-2 border rounded-lg">
+        <option value="proses">Sedang Dilaksanakan</option>
+        <option value="selesai">Selesai</option>
+      </select>
+    </div>
+
+    <!-- Button -->
+    <div class="pt-2">
+      <button type="button"
+        onclick="submitPelaksanaan()"
+        class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
+        💾 Simpan Pelaksanaan
+      </button>
+    </div>
+
+  </form>
+
+  {% endif %}
+
+  <!-- Riwayat -->
+  <div class="mt-6">
+    <h3 class="font-semibold text-gray-700 mb-2">
+      Riwayat Pelaksanaan
+    </h3>
+
+    <div class="space-y-2 text-sm">
+
+      {% for item in spt.pelaksanaan.all %}
+      <div class="border p-3 rounded-lg bg-gray-50">
+
+        <div class="flex justify-between">
+          <p class="font-medium">{{ item.tanggal }}</p>
+
+          <span class="
+            px-2 py-1 text-xs rounded
+            {% if item.status == 'selesai' %}
+              bg-green-100 text-green-700
+            {% else %}
+              bg-blue-100 text-blue-700
+            {% endif %}
+          ">
+            {{ item.status }}
+          </span>
+        </div>
+
+        <p class="text-gray-600 mt-1">
+          {{ item.deskripsi }}
+        </p>
+
+        {% if item.file %}
+        <a href="{{ item.file.url }}"
+           class="text-blue-600 text-xs underline mt-1 block">
+           Lihat Lampiran
+        </a>
+        {% endif %}
+
+      </div>
+      {% empty %}
+        <p class="text-gray-400 text-sm">
+          Belum ada data pelaksanaan
+        </p>
+      {% endfor %}
+
+    </div>
+  </div>
+
+</div>

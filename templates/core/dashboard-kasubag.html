@@ -1,0 +1,67 @@
+{% extends "layouts/base.html" %} {% block content %}
+
+<div class="space-y-6">
+
+  <!-- KPI -->
+  <div class="grid grid-cols-3 gap-4">
+
+    <div class="bg-white p-4 rounded-xl shadow">
+      <p class="text-sm text-gray-500">SPT Masuk</p>
+      <h2 class="text-xl font-bold">{{ total_masuk }}</h2>
+    </div>
+
+    <div class="bg-yellow-100 p-4 rounded-xl">
+      <p>Perlu Disposisi</p>
+      <h2>{{ perlu_disposisi }}</h2>
+    </div>
+
+    <div class="bg-green-100 p-4 rounded-xl">
+      <p>Sudah Diproses</p>
+      <h2>{{ sudah }}</h2>
+    </div>
+
+  </div>
+
+  <!-- LIST SPT -->
+  <div class="bg-white p-4 rounded-xl shadow">
+    <h2 class="font-semibold mb-3">SPT Masuk</h2>
+
+    <table class="w-full text-sm">
+      <thead>
+        <tr class="border-b">
+          <th>Judul</th>
+          <th>Pegawai</th>
+          <th>Status</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for spt in spt_list %}
+        <tr class="border-b hover:bg-gray-50">
+
+          <td>{{ spt.judul }}</td>
+          <td>{{ spt.user }}</td>
+
+          <td>
+            <span class="px-2 py-1 text-xs rounded bg-yellow-100 text-yellow-700">
+              {{ spt.status }}
+            </span>
+          </td>
+
+          <td>
+            <a href="/spt/{{ spt.id }}"
+               class="text-blue-600 underline text-xs">
+               Disposisi
+            </a>
+          </td>
+
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+{% endblock %}

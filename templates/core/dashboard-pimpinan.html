@@ -1,0 +1,78 @@
+{% extends "layouts/base.html" %}
+{% block content %}
+
+<div class="space-y-6">
+
+  <!-- KPI -->
+  <div class="grid grid-cols-4 gap-4">
+    <div class="bg-white p-4 rounded-xl shadow">
+      <p>Total SPT</p>
+      <h2 class="text-xl font-bold">{{ total_spt }}</h2>
+    </div>
+
+    <div class="bg-yellow-100 p-4 rounded-xl">
+      <p>Menunggu</p>
+      <h2>{{ diajukan }}</h2>
+    </div>
+
+    <div class="bg-green-100 p-4 rounded-xl">
+      <p>Disetujui</p>
+      <h2>{{ disetujui }}</h2>
+    </div>
+
+    <div class="bg-red-100 p-4 rounded-xl">
+      <p>Ditolak</p>
+      <h2>{{ ditolak }}</h2>
+    </div>
+  </div>
+
+  <!-- CHART -->
+  <div class="bg-white p-4 rounded-xl shadow">
+    <h2 class="font-semibold mb-2">Statistik SPT</h2>
+    <canvas id="chart"></canvas>
+  </div>
+
+  <!-- APPROVAL LIST -->
+  <div class="bg-white p-4 rounded-xl shadow">
+    <h2 class="font-semibold mb-3">Butuh Persetujuan</h2>
+
+    <table class="w-full text-sm">
+      <thead>
+        <tr class="border-b">
+          <th>Judul</th>
+          <th>Pegawai</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for spt in pending_spt %}
+        <tr class="border-b">
+          <td>{{ spt.judul }}</td>
+          <td>{{ spt.user }}</td>
+          <td>
+            <a href="/spt/{{ spt.id }}"
+               class="text-blue-600 underline text-xs">
+               Lihat
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+new Chart(document.getElementById("chart"), {
+  type: 'bar',
+  data: {
+    labels: ['Diajukan', 'Disetujui', 'Ditolak'],
+    datasets: [{
+      data: [{{ diajukan }}, {{ disetujui }}, {{ ditolak }}]
+    }]
+  }
+});
+</script>
+
+{% endblock %}

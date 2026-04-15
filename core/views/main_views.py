@@ -67,9 +67,24 @@ def edit_profile(request):
     context = {"form": form}
     return render(request, "pages/pegawai/edit-profile.html", context)
 
-
+# @login_required
 def index(request):
-    return render(request, "core/index.html")
+    user = request.user
+    
+    if not user.is_authenticated:
+        return redirect("core_login")
+    
+    # cek group
+    if user.groups.filter(name="pimpinan").exists():
+        return redirect("core_pimpinan_dashboard")
+
+    elif user.groups.filter(name="kasubag").exists():
+        return redirect("core_kasubag_dashboard")
+
+    elif user.groups.filter(name="pegawai").exists():
+        return redirect("core_pegawai_dashboard")
+    
+    # return render(request, "core/index.html")
 
 
 def dashboard(request):

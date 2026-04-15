@@ -1,0 +1,27 @@
+pip install -r requirements.txt
+
+python manage.py migrate
+python manage.py collectstatic
+/var/www/yourusername_pythonanywhere_com_wsgi.py
+
+
+import os
+import sys
+
+path = '/home/yourusername/django-spt'
+if path not in sys.path:
+    sys.path.append(path)
+
+os.environ['DJANGO_SETTINGS_MODULE'] = 'namaproject.settings'
+
+from django.core.wsgi import get_wsgi_application
+application = get_wsgi_application()
+
+/home/yourusername/django-spt/venv
+
+cd django-spt
+git pull origin main
+
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py collectstatic

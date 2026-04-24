@@ -11,10 +11,7 @@
 
   <!-- MAIN CONTENT -->
   <main class="flex-1 p-6">
-      <!-- <h2 class="text-2xl font-bold text-gray-800">Dashboard Pegawai</h2> -->
-      <p class="text-gray-600"></p>
-      {% include "pages/pegawai/partials/spt-detail.html" %}
-
+        <div hx-get="{% url 'permohonan_list_htmx' %}?init=1" hx-trigger="load">Loading...</div>
   </main>
 
 </div>

@@ -20,10 +20,14 @@ from .services import (
 # def index(request):
 #     return render(request, 'spt/index.html')
 
-def spt_action(request, spt_id):
-    spt = get_object_or_404(SPT, id=spt_id)
-    event = request.POST.get('event')
+def spt_action(request, spt_id, action):
+    # event = request.POST.get('event')
     
+    spt = get_object_or_404(SPT, id=spt_id)
+    next_url = request.POST.get('next')
+    
+    if next_url:
+        return redirect(next_url)
     
     
     return render(request, 'spt/spt_action.html')

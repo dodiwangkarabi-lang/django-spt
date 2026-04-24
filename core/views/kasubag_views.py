@@ -49,6 +49,86 @@ from core.decorators import roles_required
 
 from spt.analisis_services import RangkumanSPT
 
+from django.core.paginator import Paginator
+from django.db.models import Q, Value, CharField, F
+
+# -------------------------------------------kasugab htmx--------------------------------
+@login_required
+@roles_required("kasubag")
+def kasubag_permohonan_spt_detail(request, id):
+    spt = get_spt_detail(id, request.user)
+    lampiran_list = spt.lampiran.all()
+    context = {"spt": spt, "lampiran_list": lampiran_list}
+
+    return render(request, "pages/kasubag/permohonan-spt-detail.html", context)
+
+@login_required
+@roles_required("kasubag")
+def kasubag_permohonan_spt_list_htmx(request):
+    init = request.GET.get("init", "")
+    q = request.GET.get("q", "")
+    tanggal = request.GET.get("tanggal", "")
+    page_number = request.GET.get("page")
+    
+    # spt_list = get_spt_list(request.user).order_by("-created_at").filter(
+    #     Q(status=SPTStatus.DIAJUKAN) |
+    #     Q(status=SPTStatus.DRAFT) |
+    #     Q(status=SPTStatus.REVISI_KASUBAG) |
+    #     Q(status=SPTStatus.DITOLAK_KASUBAG) |
+    #     Q(status=SPTStatus.DITOLAK_PIMPINAN) |
+    #     Q(status=SPTStatus.PERMOHONAN_DIAJUKAN) |
+    #     Q(status=SPTStatus.REVIEW_KASUBAG)
+    # )
+    
+    spt_list = get_spt_list(request.user).order_by("-created_at")
+    
+    if q:
+        spt_list = spt_list.filter(Q(nomor_spt__icontains=q) | Q(judul__icontains=q))
+    
+    if tanggal:
+        spt_list = spt_list.filter(created_at__date=tanggal)
+        
+    # qs = spt_list
+    qs = spt_list.select_related("permohonan_spt").filter(permohonan_spt__isnull=False)\
+        .annotate(
+            status_permohonan=F("permohonan_spt__status"),
+            id_permohonan=F("permohonan_spt__id"),
+        )
+        
+    
+    paginator = Paginator(qs, 10)
+    page_obj = paginator.get_page(page_number)
+    
+    columns = [
+        # {"key": "nomor_spt", "label": "Nomor SPT"},
+        {"key": "judul", "label": "Judul"},
+        {"key": "created_at", "label": "Tanggal", "tipe": "date"},
+        {"key": "status_permohonan", "label": "Status"},
+    ]
+    
+    actions = [
+        {"key": "detail", "label": "Detail", "url": "core_kasubag_permohonan_spt_detail", "param": "id"},
+        # {"key": "upload", "label": "Upload Laporan", "url": "core_upload_laporan", "param": "id"},
+        # {"key": "delete", "label": "Hapus", "url": "core_permohonan_spt_delete", "param": "id"},
+    ]
+    
+
+    context = {
+        "page_obj": page_obj,
+        "columns": columns,
+        "actions": actions,
+        "current_url": "pegawai_spt_list_htmx",
+        # "detail_url": "core_spt_detail",
+        # "upload_url": "core_upload_laporan",
+        "judul_halaman": "Daftar Permohonan SPT",
+    }
+    
+    if init:
+        return render(request, "partials/permohonan-spt-list.html", context)
+    
+    return render(request, "partials/_tabel.html", context)
+
+
 # -------------------------------------------kasugab--------------------------------
 @login_required
 @roles_required("kasubag")
@@ -104,6 +184,11 @@ def review_permohonan(request, disposisi_id):
 
 @login_required
 @roles_required("kasubag")
+def kasubag_permohonan_spt(request):
+    return render(request, "pages/kasubag/permohonan-spt.html")
+
+@login_required
+@roles_required("kasubag")
 def daftar_spt_diajukan(request):
     spt_list = get_spt_list()
     context = {"spt_list": spt_list}
@@ -134,12 +219,12 @@ def disposisi(request):
     context = {"disposisi_list": disposisi_list}
     return render(request, "pages/kasubag/disposisi.html", context)
 
-@login_required
-@roles_required("kasubag")
-def disposisi_detail(request, disposisi_id):
-    disposisi = get_disposisi_detail(disposisi_id, request.user)
-    context = {"disposisi": disposisi}
-    return render(request, "pages/kasubag/disposisi-detail.html", context)
+# @login_required
+# @roles_required("kasubag")
+# def disposisi_detail(request, disposisi_id):
+#     disposisi = get_disposisi_detail(disposisi_id, request.user)
+#     context = {"disposisi": disposisi}
+#     return render(request, "pages/kasubag/disposisi-detail.html", context)
 
 @login_required
 @roles_required("kasubag")

@@ -4,6 +4,21 @@ from . import views
 
 urlpatterns = [
     
+    # permohonan
+    path("permohonan/", views.permohonan_list, name="permohonan_list"),
+    path("permohonan/<int:id>", views.permohonan_detail, name="permohonan_detail"),
+    path("htmx/permohonan/", views.permohonan_list_htmx, name="permohonan_list_htmx"),
+    
+    # disposisi
+    path("disposisi/", views.disposisi_list, name="disposisi_list"),
+    path("disposisi/<int:disposisi_id>", views.disposisi_detail, name="disposisi_detail"),
+    path("htmx/disposisi/", views.disposisi_list_htmx, name="disposisi_list_htmx"),
+    
+    # spt
+    path("spt/", views.spt_list, name="spt_list"),
+    path("spt/<int:spt_id>", views.spt_detail, name="spt_detail"),
+    path("htmx/spt/", views.spt_list_htmx, name="spt_list_htmx"),
+    # path("htmx/permohonan-spt/", views.permohonan_spt_list_htmx, name="permohonan_spt_list_htmx"),
     
     
     # pegawai
@@ -15,10 +30,14 @@ urlpatterns = [
     path("pegawai/ajukan-spt/", views.ajukan_spt, name="core_ajukan_spt"),
     path("pegawai/ajukan-spt/<int:spt_id>/", views.kirim_pengajuan, name="core_kirim_pengajuan"),
     path("pegawai/spt-detail/<int:spt_id>/", views.spt_detail, name="core_spt_detail"),
-    path("pegawai/<int:spt_id>/upload-laporan/", views.upload_laporan, name="core_upload_laporan"),
+    path("pegawai/<int:spt_id>/upload-laporan/", views.upload_laporan_oleh_pegawai, name="core_upload_laporan"),
     path("pegawai/<int:spt_id>/revisi/", views.spt_revisi, name="core_spt_revisi"),
     path("pegawai/<int:spt_id>/edit-revisi/", views.edit_revisi, name="core_edit_revisi"),
+    path("pegawai/permohonan-spt/", views.permohonan_spt, name="core_permohonan_spt"), # tambahan
+    path("pegawai/permohonan-spt/<int:id>", views.permohonan_spt_detail, name="core_permohonan_spt_detail"),
+    path("pegawai/permohonan-spt/<int:id>/delete", views.permohonan_spt_delete, name="core_permohonan_spt_delete"),
     path("pegawai/htmx/", include('core.url_modules.pegawai_url_htmx')),
+    
     
     # kasubag
     path("kasubag/dashboard/", views.kasubag, name="core_kasubag_dashboard"),
@@ -32,6 +51,8 @@ urlpatterns = [
     path("kasubag/reject/<int:disposisi_id>/", views.reject, name="core_kasubag_reject"),
     path("kasubag/revisi/<int:disposisi_id>/", views.revisi, name="core_kasubag_revisi"),
     path("kasubag/approval-spt/", views.approval_spt, name="core_kasubag_approval_spt"),
+    path("kasubag/permohonan-spt/", views.kasubag_permohonan_spt, name="core_kasubag_permohonan_spt"), # tambahan
+    path("kasubag/permohonan-spt/<int:id>", views.kasubag_permohonan_spt_detail, name="core_kasubag_permohonan_spt_detail"),
     path("kasubag/htmx/", include('core.url_modules.kasubag_url_htmx')),
     
 

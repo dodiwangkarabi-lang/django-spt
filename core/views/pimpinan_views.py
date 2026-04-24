@@ -5,35 +5,39 @@ from django.http import HttpResponse, HttpResponseNotAllowed
 from django.urls import reverse
 from spt.forms import SPTForm, SPTFormRevisi
 from spt.models import SPT, SPTLampiran, SPTStatus
-from spt.services import (
-    create_spt,
-    get_spt_list,
-    get_spt_detail,
-    get_inbox_disposisi,
-    get_disposisi_detail,
-    kasubbag_approve,
-    kasubbag_reject,
-    kasubbag_revisi,
-    kasubbag_terima_spt,
-    kasubbag_review,
-    update_draft_spt_kasubag,
-    pimpinan_approve,
-    pimpinan_reject,
-    pimpinan_revisi,
-    update_draft_spt,
-    simpan_draft_spt,
-    submit_spt,
-    upload_lampiran_spt,
-    delete_lampiran_spt,
-    get_lampiran_spt_detail,
-    get_lampiran_spt_list,
-    buat_spt,
-    get_spt_diterima_list,
-    get_kasubag_user,
-    get_pimpinan_user,
-    pimpinan_setujui_permohonan,
-    update_dan_create_disposisi_baru,
-)
+from spt.services import *
+# from spt.services import (
+#     create_spt,
+#     get_spt_list,
+#     get_spt_detail,
+#     get_inbox_disposisi,
+#     get_disposisi_detail,
+#     kasubbag_approve,
+#     kasubbag_reject,
+#     kasubbag_revisi,
+#     kasubbag_terima_spt,
+#     kasubbag_review,
+#     update_draft_spt_kasubag,
+#     pimpinan_approve,
+#     pimpinan_reject,
+#     pimpinan_revisi,
+#     update_draft_spt,
+#     simpan_draft_spt,
+#     submit_spt,
+#     upload_lampiran_spt,
+#     delete_lampiran_spt,
+#     get_lampiran_spt_detail,
+#     get_lampiran_spt_list,
+#     buat_spt,
+#     get_spt_diterima_list,
+#     get_kasubag_user,
+#     get_pimpinan_user,
+#     pimpinan_setujui_permohonan,
+#     update_dan_create_disposisi_baru,
+# )
+
+# utils
+from core.utils import update_by_action
 
 # timezone
 from django.utils import timezone
@@ -170,6 +174,12 @@ def pimpinan_setujui_permohonan_view(request, disposisi_id):
         disposisi_baru = pimpinan_setujui_permohonan(
             disposisi, pimpinan, kasubag, catatan
         )
+        
+        # tambahan
+        # spt = update_by_action(
+        #     disposisi.spt, action="setujui_permohonan_oleh_pimpinan"
+        #     # dari_user=request.user, ke_user=ke_user
+        # )
 
         return redirect("core_pimpinan_disposisi")
     else:

@@ -5,35 +5,37 @@ from django.http import HttpResponse, HttpResponseNotAllowed
 from django.urls import reverse
 from spt.forms import SPTForm, SPTFormRevisi
 from spt.models import SPT, SPTLampiran, SPTStatus
-from spt.services import (
-    create_spt,
-    get_spt_list,
-    get_spt_detail,
-    get_inbox_disposisi,
-    get_disposisi_detail,
-    kasubbag_approve,
-    kasubbag_reject,
-    kasubbag_revisi,
-    kasubbag_terima_spt,
-    kasubbag_review,
-    update_draft_spt_kasubag,
-    pimpinan_approve,
-    pimpinan_reject,
-    pimpinan_revisi,
-    update_draft_spt,
-    simpan_draft_spt,
-    submit_spt,
-    upload_lampiran_spt,
-    delete_lampiran_spt,
-    get_lampiran_spt_detail,
-    get_lampiran_spt_list,
-    buat_spt,
-    get_spt_diterima_list,
-    get_kasubag_user,
-    get_pimpinan_user,
-    pimpinan_setujui_permohonan,
-    update_dan_create_disposisi_baru,
-)
+from spt.services import *
+# from spt.services import (
+#     create_spt,
+#     get_spt_list,
+#     get_spt_detail,
+#     get_inbox_disposisi,
+#     get_disposisi_detail,
+#     kasubbag_approve,
+#     kasubbag_reject,
+#     kasubbag_revisi,
+#     kasubbag_terima_spt,
+#     kasubbag_review,
+#     update_draft_spt_kasubag,
+#     pimpinan_approve,
+#     pimpinan_reject,
+#     pimpinan_revisi,
+#     update_draft_spt,
+#     simpan_draft_spt,
+#     submit_spt,
+#     upload_lampiran_spt,
+#     delete_lampiran_spt,
+#     get_lampiran_spt_detail,
+#     get_lampiran_spt_list,
+#     buat_spt,
+#     get_spt_diterima_list,
+#     get_kasubag_user,
+#     get_pimpinan_user,
+#     pimpinan_setujui_permohonan,
+#     update_dan_create_disposisi_baru,
+#     get_spt_for_user
+# )
 
 # timezone
 from django.utils import timezone
@@ -49,10 +51,13 @@ from tugas.services import upload_laporan_service, is_laporan_exist
 from core.decorators import roles_required
 
 # import Q untuk filter
-from django.db.models import Q, Value, CharField
+from django.db.models import Q, Value, CharField, F
 from django.db.models.functions import Concat
 
 from django.core.paginator import Paginator
+
+# utils
+from core.utils import update_by_action
 
 # -------------------------------------------pegawai htmx --------------------------------
 @login_required
@@ -75,45 +80,159 @@ def grid_card_htmx(request):
     return render(request, "partials/grid-card.html", context)
 
 
+# @login_required
+# # @roles_required("pegawai")
+# def spt_list_htmx(request):
+#     init = request.GET.get("init", "")
+#     q = request.GET.get("q", "")
+#     tanggal = request.GET.get("tanggal", "")
+#     page_number = request.GET.get("page")
+    
+#     # spt_list = get_spt_list(request.user).order_by("-created_at").filter(
+#     #     Q(status=SPTStatus.DIAJUKAN) |
+#     #     Q(status=SPTStatus.DRAFT) |
+#     #     Q(status=SPTStatus.REVISI_KASUBAG) |
+#     #     Q(status=SPTStatus.DITOLAK_KASUBAG) |
+#     #     Q(status=SPTStatus.DITOLAK_PIMPINAN) |
+#     #     Q(status=SPTStatus.PERMOHONAN_DIAJUKAN) |
+#     #     Q(status=SPTStatus.REVIEW_KASUBAG)
+#     # ) # permohonan
+    
+#     spt_list = SPTService.get_for_user(request.user)
+#     # spt_list = get_spt_for_user(request.user)
+    
+#     # spt_list = get_spt_list(request.user).order_by("-created_at")
+    
+#     if q:
+#         spt_list = spt_list.filter(Q(nomor_spt__icontains=q) | Q(judul__icontains=q))
+    
+#     if tanggal:
+#         spt_list = spt_list.filter(created_at__date=tanggal)
+    
+#     paginator = Paginator(spt_list, 10)
+#     page_obj = paginator.get_page(page_number)
+    
+#     columns = [
+#         # {"key": "nomor_spt", "label": "Nomor SPT"},
+#         {"key": "judul", "label": "Judul"},
+#         {"key": "created_at", "label": "Tanggal", "tipe": "date"},
+#         {"key": "status", "label": "Status"},
+#     ]
+    
+#     actions = [
+#         {"key": "detail", "label": "Detail", "url": "core_spt_detail", "param": "spt_id"},
+#         {"key": "upload", "label": "Upload Laporan", "url": "core_upload_laporan", "param": "spt_id"},
+#     ]
+    
+
+#     context = {
+#         "page_obj": page_obj,
+#         "columns": columns,
+#         "actions": actions,
+#         "current_url": "pegawai_spt_list_htmx",
+#         # "detail_url": "core_spt_detail",
+#         # "upload_url": "core_upload_laporan",
+#         # "judul_halaman": "Daftar Permohonan SPT",
+#     }
+    
+#     if init:
+#         return render(request, "partials/spt-list.html", context)
+    
+#     return render(request, "partials/_tabel-spt.html", context)
+
 @login_required
-@roles_required("pegawai")
-def spt_list_htmx(request):
+# @roles_required("pegawai")
+def disposisi_list_htmx(request):
     init = request.GET.get("init", "")
     q = request.GET.get("q", "")
     tanggal = request.GET.get("tanggal", "")
     page_number = request.GET.get("page")
     
-    spt_list = get_spt_list(request.user).order_by("-created_at").filter(
-        Q(status=SPTStatus.DIAJUKAN) |
-        Q(status=SPTStatus.DRAFT) |
-        Q(status=SPTStatus.REVISI_KASUBAG) |
-        Q(status=SPTStatus.DITOLAK_KASUBAG) |
-        Q(status=SPTStatus.DITOLAK_PIMPINAN) |
-        Q(status=SPTStatus.PERMOHONAN_DIAJUKAN) |
-        Q(status=SPTStatus.REVIEW_KASUBAG)
-    ) # permohonan
+    qs = get_disposisi_for_user(request.user)
     
-    # spt_list = get_spt_list(request.user).order_by("-created_at")
+    if q:
+        qs = qs.filter(Q(nomor_spt__icontains=q) | Q(judul__icontains=q))
+    
+    if tanggal:
+        qs = qs.filter(created_at__date=tanggal)
+    
+    paginator = Paginator(qs, 10)
+    page_obj = paginator.get_page(page_number)
+    
+    columns = [
+        # {"key": "nomor_spt", "label": "Nomor SPT"},
+        # {"key": "judul", "label": "Judul"},
+        {"key": "created_at", "label": "Tanggal", "tipe": "date"},
+        {"key": "status", "label": "Status"},
+    ]
+    
+    actions = [
+        {"key": "detail", "label": "Detail", "url": "disposisi_detail", "param": "id"},
+        # {"key": "upload", "label": "Upload Laporan", "url": "core_upload_laporan", "param": "spt_id"},
+    ]
+    
+
+    context = {
+        "page_obj": page_obj,
+        "columns": columns,
+        "actions": actions,
+    }
+    
+    if init:
+        return render(request, "partials/disposisi-list.html", context)
+    
+    return render(request, "partials/_tabel.html", context)
+
+# permohonan spt list htmx
+@login_required
+@roles_required("pegawai")
+def permohonan_spt_list_htmx(request):
+    init = request.GET.get("init", "")
+    q = request.GET.get("q", "")
+    tanggal = request.GET.get("tanggal", "")
+    page_number = request.GET.get("page")
+    
+    # spt_list = get_spt_list(request.user).order_by("-created_at").filter(
+    #     Q(status=SPTStatus.DIAJUKAN) |
+    #     Q(status=SPTStatus.DRAFT) |
+    #     Q(status=SPTStatus.REVISI_KASUBAG) |
+    #     Q(status=SPTStatus.DITOLAK_KASUBAG) |
+    #     Q(status=SPTStatus.DITOLAK_PIMPINAN) |
+    #     Q(status=SPTStatus.PERMOHONAN_DIAJUKAN) |
+    #     Q(status=SPTStatus.REVIEW_KASUBAG)
+    # )
+    
+    spt_list = get_spt_list(request.user).order_by("-created_at")
     
     if q:
         spt_list = spt_list.filter(Q(nomor_spt__icontains=q) | Q(judul__icontains=q))
     
     if tanggal:
         spt_list = spt_list.filter(created_at__date=tanggal)
+        
+    # qs = spt_list
+    qs = spt_list.select_related("permohonan_spt").filter(permohonan_spt__isnull=False)\
+        .annotate(
+            status_permohonan=F("permohonan_spt__status"),
+            id_permohonan=F("permohonan_spt__id"),
+        )
+        
+    # print(qs)
     
-    paginator = Paginator(spt_list, 10)
+    paginator = Paginator(qs, 10)
     page_obj = paginator.get_page(page_number)
     
     columns = [
         # {"key": "nomor_spt", "label": "Nomor SPT"},
         {"key": "judul", "label": "Judul"},
         {"key": "created_at", "label": "Tanggal", "tipe": "date"},
-        {"key": "status", "label": "Status"},
+        {"key": "status_permohonan", "label": "Status"},
     ]
     
     actions = [
-        {"key": "detail", "label": "Detail", "url": "core_spt_detail", "param": "spt_id"},
-        {"key": "upload", "label": "Upload Laporan", "url": "core_upload_laporan", "param": "spt_id"},
+        {"key": "detail", "label": "Detail", "url": "core_permohonan_spt_detail", "param": "id"},
+        {"key": "upload", "label": "Upload Laporan", "url": "core_upload_laporan", "param": "id"},
+        {"key": "delete", "label": "Hapus", "url": "core_permohonan_spt_delete", "param": "id"},
     ]
     
 
@@ -124,12 +243,13 @@ def spt_list_htmx(request):
         "current_url": "pegawai_spt_list_htmx",
         # "detail_url": "core_spt_detail",
         # "upload_url": "core_upload_laporan",
+        "judul_halaman": "Daftar Permohonan SPT",
     }
     
     if init:
-        return render(request, "partials/spt-list.html", context)
+        return render(request, "partials/permohonan-spt-list.html", context)
     
-    return render(request, "partials/_tabel-spt.html", context)
+    return render(request, "partials/_tabel.html", context)
 
 
 @login_required
@@ -219,6 +339,11 @@ def spt_list_diterima_htmx(request):
 # -------------------------------------------pegawai--------------------------------
 @login_required
 @roles_required("pegawai")
+def permohonan_spt(request):
+    return render(request, "pages/pegawai/permohonan-spt.html")
+
+@login_required
+@roles_required("pegawai")
 def pegawai(request):
     # spt_list = [
     #     {"id": 1, "judul": "SPT 1", "status": "diajukan"},
@@ -263,30 +388,61 @@ def spt_diterima(request):
 @login_required
 @roles_required("pegawai")
 def ajukan_spt(request):
+    # print("ini ajukan spt")
 
     if request.method == "POST":
         lampiran = request.FILES.getlist("lampiran")
         data = request.POST.copy()
 
         spt = buat_spt(request.user, data=data, lampiran=lampiran)
+        
+        # tambahan
+        # spt = update_by_action(spt, "buat_permohonan_spt")
+        
         return redirect("core_spt_detail", spt_id=spt.id)
     return render(request, "pages/pegawai/ajukan-spt.html")
 
+# kirim permohonan spt
 @login_required
 @roles_required("pegawai")
 def kirim_pengajuan(request, spt_id):
-    submit_spt(spt_id, request.user)
-    return redirect("core_spt_saya")
+    # spt = submit_spt(spt_id, request.user)
+    spt = get_spt_detail(spt_id, request.user)
+    
+    # kirim permohonan (tambahan)
+    ke_user = User.objects.filter(groups__name="kasubag").first()
+    spt = update_by_action(
+        spt, action="kirim_permohonan_spt",
+        dari_user=request.user, ke_user=ke_user
+    )
+    
+    return redirect("permohonan_list")
     # return render(request, 'pages/pegawai/kirim-pengajuan.html', {"spt": spt})
+
+# @login_required
+# @roles_required("pegawai")
+# def spt_detail(request, spt_id):
+#     spt = get_spt_detail(spt_id, request.user)
+#     lampiran_list = spt.lampiran.all()
+#     context = {"spt": spt, "lampiran_list": lampiran_list}
+
+#     return render(request, "pages/pegawai/spt-detail.html", context)
 
 @login_required
 @roles_required("pegawai")
-def spt_detail(request, spt_id):
-    spt = get_spt_detail(spt_id, request.user)
+def permohonan_spt_detail(request, id):
+    spt = get_spt_detail(id, request.user)
     lampiran_list = spt.lampiran.all()
     context = {"spt": spt, "lampiran_list": lampiran_list}
 
-    return render(request, "pages/pegawai/spt-detail.html", context)
+    return render(request, "pages/pegawai/permohonan-spt-detail.html", context)
+
+@login_required
+@roles_required("pegawai")
+def permohonan_spt_delete(request, id):
+    spt = get_spt_detail(id, request.user)
+    spt.delete()
+    return redirect("permohonan_list")
 
 @login_required
 @roles_required("pegawai")
@@ -315,7 +471,7 @@ def spt_revisi(request, spt_id):
             return redirect("core_spt_detail", spt_id=spt.id)
         else:
             # print("ini jalan")
-            print(spt_form.errors)
+            # print(spt_form.errors)
             context = {"form": spt_form, "spt": spt}
             render(request, "pages/pegawai/spt-revisi.html", context)
 
@@ -328,7 +484,7 @@ def spt_revisi(request, spt_id):
 
 @login_required
 @roles_required("pegawai")
-def upload_laporan(request, spt_id):
+def upload_laporan_oleh_pegawai(request, spt_id):
     spt = get_spt_detail(spt_id, request.user)
 
     if request.method == "POST":

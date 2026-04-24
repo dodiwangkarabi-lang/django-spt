@@ -4,7 +4,7 @@ from django.db.models import Q
 from django.contrib.auth.models import User
 from django.utils import timezone
 
-from .models import SPT, SPTLampiran, SPTStatus
+from .models import SPT, SPTLampiran, SPTStatus, PermohonanSPT
 from workflow.models import Disposisi, DisposisiTemplate, DisposisiTipe
 
 from spt.utils import generate_nomor_spt
@@ -240,6 +240,10 @@ def buat_spt(user, data, lampiran=None):
         dibuat_oleh=user,
         status="draft",
     )
+    
+    # buat permohonan spt (tambahan)
+    PermohonanSPT.objects.create(spt=spt)
+    
     if lampiran:
         for lamp in lampiran:
             data_lampiran = {
@@ -323,6 +327,12 @@ def submit_spt(spt_id, user):
 
     spt.status = SPTStatus.PERMOHONAN_DIAJUKAN
     spt.save()
+    
+    # update permohonan
+    permohonan_spt = getattr(spt, "permohonan_spt", None)
+    if permohonan_spt:
+        permohonan_spt.status = SPTStatus.PERMOHONAN_DIAJUKAN
+        permohonan_spt.save()
     
     Disposisi.objects.create(
         spt=spt,
@@ -435,8 +445,8 @@ def get_inbox_disposisi(user):
 def get_disposisi_detail(disposisi_id, user):
     disposisi = Disposisi.objects.get(id=disposisi_id)
 
-    if disposisi.ke_user != user:
-        raise Exception("Bukan pemilik disposisi")
+    # if disposisi.ke_user != user:
+    #     raise Exception("Bukan pemilik disposisi")
 
     return disposisi
 
@@ -627,6 +637,11 @@ def kasubbag_reject(disposisi: Disposisi, kasubbag_user, catatan=""):
     spt.status = SPTStatus.DITOLAK_KASUBAG
     spt.catatan = catatan
     spt.save()
+    
+    # update permohonan
+    permohonan = spt.permohonan_spt
+    permohonan.status = SPTStatus.DITOLAK_KASUBAG
+    permohonan.save()
 
     return spt
 
@@ -692,6 +707,11 @@ def pimpinan_setujui_permohonan(disposisi: Disposisi, pimpinan_user, kasubag_use
     spt.status = SPTStatus.PERMOHONAN_DISETUJUI_PIMPINAN
     spt.save()
     
+    # update permohonan
+    permohonan = spt.permohonan_spt
+    permohonan.status = SPTStatus.PERMOHONAN_DISETUJUI_PIMPINAN
+    permohonan.save()
+    
     # create disposisi balik ke pegawai
     if not kasubag_user:
         kasubag_user = get_kasubag_user()
@@ -702,10 +722,6 @@ def pimpinan_setujui_permohonan(disposisi: Disposisi, pimpinan_user, kasubag_use
         status=SPTStatus.DIAJUKAN,
         catatan=catatan
     )
-
-    
-
-
 
 # =========================================================
 # 1. APPROVE FINAL (Pimpinan menyetujui)
@@ -753,13 +769,20 @@ def pimpinan_reject(disposisi: Disposisi, pimpinan_user, catatan=""):
 
     spt = disposisi.spt
 
+    # update disposisi
     disposisi.status = SPTStatus.DITOLAK
     # disposisi.catatan = catatan
     disposisi.save()
 
+    # update SPT
     spt.status = SPTStatus.DITOLAK_PIMPINAN
     spt.catatan = catatan
     spt.save()
+    
+    # update permohonan
+    permohonan = spt.permohonan_spt
+    permohonan.status = SPTStatus.DITOLAK_PIMPINAN
+    permohonan.save()
 
     return spt
 
@@ -926,49 +949,49 @@ def mulai_pelaksanaan_spt(spt: SPT, pegawai_user):
 
 
 # -----------------------------------------tambahan
-class SPTStateMachine:
-    transitions = {
-        SPTStatus.DRAFT: {
-            "ajukan": "diajukan"
-        },
-        SPTStatus.PERMOHONAN_DIAJUKAN: {
-            "setujui": "disetujui",
-            "tolak": "ditolak",
-            "revisi": "draft"
-        }
-    }
+# class SPTStateMachine:
+#     transitions = {
+#         SPTStatus.DRAFT: {
+#             "ajukan": "diajukan"
+#         },
+#         SPTStatus.PERMOHONAN_DIAJUKAN: {
+#             "setujui": "disetujui",
+#             "tolak": "ditolak",
+#             "revisi": "draft"
+#         }
+#     }
 
-    def __init__(self, state):
-        self.state = state
+#     def __init__(self, state):
+#         self.state = state
 
-    def transition(self, event):
-        if event not in self.transitions.get(self.state, {}):
-            raise Exception("Aksi tidak valid")
+#     def transition(self, event):
+#         if event not in self.transitions.get(self.state, {}):
+#             raise Exception("Aksi tidak valid")
 
-        return self.transitions[self.state][event]
+#         return self.transitions[self.state][event]
     
 
-@transaction.atomic
-def apply_action(spt, event, user):
-    from .handlers import handlers
+# @transaction.atomic
+# def apply_action(spt, event, user):
+#     from .handlers import handlers
     
-    # 1. validasi state
-    sm = SPTStateMachine(spt.status)
-    new_status = sm.transition(event)
+#     # 1. validasi state
+#     sm = SPTStateMachine(spt.status)
+#     new_status = sm.transition(event)
 
-    # 2. ambil handler
-    handler = handlers.get(event, None)
-    if not handler:
-        raise Exception("Event tidak dikenal")
+#     # 2. ambil handler
+#     handler = handlers.get(event, None)
+#     if not handler:
+#         raise Exception("Event tidak dikenal")
 
-    # 3. jalankan aksi
-    handler(spt, user)
+#     # 3. jalankan aksi
+#     handler(spt, user)
 
-    # 4. update state (opsional kalau handler tidak set)
-    spt.status = new_status
-    spt.save()
+#     # 4. update state (opsional kalau handler tidak set)
+#     spt.status = new_status
+#     spt.save()
 
-    return spt
+#     return spt
     
 # def ajukan():
 #     print("Mengajukan SPT...")
@@ -999,3 +1022,111 @@ def apply_action(spt, event, user):
 # state = "draft"
 # state = apply_action(state, "ajukan")
 # print(state)
+
+def get_user_role(user):
+    return user.groups.first().name
+
+def get_spt_for_user(user):
+    role = get_user_role(user)
+    
+    if role == "pegawai":
+        spt_list = get_spt_list(user).order_by("-created_at").filter(
+            Q(status=SPTStatus.DIAJUKAN) |
+            Q(status=SPTStatus.DRAFT) |
+            Q(status=SPTStatus.REVISI_KASUBAG) |
+            Q(status=SPTStatus.DITOLAK_KASUBAG) |
+            Q(status=SPTStatus.DITOLAK_PIMPINAN) |
+            Q(status=SPTStatus.PERMOHONAN_DIAJUKAN) |
+            Q(status=SPTStatus.REVIEW_KASUBAG)
+        )
+        return spt_list
+    elif role == "pimpinan":
+        return SPT.objects.all()
+    elif role == "kasubag":
+        return SPT.objects.all()
+    else:
+        return SPT.objects.none()
+
+def get_permohonan_for_user(user):
+    role = get_user_role(user)
+    
+    if role == "pegawai":
+        return get_spt_list(user).order_by("-created_at")
+    elif role == "pimpinan":
+        return SPT.objects.all()
+    elif role == "kasubag":
+        return SPT.objects.all()
+    else:
+        return SPT.objects.none()
+    
+def get_disposisi_for_user(user):
+    role = get_user_role(user)
+    pimpinan_user = User.objects.filter(groups__name="pimpinan").first()
+    kasubag_user = User.objects.filter(groups__name="kasubag").first()
+    
+    if role == "pegawai":
+        return Disposisi.objects.all()
+    elif role == "kasubag":
+        list_disposisi = Disposisi.objects.filter(
+            ke_user=pimpinan_user
+        )
+        return list_disposisi
+    elif role == "pimpinan":
+        list_disposisi = Disposisi.objects.filter(
+            ke_user=kasubag_user
+        )
+        return list_disposisi
+    else:
+        return Disposisi.objects.none()
+    
+    
+# def get_spt_for_user(user):
+#     role = get_user_role(user)
+    
+#     if role == "pegawai":
+#         return get_spt_list(user).order_by("-created_at")
+#     elif role == "pimpinan":
+#         return SPT.objects.all()
+#     elif role == "kasubag":
+#         return SPT.objects.all()
+#     else:
+#         return SPT.objects.none()
+
+
+# class service
+class SPTService:
+    @staticmethod
+    def get_for_user(user):
+        role = get_user_role(user)
+    
+        if role == "pegawai":
+            spt_list = get_spt_list(user).order_by("-created_at").filter(
+                Q(status=SPTStatus.DIAJUKAN) |
+                Q(status=SPTStatus.DRAFT) |
+                Q(status=SPTStatus.REVISI_KASUBAG) |
+                Q(status=SPTStatus.DITOLAK_KASUBAG) |
+                Q(status=SPTStatus.DITOLAK_PIMPINAN) |
+                Q(status=SPTStatus.PERMOHONAN_DIAJUKAN) |
+                Q(status=SPTStatus.REVIEW_KASUBAG)
+            )
+            return spt_list
+        elif role == "kasubag":
+            return SPT.objects.all()
+        elif role == "pimpinan":
+            return SPT.objects.all()
+        else:
+            return SPT.objects.none()
+        
+    @staticmethod
+    def get_detail_for_user(user, spt_id):
+        role = get_user_role(user)
+    
+        if role == "pegawai":
+            spt = get_spt_detail(spt_id, user)
+            return spt
+        elif role == "kasubag":
+            return SPT.objects.get(id=spt_id)
+        elif role == "pimpinan":
+            return SPT.objects.get(id=spt_id)
+        else:
+            return SPT.objects.none()

@@ -17,6 +17,6 @@ urlpatterns = [
     path("<int:spt_id>/cetak/", views.cetak, name="spt_cetak"),
     path("<int:spt_id>/template-pdf/", views.template_pdf, name="template_pdf"),
     path("<int:spt_id>/preview/", views.preview, name="spt_preview"),
-    path("spt/<int:spt_id>/action/", views.spt_action, name="spt_action"),
-    path("", views.index, name="spt_index"),
+    path("spt/<int:spt_id>/action/<str:action>", views.spt_action, name="spt_action"),
+    # path("", views.index, name="spt_index"),
 ]

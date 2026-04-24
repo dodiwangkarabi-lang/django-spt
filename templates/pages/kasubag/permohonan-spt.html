@@ -7,14 +7,14 @@
 <div class="flex h-screen bg-gray-100">
     
 <!-- SIDEBAR PEGAWAI -->
-  {% include "partials/sidebar.html" %}
+  {% include "pages/pegawai/partials/sidebar.html" %}
 
   <!-- MAIN CONTENT -->
   <main class="flex-1 p-6">
-      <!-- <h2 class="text-2xl font-bold text-gray-800">Dashboard Pegawai</h2> -->
-      <p class="text-gray-600"></p>
-      {% include "pages/pegawai/partials/spt-detail.html" %}
+      
 
+
+      <div hx-get="{% url 'kasubag_permohonan_spt_list_htmx' %}?init=1" hx-trigger="load">Loading...</div>
   </main>
 
 </div>

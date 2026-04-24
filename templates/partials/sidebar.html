@@ -4,34 +4,25 @@
     <!-- Header -->
     <div class="p-4 border-b">
       <h1 class="text-xl font-bold text-gray-800">SIPT</h1>
-      <p class="text-sm text-gray-500">Pegawai</p>
+      <p class="text-sm text-gray-500"></p>
     </div>
 
     <!-- Menu -->
     <nav class="flex-1 p-4 space-y-2">
+      {% for item in sidebar_menu %}
+        <a href="{% url item.url %}"
+          class="flex items-center gap-3 px-3 py-2 rounded-lg 
+          {% if request.resolver_match.url_name == item.url %}
+            bg-gray-200 font-semibold text-black
+          {% else %}
+            text-gray-700 hover:bg-gray-100
+          {% endif %}
+        ">
+          {{ item.label }}
+        </a>
+      {% endfor %}
 
-      <a href="{% url 'core_pegawai_dashboard' %}"
-         class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100"
-      >
-        🏠 Dashboard
-      </a>
 
-      <a href="{% url 'core_permohonan_spt' %}"
-         class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100"
-      >
-        📄 Permohonan
-      </a>
-
-      <a href="{% url 'core_spt_diterima' %}"
-         class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100"
-      >
-        📄 SPT diterima
-      </a>
-
-      <a href="{% url 'core_ajukan_spt' %}"
-         class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
-        ➕ Ajukan Permohonan
-      </a>
 
       
 

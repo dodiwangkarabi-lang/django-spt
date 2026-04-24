@@ -2,7 +2,7 @@
   <!-- Header -->
   <div class="flex items-center justify-between mb-4">
     <h2 class="text-xl font-bold text-gray-800">
-      {{ judul_halaman|default:"Daftar SPT" }}
+      {{ judul_halaman|default:"Daftar Permohonan SPT" }}
       
     </h2>
 
@@ -23,7 +23,7 @@
         x-ref="input"
         placeholder="Cari SPT..."
         class="w-full border rounded-lg px-3 py-2 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-        hx-get="{% url request.resolver_match.url_name %}"
+        hx-get="{% url current_url %}"
         hx-trigger="keyup changed delay:500ms"
         hx-target="#result"
         hx-include="[name='q'], [name='tanggal']"
@@ -60,7 +60,7 @@
         type="date"
         id="tanggal"
         name="tanggal"
-        hx-get="{% url request.resolver_match.url_name %}"
+        hx-get="{% url current_url %}"
         hx-trigger="change"
         hx-target="#result"
         hx-include="[name='q'], [name='tanggal']"
@@ -68,5 +68,5 @@
       />
     </div>
   </div>
-  <div id="result">{% include "partials/_tabel-spt.html" %}</div>
+  <div id="result">{% include "partials/_tabel.html" %}</div>
 </div>

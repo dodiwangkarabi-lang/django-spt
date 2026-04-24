@@ -21,6 +21,7 @@ class SPTStatus(models.TextChoices):
     
     KASUBAG_REVIEW = "KASUBAG_REVIEW", "Kasubag Review"
     KASUBAG_SETUJUI = "KASUBAG_SETUJUI", "Kasubag Setujui"
+    KASUBAG_SETUJUI_PERMOHOAN = "KASUBAG_SETUJUI_PERMOHOAN", "Kasubag Setujui Permohonan"
     KASUBAG_AJUKAN_SPT = "kasubag_ajukan_spt", "Kasubag Ajukan SPT"
 
     KEPALA_REVIEW_PERMOHONAN = "KEPALA_REVIEW_PERMOHONAN", "Kepala Review Permohonan"
@@ -83,6 +84,22 @@ class SPT(models.Model):
 
     def __str__(self):
         return self.nomor_spt
+    
+class PermohonanSPT(models.Model):
+    
+    spt = models.OneToOneField(
+       SPT,
+       on_delete=models.CASCADE,
+       related_name='permohonan_spt',
+       blank=True,
+       null=True 
+    )
+    status = models.CharField(max_length=100, choices=SPTStatus.choices, default=SPTStatus.DRAFT)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"Permohonan SPT {self.spt.id}"
     
 class SPTLampiran(models.Model):
     spt = models.ForeignKey(

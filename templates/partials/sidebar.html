@@ -1,10 +1,15 @@
     <!-- Sidebar -->
-  <aside class="w-64 bg-white shadow-md flex flex-col">
+  <aside class="w-64 bg-white shadow-md flex flex-col" x-data="modalSidebar()">
 
     <!-- Header -->
-    <div class="p-4 border-b">
+    <div class="p-4 border-b flex flex-row justify-between">
       <h1 class="text-xl font-bold text-gray-800">SIPT</h1>
       <p class="text-sm text-gray-500"></p>
+      {% if request.user.groups.first.name == "kasubag" %}
+          <a href="" @click.prevent="openModal()">
+            <ion-icon name="people"></ion-icon>
+          </a>
+      {% endif %}
     </div>
 
     <!-- Menu -->
@@ -65,4 +70,21 @@
 
 </div>
 
+  {% include "partials/kelola-akun.html" %}
   </aside>
+
+
+  <script>
+    function modalSidebar() {
+      return {
+        isOpenModal: false,
+
+        openModal() {
+          this.isOpenModal = true
+        },
+        closeModal() {
+          this.isOpenModal = false
+        }
+      }
+    }
+  </script>

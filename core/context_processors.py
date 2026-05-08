@@ -17,7 +17,7 @@ def sidebar_menu(request):
     elif kasubag:
         menu += [
             {"url": "core_kasubag_dashboard", "label": "🏠 Dashboard"},
-            {"url": "core_kasubag_disposisi", "label": "📄 Daftar Masuk"},
+            # {"url": "core_kasubag_disposisi", "label": "📄 Daftar Masuk"},
             {"url": "spt_list", "label": "📄 Daftar SPT"},
             {"url": "disposisi_list", "label": "📄 Daftar Disposisi"},
             

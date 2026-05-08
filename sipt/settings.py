@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     "tugas",
     "spt",
     "workflow",
-    "core"
+    "core",
+    "rest_framework",
 ]
 
 MIDDLEWARE = [

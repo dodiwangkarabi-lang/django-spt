@@ -9,13 +9,24 @@ from django.http import HttpResponseNotAllowed, HttpResponse, FileResponse
 from django.contrib.auth.models import User
 
 from datetime import timedelta
+from core.utils import format_tanggal_indonesia_django
 
+from django.utils import timezone
 
-from .services import (
+# models
+from tugas.models import TugasPelaksanaan
+
+from io import BytesIO
+
+from .services_old import (
     upload_lampiran_spt, delete_lampiran_spt,
     generate_spt_pdf,
     get_spt_list
 )
+
+# from spt.pdf_service import (
+#     generate_pdf_from_template
+# )
 
 # def index(request):
 #     return render(request, 'spt/index.html')
@@ -113,6 +124,33 @@ def delete_lampiran(request, lampiran_id):
         return redirect(next_url)
     
     return redirect(reverse('spt_index'))
+
+def cetak_surat_pernyataan_tugas(request, tugas_pelaksanaan_id):
+    tugas_pelaksanaan = TugasPelaksanaan.objects.get(id=tugas_pelaksanaan_id)
+    spt = tugas_pelaksanaan.spt
+    surat_pernyataan_tugas = tugas_pelaksanaan.surat_pernyataan_tugas
+    
+    pegawai = spt.dibuat_oleh.profile
+    pimpinan = User.objects.filter(groups__name="pimpinan").first().profile
+    
+    tempate_name = "pdf/laporan1.html"
+    context = {
+        "spt": spt,
+        "pegawai": pegawai,
+        "pimpinan": pimpinan,
+        "nomor_surat": surat_pernyataan_tugas.no_surat,
+        "tanggal_surat": format_tanggal_indonesia_django(surat_pernyataan_tugas.tanggal), 
+    }
+    # buffer = generate_pdf_from_template(tempate_name, context)
+    
+    return render(request, template_name=tempate_name, context=context)
+    
+    # return FileResponse(
+    #     buffer,
+    #     content_type='application/pdf',
+    #     as_attachment=True,  # penting!
+    #     filename='spt.pdf'
+    # )
 
 def cetak(request, spt_id):
     spt = SPT.objects.get(id=spt_id)

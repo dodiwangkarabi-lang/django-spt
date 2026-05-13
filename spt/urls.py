@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     # path("", views.spt, name="spt"),
+    path("<int:tugas_pelaksanaan_id>/cetak-surat-pernyataan-tugas/pdf/", views.cetak_surat_pernyataan_tugas, name="cetak_surat_pernyataan_tugas"),
     path("create/", views.spt_create, name="spt_create"),
     path("<int:spt_id>/update", views.spt_update, name="spt_update"),
     path("<int:spt_id>/", views.detail, name="spt_detail"),

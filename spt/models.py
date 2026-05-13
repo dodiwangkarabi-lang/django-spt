@@ -34,13 +34,13 @@ class SPTStatus(models.TextChoices):
 
     TTD_SPT = "TTD_SPT", "Tanda Tangan SPT"
 
-    DITOLAK = "DITOLAK", "Ditolak"
+    DITOLAK = "ditolak", "Ditolak"
     
     DIAJUKAN = "diajukan", "diajukan"
     DISETUJUI = "disetujui", "disetujui"
     FINAL = "final", "final"
     SELESAI = "selesai", "selesai"
-    REVISI = "revisi", "revisi"
+    REVISI = "direvisi", "Direvisi"
     
     REVIEW_KASUBAG = "review_kasubbag", "review_kasubbag"
     REVISI_KASUBAG = "revisi_kasubbag", "revisi_kasubbag"
@@ -81,9 +81,20 @@ class SPT(models.Model):
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
+    
+    @property
+    def is_draft(self):
+        return self.status == SPTStatus.DRAFT
+    
+    @property
+    def is_review_kasubag(self):
+        return self.status == SPTStatus.REVIEW_KASUBAG
+    
+    def has_status(self, *statuses):
+        return self.status in statuses
 
     def __str__(self):
-        return self.nomor_spt
+        return f"{self.pk} {self.nomor_spt}"
     
 class PermohonanSPT(models.Model):
     
@@ -94,12 +105,36 @@ class PermohonanSPT(models.Model):
        blank=True,
        null=True 
     )
+    judul = models.CharField(max_length=255, blank=True, null=True)
+    deskripsi = models.TextField(blank=True, null=True)
+    catatan = models.TextField(blank=True, null=True, default="")
+    tanggal_mulai = models.DateField(blank=True, null=True)
+    tanggal_selesai = models.DateField(blank=True, null=True)
+    dibuat_oleh = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='permohonan_spt',
+        blank=True,
+        null=True
+    )
     status = models.CharField(max_length=100, choices=SPTStatus.choices, default=SPTStatus.DRAFT)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        return f"Permohonan SPT {self.spt.id}"
+        return f"{self.pk} Permohonan SPT"
+    
+class LampiranPermohonanSPT(models.Model):
+    permohonan_spt = models.ForeignKey(
+        PermohonanSPT,
+        on_delete=models.CASCADE,
+        related_name='lampiran'
+    )
+    file = models.FileField(upload_to='lampiran_permohonan_spt/')
+    keterangan = models.CharField(max_length=255, blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.pk} Lampiran {self.permohonan_spt.id}"
     
 class SPTLampiran(models.Model):
     spt = models.ForeignKey(

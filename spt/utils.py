@@ -3,7 +3,6 @@ from datetime import datetime, date
 from .models import NomorSuratSequence
 from django.db import transaction
 
-
 ROMAWI = {
     1: "I", 2: "II", 3: "III", 4: "IV",
     5: "V", 6: "VI", 7: "VII", 8: "VIII",
@@ -32,11 +31,11 @@ def generate_nomor_surat(model):
         return nomor_surat
       
 
-ROMAWI = {
-    1: "I", 2: "II", 3: "III", 4: "IV",
-    5: "V", 6: "VI", 7: "VII", 8: "VIII",
-    9: "IX", 10: "X", 11: "XI", 12: "XII"
-}
+# ROMAWI = {
+#     1: "I", 2: "II", 3: "III", 4: "IV",
+#     5: "V", 6: "VI", 7: "VII", 8: "VIII",
+#     9: "IX", 10: "X", 11: "XI", 12: "XII"
+# }
 
 def generate_nomor_spt():
     now = datetime.now()

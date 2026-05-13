@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "workflow",
     "core",
     "rest_framework",
+    "django_extensions",
 ]
 
 MIDDLEWARE = [
@@ -70,6 +71,7 @@ TEMPLATES = [
                 
                 # tambahan
                 "core.context_processors.sidebar_menu",
+                "core.context_processors.app_permission",
             ],
         },
     },

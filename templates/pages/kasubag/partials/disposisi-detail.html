@@ -1,4 +1,5 @@
 <div class="max-w-4xl mx-auto space-y-6">
+  {% include "components/scripts/csrf.html" %}
   <!-- HEADER -->
   <div class="bg-white border rounded-xl p-5 shadow-sm">
     <div class="flex justify-between items-start">
@@ -54,7 +55,7 @@
 
   <!-- DETAIL SPT -->
   <div class="bg-white border rounded-xl p-5 shadow-sm space-y-3">
-    <h2 class="font-semibold text-gray-800">🧾 Detail SPT</h2>
+    <h2 class="font-semibold text-gray-800">🧾 Detail</h2>
 
     <div class="space-y-2 text-sm">
       <div>
@@ -87,26 +88,76 @@
   {% if disposisi.status == "diajukan" and disposisi.spt.status != "review_spt_pimpinan" %}
 
   <div class="bg-white border rounded-xl p-5 shadow-sm">
-    <p>{{ disposisi.spt.status }} {{ disposisi.status }}</p>
+    
     <h2 class="font-semibold text-gray-800 mb-3">⚡ Aksi</h2>
 
     <div class="flex gap-3">
-      <!-- APPROVE -->
+
+      <div x-data="permohonan()">
       <form
+        @submit.prevent="handleSubmit"
         method="post"
         action="{% url 'core_kasubag_approve' disposisi.id %}"
       >
         {% csrf_token %}
         <button
-          class="px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+          type="submit"
+          :disabled="loading"
+          class="flex flex-row items-center gap-2 px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
         >
-        {% if disposisi.spt.status == "review_kasubbag" %}
-          ✔ Ajukan Disposisi ke Pimpinan
-        {% else %}
-          ✔ Buat Disposisi
-        {% endif %}
+        <span x-show="!loading">
+          {% if disposisi.spt.status == "review_kasubbag" %}
+            ✔ Setujui Permohonan
+          {% else %}
+            ✔ Buat Disposisi
+          {% endif %}
+        </span>
+        {% include "components/spinner.html" %}
+        <span x-show="loading">
+          Loading ... 
+        </span>
         </button>
       </form>
+      </div>
+
+      <script>
+        function permohonan() {
+          return {
+            open: false,
+            loading: false,
+
+            async handleSubmit(event) {
+              const disposisi_id = "{{ disposisi.id }}";
+              
+              try {
+                this.loading = true;
+                // simulasi loading 
+                await new Promise(resolve =>
+                  setTimeout(resolve, 2500)
+                );
+
+                const result = await axios({
+                  method: "post",
+                  url: "{% url 'spt_api:permohonan-spt-setujui-permohonan' disposisi.id %}",
+                  data: {
+                    disposisi_id: disposisi_id,
+                  },
+                  headers: {
+                    'X-CSRFToken': cookieValue
+                  }
+                });
+                this.loading = false;
+
+                // redirect
+                window.location.href = "{% url 'core_kasubag_buat_spt' disposisi.id %}";
+              } catch (error) {
+                console.log(error);
+              }
+            }
+          }
+        }
+      </script>
+
 
       <!-- di bungkus dengan tombal dan modal -->
       <div>

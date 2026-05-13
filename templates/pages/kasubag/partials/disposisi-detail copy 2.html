@@ -1,0 +1,311 @@
+<div class="max-w-4xl mx-auto space-y-6">
+  {% include "components/scripts/csrf.html" %}
+  <!-- HEADER -->
+  <div class="bg-white border rounded-xl p-5 shadow-sm">
+    <div class="flex justify-between items-start">
+      <div>
+        <h1 class="text-xl font-bold text-gray-800">
+          📄 {{ disposisi.spt.judul }}
+        </h1>
+
+        <p class="text-sm text-gray-500 mt-1">
+          Nomor SPT: {{ disposisi.spt.nomor_spt }}
+        </p>
+      </div>
+
+      <span
+        class="px-3 py-1 text-xs rounded-full {% if disposisi.status == 'diajukan' %} bg-yellow-100 text-yellow-700 {% elif disposisi.status == 'disetujui' %} bg-green-100 text-green-700 {% elif disposisi.status == 'ditolak' %} bg-red-100 text-red-700 {% else %} bg-gray-100 text-gray-700 {% endif %}"
+      >
+        {{ disposisi.spt.status }}
+      </span>
+    </div>
+  </div>
+
+  <!-- INFO DISPOSISI -->
+  <div class="bg-white border rounded-xl p-5 shadow-sm space-y-3">
+    <div class="grid grid-cols-2 gap-4 text-sm">
+      <div>
+        <p class="text-gray-500">Dari</p>
+        <p class="font-medium">{{ disposisi.dari_user.profile.nama|upper }}</p>
+      </div>
+
+      <div>
+        <p class="text-gray-500">Kepada</p>
+        <p class="font-medium">{{ disposisi.ke_user.profile.nama|upper }}</p>
+      </div>
+
+      <div>
+        <p class="text-gray-500">Tanggal Masuk</p>
+        <p class="font-medium">{{ disposisi.created_at|date:"d F Y" }}</p>
+      </div>
+
+      <div>
+        <p class="text-gray-500">Status</p>
+        <p class="font-medium">{{ disposisi.status }}</p>
+      </div>
+    </div>
+
+    {% if disposisi.catatan %}
+    <div class="mt-3">
+      <p class="text-gray-500 text-sm">Catatan</p>
+      <p class="text-gray-800">{{ disposisi.catatan }}</p>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- DETAIL SPT -->
+  <div class="bg-white border rounded-xl p-5 shadow-sm space-y-3">
+    <h2 class="font-semibold text-gray-800">🧾 Detail</h2>
+
+    <div class="space-y-2 text-sm">
+      <div>
+        <p class="text-gray-500">Judul</p>
+        <p class="font-medium">{{ disposisi.spt.judul }}</p>
+      </div>
+
+      <div>
+        <p class="text-gray-500">Deskripsi</p>
+        <p class="text-gray-700">{{ disposisi.spt.deskripsi }}</p>
+      </div>
+
+      <!-- LAMPIRAN -->
+      {% if disposisi.spt.lampiran.all %}
+      <div>
+        <p class="text-gray-500">Lampiran</p>
+        {% for lampiran in disposisi.spt.lampiran.all %}
+        <p class="text-blue-700">
+          <strong>{{ forloop.counter }}</strong>
+          <a href="{{ lampiran.file.url }}">{{ lampiran.file.name }}</a>
+        </p>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- ACTION BUTTON -->
+  
+  {% if disposisi.status == "diajukan" and disposisi.spt.status != "review_spt_pimpinan" %}
+
+  <div class="bg-white border rounded-xl p-5 shadow-sm">
+    
+    <h2 class="font-semibold text-gray-800 mb-3">⚡ Aksi</h2>
+
+    <div class="flex gap-3">
+      <!-- APPROVE -->
+      <form
+        method="post"
+        action="{% url 'core_kasubag_approve' disposisi.id %}"
+      >
+        {% csrf_token %}
+        <button
+          class="px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+        >
+        {% if disposisi.spt.status == "review_kasubbag" %}
+          ✔ Ajukan Disposisi ke Pimpinan
+        {% else %}
+          ✔ Buat Disposisi
+        {% endif %}
+        </button>
+      </form>
+
+      <div x-data="permohonan()">
+      <form
+        @submit.prevent="handleSubmit"
+        method="post"
+        action="{% url 'core_kasubag_approve' disposisi.id %}"
+      >
+        {% csrf_token %}
+        <button
+          type="submit"
+          :disabled="loading"
+          class="flex flex-row px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+        >
+        <span x-show="!loading">
+          {% if disposisi.spt.status == "review_kasubbag" %}
+            ✔ Setujui Permohonan
+          {% else %}
+            ✔ Buat Disposisi
+          {% endif %}
+        </span>
+        <span x-show="loading">
+          Loading ... 
+          {% include "components/spinner.html" %}
+        </span>
+        </button>
+      </form>
+      </div>
+
+      <script>
+        function permohonan() {
+          return {
+            open: false,
+            loading: false,
+
+            async handleSubmit(event) {
+              const disposisi_id = "{{ disposisi.id }}";
+              
+              try {
+                this.loading = true;
+                // simulasi loading 
+                await new Promise(resolve =>
+                  setTimeout(resolve, 2500)
+                );
+
+                const result = await axios({
+                  method: "post",
+                  url: "http://127.0.0.1:8000/api/permohonan-spt/3/setujui-permohonan/",
+                  data: {
+                    disposisi_id: disposisi_id,
+                  },
+                  headers: {
+                    'X-CSRFToken': cookieValue
+                  }
+                });
+                this.loading = false;
+
+                // redirect
+                window.location.href = "{% url 'core_kasubag_buat_spt' disposisi.id %}";
+              } catch (error) {
+                console.log(error);
+              }
+            }
+          }
+        }
+      </script>
+
+
+      <!-- di bungkus dengan tombal dan modal -->
+      <div>
+        <div x-data="{ open: false }">
+          <!-- Tombol Tolak -->
+          <button
+            @click="open = true"
+            class="px-5 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+          >
+            ✖ Tolak
+          </button>
+
+          <!-- Modal -->
+          <div
+            x-show="open"
+            x-transition
+            class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+          >
+            <div
+              @click.away="open = false"
+              class="bg-white rounded-2xl shadow-lg w-full max-w-md p-6"
+            >
+              <h2 class="text-lg font-semibold mb-4">Konfirmasi Penolakan</h2>
+              <p class="text-sm text-gray-600 mb-4">
+                Apakah Anda yakin ingin menolak data ini?
+              </p>
+
+              <!-- Form -->
+              <form
+                method="post"
+                action="{% url 'core_kasubag_reject' disposisi.id %}"
+              >
+                {% csrf_token %}
+
+                <!-- Optional: alasan -->
+                <textarea
+                  name="catatan"
+                  placeholder="Alasan penolakan (opsional)"
+                  class="w-full border rounded-lg p-2 mb-4"
+                ></textarea>
+
+                <div class="flex justify-end gap-2">
+                  <button
+                    type="button"
+                    @click="open = false"
+                    class="px-4 py-2 bg-gray-300 rounded-lg"
+                  >
+                    Batal
+                  </button>
+
+                  <button
+                    type="submit"
+                    class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                  >
+                    Ya, Tolak
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- REVISI -->
+      <div>
+        <div x-data="{ openRevisi: false }">
+          <!-- Tombol Revisi -->
+          <button
+            @click="openRevisi = true"
+            class="px-5 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600"
+          >
+            ↻ Revisi
+          </button>
+
+          <!-- Modal -->
+          <div
+            x-show="openRevisi"
+            x-transition
+            class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+          >
+            <div
+              @click.away="openRevisi = false"
+              class="bg-white rounded-2xl shadow-lg w-full max-w-md p-6"
+            >
+              <h2 class="text-lg font-semibold mb-4">Kirim Revisi</h2>
+              <p class="text-sm text-gray-600 mb-4">
+                Tambahkan catatan revisi.
+              </p>
+
+              <!-- Form -->
+              <form
+                method="post"
+                action="{% url 'core_kasubag_revisi' disposisi.id %}"
+              >
+                {% csrf_token %}
+                <input
+                  type="hidden"
+                  name="pegawai_id"
+                  value="{{ disposisi.spt.dibuat_oleh.id }}"
+                />
+
+                <!-- Catatan revisi -->
+                <textarea
+                  name="catatan"
+                  placeholder="Catatan revisi..."
+                  class="w-full border rounded-lg p-2 mb-4"
+                  required
+                ></textarea>
+
+                <div class="flex justify-end gap-2">
+                  <button
+                    type="button"
+                    @click="openRevisi = false"
+                    class="px-4 py-2 bg-gray-300 rounded-lg"
+                  >
+                    Batal
+                  </button>
+
+                  <button
+                    type="submit"
+                    class="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600"
+                  >
+                    Kirim Revisi
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% endif %}
+</div>

@@ -5,7 +5,7 @@ from django.http import HttpResponse, HttpResponseNotAllowed
 from django.urls import reverse
 from spt.forms import SPTForm, SPTFormRevisi
 from spt.models import SPT, SPTLampiran, SPTStatus
-from spt.services import *
+from spt.services_old import *
 # from spt.services import (
 #     create_spt,
 #     get_spt_list,

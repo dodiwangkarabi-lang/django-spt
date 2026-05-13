@@ -6,7 +6,39 @@ from django.core.files.base import ContentFile
 from django.contrib.auth.models import User
 
 from xhtml2pdf import pisa
+# from weasyprint import HTML
 
+from io import BytesIO
+
+
+# def generate_pdf_from_template(
+#     template_path: str,
+#     context: dict
+# ) -> BytesIO:
+
+#     html_string = render_to_string(
+#         template_path,
+#         context
+#     )
+
+#     pdf_bytes = HTML(
+#         string=html_string
+#     ).write_pdf()
+
+#     buffer = BytesIO(pdf_bytes)
+
+#     return buffer
+
+# def generate_pdf_from_template(template_path: str, context: dict) -> BytesIO:
+#     html = render_to_string(template_path, context)
+    
+#     result = BytesIO()
+#     pisa.CreatePDF(html, dest=result)
+    
+#     buffer = BytesIO(result.getvalue())
+
+#     return buffer
+    
 def generate_spt_pdf(spt):
     pimpinan = User.objects.filter(groups__name="pimpinan").first()
     pimpinan = pimpinan.profile if pimpinan else None

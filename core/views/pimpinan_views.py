@@ -5,7 +5,7 @@ from django.http import HttpResponse, HttpResponseNotAllowed
 from django.urls import reverse
 from spt.forms import SPTForm, SPTFormRevisi
 from spt.models import SPT, SPTLampiran, SPTStatus
-from spt.services import *
+from spt.services_old import *
 # from spt.services import (
 #     create_spt,
 #     get_spt_list,
@@ -115,8 +115,14 @@ def laporan_perjalanan_dinas_htmx(request):
 @login_required
 @roles_required("pimpinan")
 def laporan_detail_pimpinan(request, laporan_id):
+    is_pimpinan = request.user.groups.filter(name="pimpinan").exists()
     laporan = TugasPelaksanaan.objects.get(id=laporan_id)
-    context = {"laporan": laporan}
+    surat_pernyataan_tugas = getattr(laporan, "surat_pernyataan_tugas", None)
+    context = {
+        "laporan": laporan,
+        "is_pimpinan": is_pimpinan,
+        "surat_pernyataan_tugas": surat_pernyataan_tugas
+    }
     return render(request, "pages/pimpinan/laporan-detail-pimpinan.html", context)
 
 @login_required

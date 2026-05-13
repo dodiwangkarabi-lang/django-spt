@@ -3,6 +3,7 @@ from django.conf import settings
 from spt.models import SPT
 from django.contrib.auth.models import User
 
+
 class TugasPelaksanaan(models.Model):
     STATUS_CHOICES = (
         ('belum', 'Belum'),
@@ -36,4 +37,17 @@ class TugasPelaksanaan(models.Model):
 
 
     def __str__(self):
-        return f"Tugas {self.spt.nomor_spt}"
+        return f"{self.pk} Tugas {self.spt.nomor_spt}"
+    
+class SuratPernyataanTugas(models.Model):
+    tugas_pelaksanaan = models.OneToOneField('tugas.TugasPelaksanaan', on_delete=models.CASCADE, null=True, blank=True, related_name='surat_pernyataan_tugas')
+    
+    surat_pernyataan = models.TextField(blank=True, null=True, default="")
+    tanggal = models.DateField(null=True, blank=True)
+    no_surat = models.CharField(max_length=100, null=True, blank=True)
+    
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
+    
+    def __str__(self):
+        return f"{self.pk} surat pernyataan"

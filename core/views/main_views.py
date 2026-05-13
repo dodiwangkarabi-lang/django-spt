@@ -5,7 +5,7 @@ from django.http import HttpResponse, HttpResponseNotAllowed
 from django.urls import reverse
 from spt.forms import SPTForm, SPTFormRevisi
 from spt.models import SPT, SPTLampiran, SPTStatus, PermohonanSPT
-from spt.services import *
+from spt.services_old import *
 # from spt.services import (
 #     create_spt,
 #     get_spt_list,
@@ -44,8 +44,12 @@ from django.utils import timezone
 from accounts.models import Profile
 from accounts.forms import UserUpdateForm
 
+# forms
 from tugas.forms import TugasPelaksanaanForm
+
+# models
 from tugas.models import TugasPelaksanaan
+from spt.models import SPTStatus
 
 from tugas.services import upload_laporan_service, is_laporan_exist
 
@@ -54,6 +58,8 @@ from core.decorators import roles_required
 # import Q untuk filter
 from django.db.models import Q, Value, CharField, F
 from django.db.models.functions import Concat
+
+
 
 from django.core.paginator import Paginator
 
@@ -185,10 +191,13 @@ def permohonan_list(request):
 def permohonan_detail(request, id):
     spt = SPT.objects.get(id=id)
     permohonan = spt.permohonan_spt
+    
     # spt = permohonan.spt
     context = {
         "spt": spt,
-        "permohonan": permohonan
+        "SPTStatus": SPTStatus,
+        "permohonan": permohonan,
+        "can_process": spt.status in [SPTStatus.DRAFT, SPTStatus.REVISI_KASUBAG]
     }
     return render(request, "pages/core/permohonan-detail.html", context)
 
@@ -210,10 +219,16 @@ def disposisi_detail(request, disposisi_id):
 def spt_detail(request, spt_id):
     # spt = get_spt_detail(spt_id, request.user)
     spt = SPTService.get_detail_for_user(request.user, spt_id)
+    tugas_pelaksanaan_list = spt.tugas.all()
+    
+    for tugas in tugas_pelaksanaan_list:
+        tugas.is_surat_pernyataan_tugas = hasattr(tugas, "surat_pernyataan_tugas")
     
     lampiran_list = spt.lampiran.all()
     context = {
-        "spt": spt, "lampiran_list": lampiran_list
+        "spt": spt,
+        "lampiran_list": lampiran_list,
+        "tugas_pelaksanaan_list": tugas_pelaksanaan_list
     }
 
     return render(request, "pages/core/spt-detail.html", context)

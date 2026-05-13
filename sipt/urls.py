@@ -22,8 +22,12 @@ from django.conf import settings
 
 urlpatterns = [
     path("spt/", include("spt.urls")),
+    path("spt-web/", include("spt.web.urls", namespace="spt_web")),
+    # path("api/spt/", include("spt.api.permohonan_api.urls", namespace="permohonan_api")),
     path("accounts/", include("accounts.urls")),
     path("admin/", admin.site.urls),
+    path("api/", include("spt.api.urls", namespace="spt_api")),
+    path("api/tugas/", include("tugas.api.urls", namespace="tugas_api")),
     path("", include("core.urls")),
 ]
 

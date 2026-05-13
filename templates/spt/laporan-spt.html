@@ -10,30 +10,8 @@
   </head>
 
   <body class="bg-white p-10 text-sm text-black">
-    <!-- HEADER -->
-    <div class="flex items-center gap-4 border-b pb-4">
-      <img
-        src="{% static 'img/logo1.png' %}"
-        alt="Logo"
-        class="w-16 h-16 object-contain"
-      />
-
-      <div class="flex-1 text-center">
-        <h1 class="text-lg font-bold uppercase">
-          PEMERINTAH KABUPATEN PEGUNUNGAN ARFAK
-        </h1>
-        <h2 class="text-base font-semibold uppercase">KECAMATAN SATUI</h2>
-        <p class="text-xs">
-          Jalan Provinsi Nomor 10 Km 167 Sinar Bulan Kode Pos 72175 <br />
-          Telp (0512) 61043 - Email: kec_satui@yahoo.co.id
-        </p>
-      </div>
-      <img
-        src="{% static 'img/logo2.png' %}"
-        alt="Logo"
-        class="w-16 h-16 object-contain"
-      />
-    </div>
+    <!-- kop surat -->
+    {% include "pdf/components/kop-surat.html" %}
 
     <!-- TITLE -->
     <div class="text-center mt-6">

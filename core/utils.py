@@ -195,3 +195,83 @@ def update_by_action(obj: SPT, action: str, machine: dict=STATE_MACHINE, **kwarg
 #     obj.save()
 
 #     return obj
+
+from datetime import datetime, date
+
+HARI_INDONESIA = {
+    0: "Senin",
+    1: "Selasa",
+    2: "Rabu",
+    3: "Kamis",
+    4: "Jumat",
+    5: "Sabtu",
+    6: "Minggu",
+}
+
+BULAN_INDONESIA = {
+    1: "Januari",
+    2: "Februari",
+    3: "Maret",
+    4: "April",
+    5: "Mei",
+    6: "Juni",
+    7: "Juli",
+    8: "Agustus",
+    9: "September",
+    10: "Oktober",
+    11: "November",
+    12: "Desember",
+}
+
+
+def format_tanggal_indonesia(tanggal_str: str) -> str:
+    """
+    Mengubah:
+        '20-01-2026'
+
+    Menjadi:
+        'Selasa, 20 Januari 2026'
+    """
+
+    tanggal = datetime.strptime(tanggal_str, "%d-%m-%Y")
+
+    hari = HARI_INDONESIA[tanggal.weekday()]
+    tanggal_angka = tanggal.day
+    bulan = BULAN_INDONESIA[tanggal.month]
+    tahun = tanggal.year
+
+    return f"{hari}, {tanggal_angka} {bulan} {tahun}"
+
+def format_date_indonesia(tanggal: date) -> str:
+    hari = HARI_INDONESIA[tanggal.weekday()]
+    bulan = BULAN_INDONESIA[tanggal.month]
+
+    return f"{hari}, {tanggal.day} {bulan} {tanggal.year}"
+
+
+# core/utils/date.py
+
+from django.utils import timezone
+
+MONTHS_ID = {
+    1: "Januari",
+    2: "Februari",
+    3: "Maret",
+    4: "April",
+    5: "Mei",
+    6: "Juni",
+    7: "Juli",
+    8: "Agustus",
+    9: "September",
+    10: "Oktober",
+    11: "November",
+    12: "Desember",
+}
+
+
+def format_tanggal_indonesia_django(date):
+    return (
+        f"{date.day} "
+        f"{MONTHS_ID[date.month]} "
+        f"{date.year}"
+    )

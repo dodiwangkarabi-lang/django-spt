@@ -100,6 +100,252 @@
 
     </div>
 
+    <!-- surat pernyataan tugas -->
+     {% if is_pimpinan %}
+    <div 
+      class="bg-white border rounded-xl p-5 shadow-sm space-y-3" 
+      x-data="suratPernyataanTugas()"
+    >
+
+        <h2 class="font-semibold text-gray-800">
+            🧾 Surat Pernyataan Tugas
+        </h2>
+
+        <div class="space-y-2 text-sm">
+
+            <div>
+              {% if surat_pernyataan_tugas %}
+              <p class="text-gray-500 mb-2">
+                <a target="_blank" href="{% url 'cetak_surat_pernyataan_tugas' laporan.id %}" class="text-blue-600">Surat Pernyataan Tugas</a>
+              </p>
+              {% else %}
+              <p class="text-gray-500 mb-2">
+                Surat Pernyataan Tugas Belum dibuat
+              </p>
+              
+              <button
+                @click="openModal = true"
+                class="px-4 py-2 rounded-lg bg-blue-600 text-white font-medium shadow-md hover:bg-blue-700 hover:shadow-lg transition duration-200 active:scale-95"
+                >
+                Buat Surat Pernyataan
+              </button>
+
+              <!-- Overlay -->
+              <template x-if="openModal">
+
+              <div
+               
+                x-transition
+                class="fixed inset-0 bg-black/50 z-40"
+                ></div>
+              </template>
+
+              <!-- Modal -->
+              <div
+                  x-show="openModal"
+                  x-transition
+                  class="fixed inset-0 z-50 flex items-center justify-center p-4"
+              >
+                  <div
+                      
+                      class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden"
+                  >
+
+                      <!-- Header -->
+                      <div class="flex items-center justify-between px-6 py-4 border-b">
+                          <h2 class="text-lg font-semibold text-gray-800">
+                              Form Surat
+                          </h2>
+
+                          <button
+                              @click="openModal = false"
+                              class="text-gray-400 hover:text-red-500 text-xl"
+                          >
+                              &times;
+                          </button>
+                      </div>
+
+                      <!-- Form Buat Surat Pernyataan -->
+                      <form
+                        @submit.prevent="handleSubmit()"
+                        class="p-6 space-y-5"
+                      >
+
+                          <!-- No Surat -->
+                          <div>
+                              <label class="block mb-2 text-sm font-medium text-gray-700">
+                                  No Surat
+                              </label>
+
+                              <input
+                                  type="text"
+                                  name="no_surat"
+                                  x-model="form.no_surat"
+                                  required
+                                  placeholder="Masukkan nomor surat"
+                                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                              >
+                          </div>
+
+                          <!-- Tanggal -->
+                          <div>
+                              <label class="block mb-2 text-sm font-medium text-gray-700">
+                                  Tanggal
+                              </label>
+
+                              <input
+                                  type="date"
+                                  name="tanggal"
+                                  x-model="form.tanggal"
+                                  required
+                                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                              >
+                          </div>
+
+                          <!-- Footer -->
+                          <div class="flex justify-end gap-3 pt-2">
+
+                              <button
+                                  type="button"
+                                  @click="handleBatalBuatSurat()"
+                                  class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 transition"
+                              >
+                                  Batal
+                              </button>
+
+                              <button
+                                type="submit"
+                                :disabled="loading"
+                                class="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 disabled:opacity-50"
+                              >
+                                <!-- Spinner -->
+                                <svg
+                                  x-show="loading"
+                                  class="animate-spin h-5 w-5"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <circle
+                                    class="opacity-25"
+                                    cx="12"
+                                    cy="12"
+                                    r="10"
+                                    stroke="currentColor"
+                                    stroke-width="4"
+                                  ></circle>
+
+                                  <path
+                                    class="opacity-75"
+                                    fill="currentColor"
+                                    d="M4 12a8 8 0 018-8v4
+                                      a4 4 0 00-4 4H4z"
+                                  ></path>
+                                </svg>
+
+                                <span x-text="loading ? 'Menyimpan...' : 'Simpan'"></span>
+                              </button>
+
+                          </div>
+
+                      </form>
+
+                  </div>
+              </div>
+              {% endif %}
+          </div>
+
+            
+
+            <!-- LAMPIRAN -->
+             {% if laporan.lampiran %}
+             <div>
+                <p class="text-gray-500">Lampiran</p>
+                
+                <p class="text-blue-700"> <strong></strong>  <a href="{{ laporan.lampiran.url }}">{{ laporan.lampiran.file.name }}</a></p>
+                
+            </div>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    
+    <script>
+
+      // function getCookie(name) {
+      //   let cookieValue = null;
+
+      //   if (document.cookie && document.cookie !== '') {
+      //     const cookies = document.cookie.split(';');
+
+      //     for (let cookie of cookies) {
+      //       cookie = cookie.trim();
+
+      //       if (cookie.startsWith(name + '=')) {
+      //         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+      //         break;
+      //       }
+      //     }
+      //   }
+
+      //   return cookieValue;
+      // }
+
+      axios.defaults.headers.common['X-CSRFToken'] = getCookie('csrftoken');
+
+        function suratPernyataanTugas() {
+            return {
+                openModal: false,
+                loading: false,
+                form: {},
+
+                handleBatalBuatSurat () {
+                  this.form = {};
+                  this.openModal = false;
+                },
+
+                async handleSubmit () {
+                  try {
+                    this.loading = true;
+                    const res = await axios.post(
+                      "{% url 'tugas_api:tugas-pelaksanaan' laporan.id %}",
+                      this.form
+                    )
+
+                    await new Promise(resolve =>
+                      setTimeout(resolve, 2500)
+                    );
+
+                    
+                    // reset form
+                    this.form = {};
+  
+                    this.openModal = false;
+                    
+                    // reload page
+                    location.reload();
+                    
+                  } catch (error) {
+                    console.log(error);
+                  } finally {
+                    this.loading = false;
+                  }
+                  
+
+                }
+            }
+        }
+    </script>
+
+
+
+    {% endif %}
+    <!-- end surat pernyataan tugas -->
+
+    
+
     <!-- ACTION BUTTON -->
     {% if laporan.status == "diajukan" %}
 

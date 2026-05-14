@@ -30,7 +30,7 @@ def sidebar_menu(request):
             {"url": "core_kasubag_dashboard", "label": "🏠 Dashboard"},
             {"url": "core_kasubag_disposisi", "label": "📄 Daftar Masuk"},
             {"url": "spt_list", "label": "📄 Daftar SPT"},
-            {"url": "disposisi_list", "label": "📄 Daftar Disposisi"},
+            # {"url": "disposisi_list", "label": "📄 Daftar Disposisi"},
             
         ]
     elif pimpinan:
@@ -39,7 +39,7 @@ def sidebar_menu(request):
             {"url": "core_pimpinan_disposisi", "label": "📄 Daftar Masuk"},
             {"url": "core_pimpinan_laporan_pelaksanaan", "label": "📄 Laporan Pelaksanaan"},
             {"url": "spt_list", "label": "📄 Daftar SPT"},
-            {"url": "disposisi_list", "label": "📄 Daftar Disposisi"},
+            # {"url": "disposisi_list", "label": "📄 Daftar Disposisi"},
         ]
 
     # shared menu

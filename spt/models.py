@@ -4,16 +4,28 @@ from django.contrib.auth.models import User
 # models.py
 from django.db import models
 
+class JenisSurat(models.Model):
+    nama = models.CharField(max_length=100)
+    kode = models.CharField(max_length=20, unique=True)
+    
+    def __str__(self):
+        return f"{self.kode} - {self.nama}"
+
 class NomorSuratSequence(models.Model):
+    jenis_surat = models.ForeignKey(
+        JenisSurat, on_delete=models.CASCADE, related_name='sequences',
+        null=True,
+        blank=True
+    )
     tahun = models.IntegerField()
     bulan = models.IntegerField()
     nomor_akhir = models.IntegerField(default=0)
 
     class Meta:
-        unique_together = ('tahun', 'bulan')
+        unique_together = ('jenis_surat', 'tahun', 'bulan')
 
     def __str__(self):
-        return f"{self.tahun}-{self.bulan}: {self.nomor_akhir}"
+        return f"{self.pk} {self.tahun}-{self.bulan}: {self.nomor_akhir}"
 
 class SPTStatus(models.TextChoices):
     DRAFT = "draft", "draft"

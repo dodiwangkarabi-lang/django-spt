@@ -4,8 +4,12 @@ from rest_framework import status
 
 from datetime import datetime
 
+# services
+from core.services import generate_nomor_surat
+
 # models
 from tugas.models import TugasPelaksanaan, SuratPernyataanTugas
+from spt.models import JenisSurat
 
 # serializers
 from tugas.api.serializers import TugasPelaksanaanSerializer, SuratPernyataanTugasSerializer
@@ -28,11 +32,14 @@ class TugasPelaksanaanView(APIView):
         formData = request.data.copy()
         
         tugas_pelaksanaan = TugasPelaksanaan.objects.get(id=tugas_pelaksanaan_id)
+        tanggal = datetime.strptime(formData.get("tanggal"), "%Y-%m-%d")
+        no_surat = generate_nomor_surat(jenis_surat=JenisSurat.objects.get(kode="SPMT"), tanggal=tanggal)
+        
         obj, created = SuratPernyataanTugas.objects.update_or_create(
             tugas_pelaksanaan=tugas_pelaksanaan,
             defaults={
-                "tanggal": datetime.strptime(formData.get("tanggal"), "%Y-%m-%d"),
-                "no_surat": formData.get("no_surat"),
+                "tanggal": tanggal,
+                "no_surat": no_surat,
             }
         )
         

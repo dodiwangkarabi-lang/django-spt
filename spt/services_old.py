@@ -4,10 +4,13 @@ from django.db.models import Q
 from django.contrib.auth.models import User
 from django.utils import timezone
 
-from .models import SPT, SPTLampiran, SPTStatus, PermohonanSPT
+# models
+from .models import SPT, SPTLampiran, SPTStatus, PermohonanSPT, JenisSurat, NomorSuratSequence
 from workflow.models import Disposisi, DisposisiTemplate, DisposisiTipe
 
-from spt.utils import generate_nomor_spt
+
+# from spt.utils import generate_nomor_spt
+from core.services import generate_nomor_surat
 
 from .pdf_service import generate_spt_pdf
 # -----------------------------------------------
@@ -746,7 +749,9 @@ def pimpinan_approve(disposisi: Disposisi, pimpinan_user):
 
     # update SPT FINAL
     spt.status = SPTStatus.DISETUJUI_FINAL
-    spt.nomor_spt = generate_nomor_spt()
+    # nomor surat otomatis
+    jenis_surat = JenisSurat.objects.get(kode="SPT")
+    spt.nomor_spt = generate_nomor_surat(jenis_surat=jenis_surat)
     spt.save()
 
     return spt

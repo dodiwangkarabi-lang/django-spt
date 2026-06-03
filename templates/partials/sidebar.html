@@ -1,5 +1,10 @@
     <!-- Sidebar -->
-  <aside class="w-64 bg-white shadow-md flex flex-col" x-data="modalSidebar()">
+  <aside 
+    class="fixed top-0 left-0 w-64 h-screen bg-white shadow-md flex flex-col z-40" 
+    x-data="modalSidebar()"
+  >
+    
+
 
     <!-- Header -->
     <div class="p-4 border-b flex flex-row justify-between">
@@ -12,12 +17,16 @@
       {% endif %}
     </div>
 
+    <div
+      class="overflow-auto"
+    >
+
     <!-- Menu -->
     <nav class="flex-1 p-4 space-y-2">
       {% for item in sidebar_menu %}
         <a href="{% url item.url %}"
           class="flex items-center gap-3 px-3 py-2 rounded-lg 
-          {% if request.resolver_match.url_name == item.url %}
+          {% if request.resolver_match.view_name == item.url %}
             bg-gray-200 font-semibold text-black
           {% else %}
             text-gray-700 hover:bg-gray-100
@@ -71,6 +80,9 @@
 </div>
 
   {% include "partials/kelola-akun.html" %}
+
+    </div>
+
   </aside>
 
 

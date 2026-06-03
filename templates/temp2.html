@@ -1,0 +1,100 @@
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <!-- ===================== -->
+    <!-- DATA SPT (EDIT) -->
+    <!-- ===================== -->
+    <div>
+        <label>Nomor SPT</label>
+        <input 
+            type="text" 
+            name="nomor"
+            value="{{ spt.nomor }}"
+            class="border p-2 w-full"
+        >
+    </div>
+
+    <div>
+        <label>Perihal</label>
+        <input 
+            type="text" 
+            name="perihal"
+            value="{{ spt.perihal }}"
+            class="border p-2 w-full"
+        >
+    </div>
+
+    <!-- ===================== -->
+    <!-- LAMPIRAN EDIT -->
+    <!-- ===================== -->
+    <div 
+        x-data="lampiranEdit()"
+        x-init="init()"
+        class="mt-6 space-y-3"
+    >
+
+        <h3 class="font-bold">Lampiran</h3>
+
+        <!-- LIST LAMPIRAN -->
+        <template x-for="(item, index) in lampiran" :key="index">
+
+            <div class="border p-3 rounded space-y-2">
+
+                <!-- ID (untuk update) -->
+                <input type="hidden" :name="`lampiran[${index}][id]`" x-model="item.id">
+
+                <!-- keterangan -->
+                <input 
+                    type="text"
+                    :name="`lampiran[${index}][keterangan]`"
+                    x-model="item.keterangan"
+                    class="border p-2 w-full"
+                >
+
+                <!-- preview file lama -->
+                <template x-if="item.file_url">
+                    <div class="text-sm text-blue-600">
+                        File lama: 
+                        <a :href="item.file_url" target="_blank">Lihat</a>
+                    </div>
+                </template>
+
+                <!-- upload file baru (optional replace) -->
+                <input 
+                    type="file"
+                    :name="`lampiran[${index}][file]`"
+                    class="border p-2 w-full"
+                >
+
+                <!-- tombol hapus -->
+                <button 
+                    type="button"
+                    @click="remove(index)"
+                    class="text-red-500"
+                >
+                    Hapus
+                </button>
+
+            </div>
+
+        </template>
+
+        <!-- tambah lampiran baru -->
+        <button 
+            type="button"
+            @click="add()"
+            class="bg-blue-500 text-white px-4 py-2 rounded"
+        >
+            + Tambah Lampiran
+        </button>
+
+    </div>
+
+    <!-- submit -->
+    <div class="mt-6">
+        <button class="bg-green-600 text-white px-6 py-2 rounded">
+            Update
+        </button>
+    </div>
+
+</form>

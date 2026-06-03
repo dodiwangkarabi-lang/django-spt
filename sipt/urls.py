@@ -28,6 +28,10 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include("spt.api.urls", namespace="spt_api")),
     path("api/tugas/", include("tugas.api.urls", namespace="tugas_api")),
+    path("spt/permohonan/", include("spt.permohonan.urls", namespace="permohonan")),
+    path("workflow/disposisi/", include("workflow.disposisi.urls", namespace="disposisi")),
+    path("myspt/", include("spt.spt.urls", namespace="spt")),
+    path("notification/", include("notification.urls", namespace="notification")),
     path("", include("core.urls")),
 ]
 

@@ -1,8 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse, reverse_lazy
 
 # models.py
 from django.db import models
+
+# selectors
+from accounts.selectors.selectors import (
+    get_kasubag_user, get_pegawai_user, get_pimpinan_user
+)
 
 class JenisSurat(models.Model):
     nama = models.CharField(max_length=100)
@@ -94,6 +100,36 @@ class SPT(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     
+    def get_absolute_url(self):
+        return reverse('spt:spt_web:review_spt', kwargs={'spt_id': self.pk})
+    
+    @property
+    def can_edit(self)->bool:
+        # kasubag user
+        kasubag = get_kasubag_user()
+        status = self.status == SPTStatus.REVISI
+        return kasubag and status
+    
+    @property
+    def is_disetujui(self):
+        return self.status == SPTStatus.DISETUJUI
+    
+    @property
+    def is_direvisi(self):
+        return self.status == SPTStatus.DIREVISI
+    
+    @property
+    def is_ditolak_pimpinan(self):
+        return self.status == SPTStatus.DITOLAK_PIMPINAN
+    
+    @property
+    def is_ditolak(self):
+        return self.status == SPTStatus.DITOLAK
+    
+    @property
+    def is_diajukan(self):
+        return self.status == SPTStatus.DIAJUKAN
+    
     @property
     def is_draft(self):
         return self.status == SPTStatus.DRAFT
@@ -133,6 +169,12 @@ class PermohonanSPT(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
+    def get_absolute_url(self):
+        return reverse('permohonan:permohonan_web:detail', kwargs={'permohonan_id': self.pk})
+    
+    class Meta:
+        ordering=['-created_at']
+    
     def __str__(self):
         return f"{self.pk} Permohonan SPT"
     
@@ -156,6 +198,9 @@ class SPTLampiran(models.Model):
     )
     file = models.FileField(upload_to='lampiran_spt/')
     keterangan = models.CharField(max_length=255, blank=True)
+    
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
 
     def __str__(self):
         return f"Lampiran {self.spt.nomor_spt}"

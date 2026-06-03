@@ -59,6 +59,11 @@ from django.core.paginator import Paginator
 # utils
 from core.utils import update_by_action
 
+# selectors
+from spt.spt.selectors import (
+    get_spt, get_spt_by_user, get_spt_by_role
+)
+
 # -------------------------------------------pegawai htmx --------------------------------
 @login_required
 @roles_required("pegawai")
@@ -262,7 +267,14 @@ def spt_list_diterima_htmx(request):
     
     today = timezone.now().date()
     
-    spt_list = get_spt_list(request.user).order_by("-created_at").filter(Q(status="selesai") | Q(status="disetujui_final")) # hanya permohonan
+    spt_list = (
+        get_spt()
+        .filter(
+            Q(status="selesai") | Q(status="disetujui_final") |
+            Q(status=SPTStatus.DISETUJUI)
+        )
+    ) # hanya permohonan
+    
     for obj in spt_list:
         obj.periode = f"{obj.tanggal_mulai:%d-%m-%Y} - {obj.tanggal_selesai:%d-%m-%Y}"
         
@@ -374,14 +386,15 @@ def spt_saya(request):
 @roles_required("pegawai")
 def spt_diterima(request):
     spt_list = get_spt_diterima_list(request.user).order_by("-created_at")
-
+    
     today = timezone.now().date()
 
     for spt in spt_list:
         spt.is_expired = spt.tanggal_selesai and spt.tanggal_selesai < today
 
         spt.has_laporan = spt.tugas.exists()
-
+        
+    print(spt_list)
     context = {"spt_list": spt_list}
     return render(request, "pages/pegawai/spt-diterima.html", context)
 

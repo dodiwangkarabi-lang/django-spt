@@ -1,0 +1,32 @@
+@startuml komponen diagram
+
+class Form {}
+class Field {}
+class Button {}
+class Table {}
+
+class Disposisi{}
+class SPT {}
+
+class SPTRevisiForm {}
+class SPTListTable {}
+class SPTDetailCard {}
+
+class SPTPage {}
+
+SPTPage o-- SPTListTable
+SPTPage o-- SPTRevisiForm
+SPTPage o-- SPTDetailCard
+
+SPTListTable --> SPT
+SPTDetailCard --> SPT
+SPTRevisiForm --> SPT
+
+Form o-- Button
+Form o-- Field
+
+Form <|-- SPTRevisiForm
+Table <|-- SPTListTable
+
+SPT "1" *-- "*" Disposisi
+@enduml

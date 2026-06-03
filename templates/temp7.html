@@ -1,0 +1,99 @@
+<script>
+
+function uploadLampiran() {
+
+    return {
+
+        lampirans: [],
+
+        async loadLampiran() {
+
+            try {
+
+                const result = await axios.get(
+                    "{% url 'spt:spt_api:list_lampiran' spt.id %}"
+                )
+
+                this.lampirans = result.data.data
+
+            } catch (error) {
+
+                console.error(error)
+
+            }
+        },
+
+        async handleFileChange(event) {
+
+            const files = [...event.target.files]
+
+            if (!files.length) return
+
+            const formData = new FormData()
+
+            files.forEach(file => {
+                formData.append('lampiran', file)
+            })
+
+            try {
+
+                await axios({
+                    method: 'post',
+                    url: "{% url 'spt:spt_api:simpan_banyak_lampiran' spt.id %}",
+                    data: formData,
+                    headers: {
+                        'X-CSRFToken': cookieValue,
+                        'Content-Type': 'multipart/form-data'
+                    }
+                })
+
+                alert('Upload berhasil')
+
+                // reload list
+                await this.loadLampiran()
+
+                // reset input
+                event.target.value = ''
+
+            } catch (error) {
+
+                console.error(error)
+
+                alert('Upload gagal')
+            }
+        },
+
+        async handleDeleteLampiran(item) {
+
+            const ok = confirm(
+                `Hapus ${item.file_name} ?`
+            )
+
+            if (!ok) return
+
+            try {
+
+                await axios({
+                    method: 'post',
+                    url: item.delete_url,
+                    headers: {
+                        'X-CSRFToken': cookieValue
+                    }
+                })
+
+                alert('Berhasil dihapus')
+
+                // reload list
+                await this.loadLampiran()
+
+            } catch (error) {
+
+                console.error(error)
+
+                alert('Gagal hapus')
+            }
+        }
+    }
+}
+
+</script>

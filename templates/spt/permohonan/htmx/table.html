@@ -1,0 +1,72 @@
+<div class="bg-white rounded-xl shadow p-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-4">
+    <h2 class="text-xl font-bold text-gray-800">
+      {{ judul_halaman|default:"Daftar Disposisi" }}
+      
+    </h2>
+
+    <!-- <a href="#"
+       class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700">
+      + Ajukan SPT
+    </a> -->
+  </div>
+
+  <!-- Filter -->
+  <div class="flex flex-wrap gap-3 mb-4">
+    <div x-data="{ q: '' }" class="relative w-64">
+      <!-- Input -->
+      <input
+        type="text"
+        name="q"
+        x-model="q"
+        x-ref="input"
+        placeholder="Cari ..."
+        class="w-full border rounded-lg px-3 py-2 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+        hx-get="{% url request.resolver_match.view_name %}"
+        hx-trigger="keyup changed delay:500ms"
+        hx-target="#result"
+        hx-include="[name='q'], [name='tanggal']"
+      />
+
+      <!-- Clear button -->
+      <button
+        x-show="q.length > 0"
+        x-transition  
+        type="button"
+        @click="
+            q = '';
+            $nextTick(() => $refs.input.dispatchEvent(new Event('keyup')))
+        "
+        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-black"
+      >
+        ✕
+      </button>
+    </div>
+
+    <!-- <select class="border rounded-lg px-3 py-2 text-sm">
+      <option>Semua Status</option>
+      <option>Draft</option>
+      <option>Review</option>
+      <option>Disetujui</option>
+      <option>Ditolak</option>
+      <option>Selesai</option>
+    </select> -->
+
+    <div class="flex items-center gap-2">
+      <label for="tanggal" class="text-sm font-medium"> Tanggal: </label>
+
+      <input
+        type="date"
+        id="tanggal"
+        name="tanggal"
+        hx-get="{% url request.resolver_match.view_name %}"
+        hx-trigger="change"
+        hx-target="#result"
+        hx-include="[name='q'], [name='tanggal']"
+        class="border rounded-lg px-3 py-2 text-sm"
+      />
+    </div>
+  </div>
+  <div id="result">{% include "partials/_tabel.html" %}</div>
+</div>

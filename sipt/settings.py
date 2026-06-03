@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "tugas",
     "spt",
     "workflow",
+    "notification",
     "core",
     "rest_framework",
     "django_extensions",

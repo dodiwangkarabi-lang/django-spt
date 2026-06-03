@@ -1,0 +1,29 @@
+<div x-data="alertBox()" class="space-y-3 mb-4">
+
+    <template x-for="msg in messages" :key="msg">
+        <div
+            class="rounded-xl border px-4 py-3 text-sm"
+            :class="msg.type === 'error'
+                ? 'border-red-200 bg-red-50 text-red-700'
+                : 'border-green-200 bg-green-50 text-green-700'"
+            x-text="msg.text"
+        ></div>
+    </template>
+
+</div>
+
+<script>
+    function alertBox() {
+        return {
+            messages: [],
+
+            add(type, text) {
+                this.messages.push({ type, text })
+            },
+
+            clear() {
+                this.messages = []
+            }
+        }
+    }
+</script>

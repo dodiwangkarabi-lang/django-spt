@@ -1,0 +1,61 @@
+<div 
+    x-data="lampiranForm()"
+    class="w-full bg-white rounded-2xl shadow p-6 space-y-6 m-0"
+>
+
+<!-- forms -->
+{% url 'spt:spt_web:create_spt' disposisi.id as action_url %}
+
+{% include "workflow/disposisi/partials/form-spt.html" with action_url=action_url %}
+{% include "spt/spt/form/list-lampiran.html" %}
+
+</div>
+
+{% include "core/components/scripts/cookie.html" %}
+<script>
+function lampiranForm() {
+    return {
+        lampiran: [
+            // contoh data existing (kalau edit)
+            // {
+            //     id: 1,
+            //     keterangan: "Undangan"
+            // }
+        ],
+
+        add() {
+            this.lampiran.push({
+                id: null,
+                keterangan: ''
+            })
+        },
+
+        remove(index) {
+            this.lampiran.splice(index, 1)
+        },
+
+        async handleSubmit(event) {
+            alert(3);
+            const form = event.target;
+            const formData = new FormData(form);
+
+            // kirim ke backend Django
+            try {
+                const res = await axios({
+                    method: "post",
+                    url: "{% url 'disposisi:disposisi_api:disposisi_create' %}",
+                    data: formData,
+                    headers: {
+                        'X-CSRFToken': cookieValue,
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+            } catch (error) {
+                console.log(error);
+            }
+
+            console.log('submit', formData)
+        }
+    }
+}
+</script>

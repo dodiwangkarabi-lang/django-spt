@@ -1,0 +1,13 @@
+@startuml contoh
+start
+:klik aksi;
+if (aksi = edit) then (ya)
+    :open modal edit form;
+    stop
+else if (aksi == hapus) then (ya)
+    :open modal hapus form;
+    stop
+else (tidak)
+    :tidak;
+stop
+@enduml

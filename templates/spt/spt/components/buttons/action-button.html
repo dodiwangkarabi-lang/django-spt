@@ -1,0 +1,36 @@
+<!-- templates/components/buttons/action-button.html -->
+
+<div
+    x-data="actionButton('{{ variant|default:'primary' }}')"
+>
+
+    <button
+        type="{{ type|default:'button' }}"
+
+        class="
+            inline-flex
+            items-center
+            gap-2
+            px-4
+            py-2
+            rounded-lg
+            text-sm
+            font-medium
+            transition
+            duration-200
+        "
+
+        :class="buttonClass"
+    >
+
+        <!-- Icon -->
+        <ion-icon :name="icon"></ion-icon>
+
+        <!-- Label -->
+        <span>
+            {{ label }}
+        </span>
+
+    </button>
+
+</div>

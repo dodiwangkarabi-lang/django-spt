@@ -1,0 +1,39 @@
+@startuml Activity Dashboard Paralel
+
+start
+
+:User Login;
+
+if (Valid?) then (Yes)
+
+  :Redirect ke dashboard;
+
+  fork
+    :Query profil user;
+  fork again
+    :Query daftar tugas;
+  fork again
+    :Query notifikasi;
+  fork again
+    :Query pengumuman;
+
+    :Input Nilai;
+    if (>80) then (A)
+        :Sangat baik;
+    elseif (>100) then (B)
+        :Sempurna;
+        repeat
+            :proses;
+        repeat while (kondisi)
+    endif
+  end fork
+
+  :Render dashboard UI;
+
+else
+  :Error login;
+endif
+
+stop
+
+@enduml

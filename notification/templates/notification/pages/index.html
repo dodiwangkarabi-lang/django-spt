@@ -1,0 +1,7 @@
+{% extends "layouts/base.html" %} 
+
+{% block content %}
+
+  <div hx-get="{% url 'notification:notification_htmx:list' %}?init=1" hx-trigger="load">Loading...</div>
+
+{% endblock %}

@@ -1,0 +1,72 @@
+<!-- templates/components/buttons/action-button.html -->
+
+<div
+    x-data="actionButton('{{ variant|default:'create' }}')"
+>
+
+    <button
+        class="
+            inline-flex
+            items-center
+            gap-2
+            px-4
+            py-2
+            rounded-lg
+            text-white
+        "
+
+        :class="buttonClass"
+    >
+
+        <ion-icon :name="icon"></ion-icon>
+
+        <span>
+            {{ label }}
+        </span>
+
+    </button>
+
+</div>
+
+<script>
+
+    function actionButton(variant) {
+
+        const variants = {
+
+            create: {
+                class:
+                    'bg-green-600 hover:bg-green-700',
+
+                icon:
+                    'add-circle-outline',
+            },
+
+            edit: {
+                class:
+                    'bg-blue-600 hover:bg-blue-700',
+
+                icon:
+                    'create-outline',
+            },
+
+            delete: {
+                class:
+                    'bg-red-600 hover:bg-red-700',
+
+                icon:
+                    'trash-outline',
+            },
+        }
+
+        return {
+
+            buttonClass:
+                variants[variant]?.class,
+
+            icon:
+                variants[variant]?.icon,
+        }
+    }
+
+</script>

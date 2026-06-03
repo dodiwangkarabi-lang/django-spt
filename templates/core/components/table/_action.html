@@ -1,0 +1,14 @@
+<div>
+{% load table_tags %}
+
+{% if action.key == 'read' %}
+    <a 
+        class="text-blue-600 hover:underline text-sm"
+        href="{% url action.url obj|attr:action.param %}"
+    >
+        {{ action.label }} 
+        
+    </a>
+{% endif %}
+
+</div>

@@ -1,0 +1,14 @@
+<button
+    {{ attrs|safe }}
+    type="{{ type|default:'button' }}"
+    class="
+        px-4 py-2 rounded-xl font-medium transition
+        {{ variant|default:'bg-blue-600 text-white hover:bg-blue-700' }}
+        {{ class }}
+    "
+    {% if disabled %}
+        disabled
+    {% endif %}
+>
+    {{ label }}
+</button>

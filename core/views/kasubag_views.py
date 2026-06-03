@@ -162,7 +162,7 @@ def buat_spt_kasubag_view(request, disposisi_id):
             return redirect("core_kasubag_disposisi")
         else:
             # print("ini jalan")
-            print(spt_form.errors)
+            # print(spt_form.errors)
             context = {"form": spt_form, "spt": spt}
             render(request, "pages/kasubag/spt-revisi.html", context)
 

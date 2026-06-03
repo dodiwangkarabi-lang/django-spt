@@ -8,7 +8,16 @@ from django.shortcuts import get_object_or_404
 from workflow.services import WorkFlowService
 
 # models
-from spt.models import SPT, PermohonanSPT, SPTLampiran
+from spt.models import (
+    SPT, PermohonanSPT, SPTLampiran,
+    JenisSurat, NomorSuratSequence
+)
+
+@transaction.atomic
+def buat_surat_pernyataan_melaksananan_tugas(data, user):
+    permohonan_spt_service = WorkFlowService(PermohonanSPT)
+    permohonan_spt_service.buat_surat_pernyataan_melaksanakan_tugas(data, user)
+    return True
 
 def upload_lampiran_spt(spt_id, data): # spt -> Lampiran (1:N)
     """keterangan

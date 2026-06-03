@@ -59,7 +59,10 @@ from core.decorators import roles_required
 from django.db.models import Q, Value, CharField, F
 from django.db.models.functions import Concat
 
-
+# selectors
+from spt.spt.selectors import (
+    get_spt, get_spt_by_user, get_spt_by_role
+)
 
 from django.core.paginator import Paginator
 
@@ -253,8 +256,11 @@ def spt_list_htmx(request):
     #     Q(status=SPTStatus.REVIEW_KASUBAG)
     # ) # permohonan
     
-    spt_list = SPTService.get_for_user(request.user)
+    # spt_list = SPTService.get_for_user(request.user)
     # spt_list = get_spt_for_user(request.user)
+    
+    spt_list = get_spt_by_role(request.user)
+    # spt_list = get_spt()
     
     # spt_list = get_spt_list(request.user).order_by("-created_at")
     

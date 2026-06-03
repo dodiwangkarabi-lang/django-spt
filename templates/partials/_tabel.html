@@ -74,7 +74,9 @@
           {% if actions %}
           <td class="px-4 py-3 text-center space-x-2">
             
+            
             {% for action in actions %}
+              {% include 'core/components/table/_action.html' %}
              
               {% if action.key == "detail" %}
 

@@ -1,0 +1,219 @@
+<div class="w-full bg-white rounded-2xl shadow p-6 space-y-6">
+    <!-- Header -->
+    <div class="flex justify-between items-center border-b pb-4">
+    <!-- Title -->
+        <div>
+            <h1 class="text-2xl font-bold text-gray-800">
+                {{ judul_halaman|default:"Detail SPT" }}
+            </h1>
+
+            <p class="text-sm text-gray-500">
+                Nomor: {{ disposisi.spt.nomor_spt }}
+            </p>
+        </div>
+
+        <!-- Right Section -->
+        <div class="flex items-center gap-3">
+
+            <!-- Status -->
+            <!-- <span
+                class="px-4 py-2 text-sm rounded-full bg-yellow-100 text-yellow-700"
+            >
+                {{ disposisi.spt.status }}
+            </span> -->
+
+            {% if spt.can_edit %}
+            <!-- Button Edit -->
+            <button
+                @click="$dispatch('open-modal')"
+                type="button"
+                class="flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition"
+            >
+                <ion-icon name="create-outline" class="text-lg"></ion-icon>
+
+                <span>Edit</span>
+            </button>
+            {% endif %}
+
+        </div>
+
+    
+    </div>
+
+    <!-- Informasi Utama -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div>
+        <p class="text-sm text-gray-500">No. SPT</p>
+        <p class="font-semibold text-gray-800">{{ disposisi.spt.nomor_spt }}</p>
+    </div>
+
+    <div>
+        <p class="text-sm text-gray-500">Judul</p>
+        <p class="font-semibold text-gray-800">{{ disposisi.spt.judul }}</p>
+    </div>
+
+    <div>
+        <p class="text-sm text-gray-500">Tanggal Mulai</p>
+        <p class="font-semibold text-gray-800">
+        {{ disposisi.spt.tanggal_mulai|date:"d F Y" }}
+        </p>
+    </div>
+
+    <div>
+        <p class="text-sm text-gray-500">Tanggal Pengajuan</p>
+        <p class="font-semibold text-gray-800">
+        {{ disposisi.spt.created_at|date:"d F Y" }}
+        </p>
+    </div>
+
+    <div>
+        <p class="text-sm text-gray-500">Tanggal Selesai</p>
+        <p class="font-semibold text-gray-800">
+        {{ disposisi.spt.tanggal_selesai|date:"d F Y" }}
+        </p>
+    </div>
+
+    <div>
+        <p class="text-sm text-gray-500">Diajukan Oleh</p>
+        <p class="font-semibold text-gray-800">{{ disposisi.spt.dibuat_oleh.profile.nama|upper }}</p>
+    </div>
+    </div>
+
+    <!-- Lampiran -->
+    {% if disposisi.spt.lampiran.all %}
+    <div>
+    <h2 class="text-lg font-semibold text-gray-800 mb-2">Lampiran</h2>
+
+    {% for lampiran in disposisi.spt.lampiran.all %}
+    <div class="bg-gray-50 p-4 rounded-lg flex justify-between items-center">
+        <span class="text-gray-700"
+        >{{ forloop.counter }}. {{ lampiran.file.name|cut:'lampiran_spt/'}}</span
+        >
+        <a href="{{ lampiran.file.url }}" class="text-blue-600 hover:underline"
+        >Download</a
+        >
+    </div>
+    {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Download dokumen spt -->
+    {% if spt.status == 'disetujui_final' or spt.status == 'selesai' %}
+    <div>
+    <h2 class="text-lg font-semibold text-gray-800 mb-2">
+        Download Dokumen SPT
+    </h2>
+    <div class="bg-gray-50 p-4 rounded-lg space-y-2">
+        <p class="text-sm text-gray-600">Dokumen SPT</p>
+        <a
+        target="_blank"
+        href="{% url 'spt_preview' spt.id %}"
+        class="text-blue-600 hover:underline"
+        >Cetak</a
+        >
+    </div>
+    <div class="bg-gray-50 p-4 rounded-lg space-y-2">
+        <p class="text-sm text-gray-600">Surat Pernyataan Pimpinan</p>
+        
+        {% for tugas in tugas_pelaksanaan_list %}
+        {% if tugas.is_surat_pernyataan_tugas %}
+            <a
+            target="_blank"
+            href="{% url 'cetak_surat_pernyataan_tugas' tugas.id %}"
+            class="text-blue-600 hover:underline"
+            >Cetak</a
+            >
+        {% endif %}
+        {% endfor %}
+        {% if not tugas_pelaksanaan_list %}
+        <p class="text-sm text-gray-600">Belum ada Surat Pernyataan Pimpinan</p>
+        {% endif %}
+    </div>
+    </div>
+    {% endif %}
+
+    <!-- approval -->
+    {% if is_pimpinan and spt.is_diajukan %}
+    
+    <div 
+        x-data="approval()" 
+        @open-modal="openModal($event.detail)"
+        @close-modal="closeModal()"
+        @setujui-spt="handleSetujuiSPT($event.detail)"
+        class="flex flex-row flex-nowrap gap-3 pt-4 border-t justify-start"
+    >
+
+    {% url 'spt:spt_api:tolak_sptku' spt.id as tolak_spt_url %}
+    {% url 'spt:spt_api:revisi_sptku' spt.id as revisi_spt_url %}
+    {% url 'spt:spt_api:terima_sptku' spt.id as terima_spt_url %}
+
+
+
+    
+    <div x-show="!loading" class="flex flex-row items-center gap-2">
+        {% include "spt/spt/partials/button.html" with event="setujui-spt" label="Terima" variant='default' url=terima_spt_url %}
+        {% include "spt/spt/partials/button.html" with event="open-modal" label="Revisi" variant='warning' url=revisi_spt_url %}
+        {% include "spt/spt/partials/button.html" with event="open-modal" label="Tolak" variant='danger' url=tolak_spt_url %}
+    </div>
+    <div x-show="loading" class="flex flex-row items-center gap-2">
+        {% include "components/spinner.html" %}
+    </div>
+    
+    
+    {% include "spt/spt/partials/modal.html" %}
+
+    {% include "spt/spt/partials/approval-form-js.html" %}
+    
+    </div>
+
+    {% endif %}
+
+
+    <!-- Aksi -->
+    {% if is_pegawai %}
+    {% if spt.status == 'draft' or spt.status == 'revisi_kasubbag' or spt.status == 'DRAFT' %}
+    <div class="flex flex-wrap gap-3 pt-4 border-t">
+    <a href="{% url 'core_edit_revisi' spt.id %}">
+        <button
+        class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600"
+        >
+        Edit
+        </button>
+    </a>
+
+    {% if spt.status == 'draft' %}
+    
+    <a
+        onclick="return confirm('apakah anda yakin?');"
+        href="{% url 'core_kirim_pengajuan' spt.id %}"
+    >
+        <button
+        class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+        >
+        Kirim Permohonan SPT
+        </button>
+    </a>
+    
+    {% endif %}
+
+    
+    </div>
+    {% endif %}
+    {% endif %}
+</div>
+
+<script>
+    function aksiSPT() {
+        return {
+            loading: false,
+            disabled: false,
+
+            submit(url) {
+                // if (this.loading) return;
+                this.loading = true;
+                this.disabled = true;
+                window.location.href = url;
+            }
+        }
+    }
+</script>

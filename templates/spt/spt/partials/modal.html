@@ -1,0 +1,40 @@
+<template x-if="modalOpen">
+
+  <div
+    class="fixed inset-0 bg-black/50 flex items-center justify-center"
+>
+    <div class="bg-white rounded-xl p-6 w-full max-w-lg">
+
+        <div class="flex justify-between mb-4">
+            <h2 class="font-bold text-lg">
+                <span x-text="judulModal"></span>
+            </h2>
+
+            <button @click="$dispatch('close-modal')">
+                ✕
+            </button>
+        </div>
+
+        <form @submit.prevent="handleSubmit" method="post" action="{{ action_url }}">
+          {% csrf_token %}
+          
+          {% include 'core/components/forms/input.html' with label='Catatan' name='catatan' %}
+
+          <button
+            type="submit"
+            :disabled="loading"
+            class="flex flex-row items-center gap-2 px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+            
+          >
+            <span x-show="!loading">Kirim</span>
+            {% include "components/spinner.html" %}
+            <span x-show="loading"> Loading ... </span>
+          </button>
+        </form>
+
+    </div>
+</div>
+
+
+  
+</template>

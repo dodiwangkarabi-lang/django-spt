@@ -1,0 +1,15 @@
+{% if field.errors %}
+
+    <div class="mt-1 space-y-1">
+
+        {% for error in field.errors %}
+
+            <p class="text-sm text-red-500">
+                {{ error }}
+            </p>
+
+        {% endfor %}
+
+    </div>
+
+{% endif %}

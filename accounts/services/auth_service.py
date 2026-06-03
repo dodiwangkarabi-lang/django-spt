@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
-from ..models import Profile
+from accounts.models import Profile
 from django.db import transaction
 
 ROLE_DASHBOARD_MAP = {
@@ -17,8 +17,6 @@ ROLE_DASHBOARD_MAP = {
 #             return url
 
 #     return 'login'  # fallback
-
-
 
 def login_user(request, username, password):
     user = authenticate(request, username=username, password=password)
@@ -42,6 +40,7 @@ def get_dashboard_url(user):
 
 
 class UserService:
+    
     @staticmethod
     def update_user(user_id, data):
         user = get_object_or_404(User, id=user_id)

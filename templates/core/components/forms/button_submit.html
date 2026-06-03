@@ -1,0 +1,13 @@
+<button
+    :disabled="loading"
+    {{ attrs|safe }}
+    type="{{ type|default:'button' }}"
+    class="
+        px-4 py-2 rounded-xl text-white
+        bg-sky-600 hover:bg-sky-700
+        transition
+    "
+>
+    <span x-show="!loading">{{ label }}</span>
+    <span x-show="loading">Loading...</span>
+</button>

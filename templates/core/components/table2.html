@@ -1,0 +1,117 @@
+<div class="bg-white rounded-2xl shadow overflow-hidden">
+
+    <!-- HEADER -->
+     <div class="px-6 py-4 border-b bg-slate-50 flex items-center justify-between">
+
+        <h2 class="text-lg font-semibold text-slate-700">
+            {{ table_title }}
+        </h2>
+
+        <a
+            @click.prevent="openForm"
+            x-show="!isFormOpen"
+            href="{{ create_url }}"
+            class="
+                inline-flex items-center gap-2
+                bg-blue-600 hover:bg-blue-700
+                text-white text-sm font-medium
+                px-4 py-2 rounded-md
+                transition
+            "
+        >
+            <ion-icon name="add-outline" class="text-lg"></ion-icon>
+
+            
+        </a>
+    </div>
+
+    <!-- TABLE -->
+    <div class="overflow-x-auto">
+
+        <table class="min-w-full text-sm text-left">
+
+            <thead class="bg-slate-100">
+                <tr>
+
+                    {% for header in headers %}
+                        <th class="px-4 py-3 font-semibold bg-slate-600 text-white">
+                            {{ header }}
+                        </th>
+                    {% endfor %}
+
+                    
+
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for row in rows %}
+
+                    <tr class="border-t hover:bg-slate-50">
+
+                        <!-- CELLS -->
+                        {% for cell in row.cells %}
+                            <td class="px-4 py-3">
+                                {{ cell }}
+                            </td>
+                        {% endfor %}
+
+                        <!-- ACTIONS -->
+                        <td class="px-4 py-3">
+
+                            <div class="flex gap-2">
+
+                                {% for action in row.actions %}
+
+                                    <a
+                                        href="{{ action.url }}"
+                                        class="
+                                            px-3 py-1 rounded-lg text-white text-xs
+
+                                            {% if action.color == 'blue' %}
+                                                bg-blue-500
+                                            {% elif action.color == 'red' %}
+                                                bg-red-500
+                                            {% elif action.color == 'green' %}
+                                                bg-green-500
+                                            {% endif %}
+                                        "
+                                    >
+                                        {{ action.label }}
+                                    </a>
+
+                                {% empty %}
+
+                                    <span class="text-slate-400">
+                                        -
+                                    </span>
+
+                                {% endfor %}
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                {% empty %}
+
+                    <tr>
+                        <td
+                            colspan="{{ headers|length|add:1 }}"
+                            class="px-4 py-6 text-center text-slate-500"
+                        >
+                            Data kosong
+                        </td>
+                    </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>

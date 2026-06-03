@@ -1,0 +1,17 @@
+<section x-data="approvalForm('{{ variant }}', '{{ action_url }}', loading)">
+<div x-data="{ openModal: false}">
+  <button
+    @click="$dispatch('open-modal', '{{ label }}')"
+    x-show="!openModal"
+    type="submit"
+    :disabled="loading"
+    class="flex flex-row items-center gap-2 px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+    :class="buttonClass"
+  >
+    <span x-show="!loading"> {{ label }}</span>
+    {% include "components/spinner.html" %}
+    <span x-show="loading"> Loading ... </span>
+  </button>
+</div>
+
+</section>

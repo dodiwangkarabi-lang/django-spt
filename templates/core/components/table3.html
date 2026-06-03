@@ -1,0 +1,137 @@
+<!-- Table -->
+  <div class="overflow-x-auto" >
+    {% load table_tags %}
+    <table class="min-w-full text-sm text-left">
+
+      <thead class="bg-gray-100 text-gray-700">
+        <tr>
+          {% for col in columns %}
+          <th class="px-4 py-3">{{ col.label }}</th>
+          
+          {% endfor %}
+          {% if actions %}
+            <th class="px-4 py-3 text-center">Aksi</th>
+          {% endif %}
+        </tr>
+      </thead>
+
+      <tbody class="divide-y" id="">
+        {% for obj in page_obj %}
+        <!-- Row 1 -->
+        <tr class="hover:bg-gray-50">
+          {% for col in columns %}
+            {% if col.key == "status" %}
+              <td class="px-4 py-3">
+                {% if obj|attr:col.key == "draft" or obj|attr:col.key == "revisi_kasubbag" %}
+                <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700">
+                  {{ obj|attr:col.key }}
+                </span>
+                {% elif obj|attr:col.key == "diajukan" %}
+                <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">
+                  {{ obj|attr:col.key }}
+                </span>
+                {% elif obj|attr:col.key == "disetujui" %}
+                <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">
+                  Disetujui
+                </span>
+                {% elif obj|attr:col.key == "ditolak" %}
+                <span class="px-2 py-1 text-xs rounded-full bg-red-100 text-red-700">
+                  Ditolak
+                </span>
+                {% elif obj|attr:col.key == "selesai" %}
+                <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">
+                  Selesai
+                </span>
+                {% elif obj|attr:col.key == "revisi" %}
+                <span class="px-2 py-1 text-xs rounded-full bg-red-100 text-red-700">
+                  Revisi
+                </span>
+                {% else %}
+                <span class="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-700">
+                  {{ obj|attr:col.key }}
+                </span>
+                {% endif %}
+              </td>
+            {% elif col.key == "upload_laporan_url" %}
+              <td class="px-4 py-3">
+                
+                {% if obj|attr:col.key %}
+                <a href="{% url obj|attr:col.key obj.id %}"
+                  class="text-blue-600 hover:underline text-sm">
+                  {{ col.label_url }}
+                </a>
+                {% endif %}
+              </td>
+            {% elif col.key == "created_at" and col.tipe == "date" %}
+              <td class="px-4 py-3">{{ obj|attr:col.key|date:"d F Y" }}</td>
+            {% elif col.key == "judul" %}
+              <td class="px-4 py-3 max-w-[200px] truncate">{{ obj|attr:col.key }}</td>
+            {% else %}
+            <td class="px-4 py-3">{{ obj|attr:col.key }}</td>
+            {% endif %}
+          {% endfor %}
+
+          {% if actions %}
+          <td class="px-4 py-3 text-center space-x-2">
+            
+            {% for action in actions %}
+             
+              {% if action.key == "detail" %}
+
+            <a href="{% url action.url obj.id %}"
+               class="text-blue-600 hover:underline text-sm">
+              {{ action.label }}
+            </a>
+              {% elif action.key == "upload" %}
+                {% if obj.status == "disetujui_final" %}
+                  <a href="{% url action.url obj.id %}"
+                    class="text-blue-600 hover:underline text-sm">
+                    upload dokumen
+                  </a>
+                  {% endif %}
+              {% endif %}
+    
+            {% endfor %}
+            
+          </td>
+          {% endif %}
+        </tr>
+        {% empty %}
+        <tr>
+          <td class="px-4 py-3 text-center" colspan="7">
+            Tidak ada data
+          </td>
+        </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <div class="flex gap-2 mt-4">
+
+        {% if page_obj.has_previous %}
+        <button
+            hx-get="{% url request.resolver_match.url_name %}?page={{ page_obj.previous_page_number }}"
+            hx-target="#result"
+            hx-include="[name='q'], [name='tanggal']"
+            class="px-3 py-1 border">
+            Prev
+        </button>
+        {% endif %}
+
+        <span>Hal {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+
+        {% if page_obj.has_next %}
+        <button
+            hx-get="{% url request.resolver_match.url_name %}?page={{ page_obj.next_page_number }}"
+            hx-target="#result"
+            hx-include="[name='q'], [name='tanggal']"
+            class="px-3 py-1 border">
+            Next
+        </button>
+        {% endif %}
+
+    </div>
+
+  </div>

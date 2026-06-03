@@ -1,0 +1,155 @@
+<form
+  x-data="formSPT"
+  @submit.prevent="handleSubmit"
+  method="POST"
+  enctype="multipart/form-data"
+  action="{{ action_url }}"
+  class="space-y-3 bg-white p-6 rounded-2xl shadow"
+>
+  {% csrf_token %}
+  <h1 class="text-xl font-bold mb-0">SPT</h1>
+
+  <!-- hidden kirim next page -->
+  <input type="hidden" name="next" value="{{ next_url }}" />
+  <!-- Nomor SPT -->
+  <div>
+    <!-- <label class="block text-sm font-medium text-gray-700">Nomor SPT</label> -->
+    <input
+      type="hidden"
+      name="nomor_spt"
+      class="mt-1 w-full border rounded-lg px-4 py-2 focus:ring focus:ring-blue-200"
+      placeholder="Masukkan nomor SPT"
+      value="{{ spt_form.nomor_spt.value|default_if_none:'SPT-   /2026' }}"
+    />
+  </div>
+
+  <!-- Judul -->
+  <div>
+    <label class="block text-sm font-medium text-gray-700">Judul</label>
+    <input
+      type="text"
+      name="judul"
+      class="mt-1 w-full border rounded-lg px-4 py-2 focus:ring focus:ring-blue-200"
+      placeholder="Masukkan judul kegiatan"
+      required
+      value="{{ spt_form.judul.value|default_if_none:'' }}"
+    />
+  </div>
+
+  <!-- Deskripsi -->
+  <div>
+    <label class="block text-sm font-medium text-gray-700">Deskripsi</label>
+    <textarea
+      name="deskripsi"
+      class="mt-1 w-full border rounded-lg px-4 py-2 focus:ring focus:ring-blue-200"
+      rows="4"
+      placeholder="Deskripsi (opsional)"
+    >
+            {{ spt_form.deskripsi.value|default_if_none:'' }}
+        </textarea
+    >
+  </div>
+
+  <!-- Tanggal Mulai -->
+  <div>
+    <label class="block text-sm font-medium text-gray-700">Tanggal Mulai</label>
+    <input
+      type="date"
+      name="tanggal_mulai"
+      value="{{ spt_form.tanggal_mulai.value|default_if_none:''|date:'Y-m-d' }}"
+      class="mt-1 w-full border rounded-lg px-4 py-2 focus:ring focus:ring-blue-200"
+      required
+    />
+  </div>
+
+  <!-- Tanggal Selesai -->
+  <div>
+    <label class="block text-sm font-medium text-gray-700"
+      >Tanggal Selesai</label
+    >
+    <input
+      type="date"
+      name="tanggal_selesai"
+      value="{{ spt_form.tanggal_selesai.value|default_if_none:''|date:'Y-m-d' }}"
+      class="mt-1 w-full border rounded-lg px-4 py-2 focus:ring focus:ring-blue-200"
+      required
+    />
+  </div>
+
+  {% if not spt %}
+  <!-- upload lampiran -->
+  <div>
+    <label class="block text-sm font-medium text-gray-700">lampiran</label>
+    <input
+      type="file"
+      name="lampiran"
+      class="mt-1 w-full border rounded-lg px-4 py-2 focus:ring focus:ring-blue-200"
+      accept=".pdf"
+      multiple
+    />
+  </div>
+  {% endif %}
+
+  <!-- Submit -->
+  <div class="flex justify-end gap-3">
+    <!-- <a
+      href=""
+      class="bg-gray-300 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-400"
+    >
+      Batal
+    </a> -->
+
+    <button
+      type="submit"
+      class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
+    >
+      <span x-show="!loading">Kirim</span>
+      <span x-show="loading">Loading...</span>
+    </button>
+    <button
+      x-show="!loading"
+      type="button"
+      @click="$dispatch('close-modal')"
+      class="bg-yellow-600 text-white px-6 py-2 rounded-lg hover:bg-yellow-700"
+    >
+      Batal
+    </button>
+  </div>
+
+  <!-- Status -->
+  <input type="hidden" name="status" value="draft" />
+
+  <!-- <div>
+        <label class="block text-sm font-medium text-gray-700">Status</label>
+        <select name="status"
+                class="mt-1 w-full border rounded-lg px-4 py-2 focus:ring focus:ring-blue-200">
+            <option value="draft">Draft</option>
+            <option value="diajukan">Diajukan</option>
+            <option value="disetujui">Disetujui</option>
+            <option value="ditolak">Ditolak</option>
+            <option value="direvisi">Direvisi</option>
+        </select>
+    </div> -->
+
+    
+</form>
+
+<script>
+  function formSPT() {
+    return {
+      handleSubmit(event) {
+        const form = event.target;
+        const formData = new FormData(form);
+
+        const data = Object.fromEntries(formData.entries());
+
+        console.log(data);
+        const isConfirmed = confirm("Apakah Anda yakin ingin mengirim data ini?");
+        if (!isConfirmed) return;
+
+        this.$dispatch("kirim-revisi-spt", data);
+        
+      },
+    };
+  }
+</script>

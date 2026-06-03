@@ -1,0 +1,62 @@
+@startuml alur_bisnis
+
+|Kasubag|
+start
+:Ajukan Permohohan Kegiatan;
+
+|Pimpinan|
+:Membuat Disposisi;
+
+fork
+    |Pegawai|
+    :Melihat Disposisi;
+fork again
+    |Kasubag|
+    :Melihat Dispoisis;
+end fork
+
+
+|Kasubag|
+:Ajukan SPT;
+
+|Pimpinan|
+:Validasi;
+
+while (Perlu revisi?) is (Ya)
+
+    |Kasubag|
+    :Perbaiki SPT;
+    :Kirim Ulang;
+
+endwhile (Tidak)
+
+|Pimpinan|
+if (valid?) then (Ya)
+    :Tanda Tangan dan Terima SPT;
+else (Tidak)
+    :Arsipkan;
+    stop
+endif
+
+|Kasubag|
+fork
+    :Lihat Notifikasi;
+fork again
+    |Pegawai|
+    :Lihat Notifikasi;
+
+end fork
+
+while (Kegiatan selesai?) is (tidak)
+    :Kerjakan;
+    
+endwhile (yak) 
+
+|Pegawai|
+:Lihat & buat laporan;
+
+|Pimpinan|
+:Lihat Laporan Pegawai;
+stop
+
+@enduml

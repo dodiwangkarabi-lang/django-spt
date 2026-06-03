@@ -1,0 +1,22 @@
+<!-- templates/components/form/input.html -->
+
+<div class="mb-4">
+
+    <label class="block text-sm font-medium mb-1">
+        {{ label }}
+    </label>
+
+    <input
+        type="{{ type|default:'text' }}"
+        name="{{ name }}"
+        value="{{ value|default:'' }}"
+        class="w-full rounded-xl border p-3"
+    >
+
+    {% if error %}
+        <p class="text-red-500 text-sm mt-1">
+            {{ error }}
+        </p>
+    {% endif %}
+
+</div>

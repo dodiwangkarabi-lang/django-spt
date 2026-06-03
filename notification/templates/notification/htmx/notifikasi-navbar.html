@@ -1,0 +1,70 @@
+<nav
+    x-data="{ openNotif: false }"
+    class="fixed top-0 left-64 right-0 h-16 bg-white shadow z-2 flex items-center justify-end px-6"
+>
+
+    <!-- Notifikasi -->
+    <div class="relative mr-6">
+
+        <button
+            @click="openNotif = !openNotif"
+            class="relative flex items-center gap-2 text-gray-700 hover:text-black"
+        >
+            <ion-icon name="notifications-outline" class="text-2xl"></ion-icon>
+            <span class="text-sm"></span>
+
+            <!-- badge -->
+            <span class="absolute -top-1 -right-2 bg-red-500 text-white text-xs px-1.5 rounded-full">
+                {{ total_notifikasi }}
+            </span>
+        </button>
+
+        <!-- Dropdown -->
+     
+
+        <div
+           x-show="openNotif"
+           @click.away="openNotif = false"
+           x-transition
+           x-cloak
+            class="absolute right-0 mt-2 w-80 bg-white shadow-lg rounded-lg border z-50"
+        >
+            <div class="p-3 border-b font-semibold">
+                Notifikasi
+            </div>
+
+            <ul class="max-h-64 overflow-y-auto text-sm">
+                {% for notifikasi in qs %}
+                <li class=" hover:bg-gray-100 border-b">
+                    <a 
+                        class="w-full block p-3"
+                        href="{% url 'notification:notification_web:notification_redirect' notifikasi.id %}"
+                    >
+                        {{ notifikasi.pesan }}1
+                    </a>
+                </li>
+                {% empty %}
+                <li class="p-3 text-gray-400 border-b">
+                    Tidak ada notifikasi
+                </li>
+                {% endfor %}
+            </ul>
+
+            <div class="p-2 text-center text-xs text-blue-600 hover:underline cursor-pointer">
+                <a href="{% url 'notification:notification_web:index' %}">
+                    Lihat semua
+                </a>
+            </div>
+        </div>
+       
+        <!-- end dropdown -->
+
+    </div>
+
+    <!-- Settings -->
+    <!-- <a href="#" class="flex items-center gap-2 text-gray-700 hover:text-black">
+        <ion-icon name="settings-outline" class="text-2xl"></ion-icon>
+        <span class="text-sm">Settings</span>
+    </a> -->
+
+</nav>

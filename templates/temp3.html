@@ -1,0 +1,25 @@
+<form method="POST">
+    {% csrf_token %}
+
+    <input 
+        type="text"
+        name="nomor"
+        value="{{ spt.nomor|default:'' }}"
+        placeholder="Nomor SPT"
+    >
+
+    <input 
+        type="text"
+        name="perihal"
+        value="{{ spt.perihal|default:'' }}"
+        placeholder="Perihal"
+    >
+
+    <button type="submit">
+        {% if mode == "update" %}
+            Update
+        {% else %}
+            Simpan
+        {% endif %}
+    </button>
+</form>

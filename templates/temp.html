@@ -1,0 +1,100 @@
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <!-- ===================== -->
+    <!-- DATA SPT -->
+    <!-- ===================== -->
+    <div>
+        <label>Nomor SPT</label>
+        <input type="text" name="nomor" class="border p-2 w-full">
+    </div>
+
+    <div>
+        <label>Perihal</label>
+        <input type="text" name="perihal" class="border p-2 w-full">
+    </div>
+
+    <!-- ===================== -->
+    <!-- LAMPIRAN -->
+    <!-- ===================== -->
+    <div 
+        x-data="lampiranForm()"
+        class="mt-6 space-y-3"
+    >
+
+        <h3 class="font-bold">Lampiran</h3>
+
+        <!-- LIST LAMPIRAN -->
+        <template x-for="(item, index) in lampiran" :key="index">
+            <div class="border p-3 rounded space-y-2">
+
+                <!-- hidden id (untuk update) -->
+                <input type="hidden" :name="`lampiran[${index}][id]`" x-model="item.id">
+
+                <!-- keterangan -->
+                <input 
+                    type="text"
+                    :name="`lampiran[${index}][keterangan]`"
+                    placeholder="Keterangan"
+                    x-model="item.keterangan"
+                    class="border p-2 w-full"
+                >
+
+                <!-- file -->
+                <input 
+                    type="file"
+                    :name="`lampiran[${index}][file]`"
+                    class="border p-2 w-full"
+                >
+
+                <!-- tombol hapus -->
+                <button type="button" @click="remove(index)" class="text-red-500">
+                    Hapus
+                </button>
+
+            </div>
+        </template>
+
+        <!-- tombol tambah -->
+        <button 
+            type="button"
+            @click="add()"
+            class="bg-blue-500 text-white px-4 py-2 rounded"
+        >
+            + Tambah Lampiran
+        </button>
+
+    </div>
+
+    <!-- submit -->
+    <div class="mt-6">
+        <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded">
+            Simpan
+        </button>
+    </div>
+</form>
+
+<script>
+function lampiranForm() {
+    return {
+        lampiran: [
+            // contoh data existing (kalau edit)
+            // {
+            //     id: 1,
+            //     keterangan: "Undangan"
+            // }
+        ],
+
+        add() {
+            this.lampiran.push({
+                id: null,
+                keterangan: ''
+            })
+        },
+
+        remove(index) {
+            this.lampiran.splice(index, 1)
+        }
+    }
+}
+</script>

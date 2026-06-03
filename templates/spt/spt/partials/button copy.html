@@ -1,0 +1,56 @@
+<section x-data="">
+<div x-data="buttonComponent('{{ variant }}', '{{ action_url }}', '{{ loading }}')">
+  <button
+    @click="handleClick"
+    type="submit"
+    :disabled="loading"
+    class="flex flex-row items-center gap-2 px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+    :class="buttonClass"
+  >
+    <span x-show="!loading"> {{ label }}</span>
+    {% include "components/spinner.html" %}
+    <span x-show="loading"> Loading ... </span>
+  </button>
+</div>
+
+</section>
+
+<script>
+  function buttonComponent(variant, action_url=null, loading=false) {
+    return {
+      variant: variant,
+      loading: loading,
+      
+      // computed
+        get buttonClass() {
+            const variants = {
+            create: "bg-green-600 hover:bg-green-700",
+            edit: "bg-blue-600 hover:bg-blue-700",
+            delete: "bg-red-600 hover:bg-red-700",
+            warning: "bg-yellow-500 hover:bg-yellow-600", 
+            danger: "bg-red-600 hover:bg-red-700",
+            default: "bg-blue-600 hover:bg-gray-700",
+            };
+
+            return [
+            variants[this.variant],
+            {
+                "opacity-50": this.disabled,
+                "cursor-not-allowed": this.disabled,
+                "animate-pulse": this.loading,
+            },
+            ];
+        },
+
+        // methods
+        handleClick() {
+            const data = {
+                label: '{{ label }}',
+                action_url: '{{ action_url }}',
+            }
+            this.$dispatch('open-modal', data);
+        },
+      
+    };
+  }
+</script>

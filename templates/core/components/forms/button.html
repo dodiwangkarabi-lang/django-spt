@@ -1,0 +1,10 @@
+<button
+    {{ attrs|safe }}
+    type="{{ type|default:'button' }}"
+    @click="submit('{{ url }}')"
+    class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+    :disabled="loading"
+>
+    <span x-show="!loading">{{ text }}</span>
+    <span x-show="loading">Loading...</span>
+</button>

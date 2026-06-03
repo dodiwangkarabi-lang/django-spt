@@ -418,16 +418,27 @@ def upload_laporan(spt_id, file, user):
 
 def get_spt_list(user):
     if user.groups.filter(name="pegawai").exists():
-        return SPT.objects.filter(dibuat_oleh=user)
+        qs = SPT.objects.filter(dibuat_oleh=user)
+        return qs
 
     if user.groups.filter(name="pimpinan").exists():
         return SPT.objects.filter(status="diajukan")
+    
 
     return SPT.objects.none()
 
 def get_spt_diterima_list(user):
     if user.groups.filter(name="pegawai").exists():
-        return SPT.objects.filter(dibuat_oleh=user).filter(Q(status="disetujui_final") | Q(status="selesai"))
+        # qs = (
+        #     SPT.objects.filter(dibuat_oleh=user)
+        #     .filter(
+        #         Q(status="disetujui_final") |
+        #         Q(status="selesai") |
+        #         Q(status=SPTStatus.DISETUJUI)
+        #     )
+        # )
+        qs = SPT.objects.all()
+        return qs
 
     if user.groups.filter(name="pimpinan").exists():
         return SPT.objects.filter(status=SPTStatus.DIAJUKAN)

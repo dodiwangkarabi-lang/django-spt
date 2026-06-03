@@ -1,0 +1,68 @@
+<div class="space-y-4">
+
+    <!-- HEADER -->
+    <div class="flex items-center justify-between">
+        <h2 class="text-xl font-bold text-gray-800">
+            📥 Inbox
+        </h2>
+
+        <span class="text-sm text-gray-500">
+            Total: {{ disposisi_list|length }}
+        </span>
+    </div>
+
+    <!-- LIST -->
+    <div class="space-y-3">
+        
+        {% for d in disposisi_list %}
+        <div class="bg-white border rounded-xl p-4 shadow-sm hover:shadow-md transition">
+            
+            <!-- TOP -->
+            <div class="flex justify-between items-start">
+                <div>
+                    <h3 class="font-semibold text-gray-800">
+                        {{ d.spt.judul }} 
+                    </h3>
+
+                    <!-- <p class="text-sm text-gray-500">
+                        Nomor: {{ d.spt.nomor_spt }}
+                    </p> -->
+                </div>
+
+                <span class="px-3 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700">
+                    {{ d.status }}
+                </span>
+            </div>
+
+            <!-- INFO -->
+            <div class="mt-3 text-sm text-gray-600 space-y-1">
+                <p>👤 Dari: <span class="font-medium">{{ d.dari_user.profile.nama }}</span></p>
+                <p>📅 Tanggal: {{ d.created_at|date:'Y-m-d' }}</p>
+                {% if d.spt.catatan %}
+                <p>📝 Catatan: {{ d.spt.catatan }}</p>
+                {% endif %}
+            </div>
+
+            <!-- ACTION -->
+            <div class="mt-4 flex gap-2">
+
+                {% include "workflow/disposisi/actions/buat-spt.html" %}
+                {% include "workflow/disposisi/actions/review-spt.html" %}
+                {% include "workflow/disposisi/actions/lihat-intruksi.html" %}
+                
+
+            </div>
+
+        </div>
+        {% empty %}
+
+        <!-- EMPTY STATE -->
+        <div class="text-center py-10 text-gray-500">
+            Tidak ada data
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>

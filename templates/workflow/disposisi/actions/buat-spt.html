@@ -1,0 +1,8 @@
+<!-- BUAT SPT -->
+{% if d.status == STATUS_DISPOSISI.INSTRUKSI and not d.has_spt and is_kasubag  %}
+    
+    <a href="{% url 'spt:spt_web:create_spt' d.id %}"
+    class="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+    Buat SPT
+</a>
+{% endif %}

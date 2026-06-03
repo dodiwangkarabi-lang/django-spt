@@ -1,0 +1,87 @@
+<div x-data="uploadLampiran()">
+
+    <!-- Input file hidden -->
+    <input
+        type="file"
+        x-ref="fileInput"
+        class="hidden"
+        @change="handleFileChange"
+    >
+
+    <!-- Tombol -->
+    <button
+        type="button"
+        @click="$refs.fileInput.click()"
+        class="flex items-center gap-1 px-3 py-1.5 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition"
+    >
+        <ion-icon name="add-outline" class="text-lg"></ion-icon>
+        Lampiran
+    </button>
+
+</div>
+
+<script>
+function uploadLampiran() {
+    return {
+
+        async handleFileChange(event) {
+
+            const file = event.target.files[0]
+
+            if (!file) return
+
+            const formData = new FormData()
+
+            formData.append('lampiran', file)
+
+            try {
+
+                const response = await fetch('/upload-lampiran/', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken')
+                    }
+                })
+
+                const result = await response.json()
+
+                console.log(result)
+
+                alert('Upload berhasil')
+
+            } catch (error) {
+
+                console.error(error)
+
+                alert('Upload gagal')
+
+            }
+        }
+    }
+}
+
+function getCookie(name) {
+
+    let cookieValue = null
+
+    if (document.cookie && document.cookie !== '') {
+
+        const cookies = document.cookie.split(';')
+
+        for (let cookie of cookies) {
+
+            cookie = cookie.trim()
+
+            if (cookie.startsWith(name + '=')) {
+
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1))
+
+                break
+            }
+        }
+    }
+
+    return cookieValue
+}
+</script>

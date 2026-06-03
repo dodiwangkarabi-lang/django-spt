@@ -1,0 +1,35 @@
+<!-- templates/siswa/list.html -->
+
+{% extends 'layouts/app.html' %}
+
+{% block content %}
+
+<div class="p-6 space-y-4">
+
+    <!-- Tombol Tambah -->
+    {% include 'components/buttons/action-button.html' with
+        label='Tambah'
+        variant='create'
+    %}
+
+    <!-- Tombol Edit -->
+    {% include 'components/buttons/action-button.html' with
+        label='Edit'
+        variant='edit'
+    %}
+
+    <!-- Tombol Hapus -->
+    {% include 'components/buttons/action-button.html' with
+        label='Hapus'
+        variant='delete'
+    %}
+
+    <!-- Tombol Approve -->
+    {% include 'components/buttons/action-button.html' with
+        label='Setujui'
+        variant='approve'
+    %}
+
+</div>
+
+{% endblock %}

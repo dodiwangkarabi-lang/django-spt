@@ -1,0 +1,101 @@
+<div>
+
+<div x-data="formHandlerDisposisi()">
+
+    <form @submit.prevent="handleSubmit" action="" method="post">
+        <p
+            x-show="errors.catatan"
+            x-text="errors.catatan"
+            class="text-red-500 text-sm"
+        ></p>
+        {% csrf_token %}
+        
+        {% include "core/components/forms/textarea.html" with attrs='x-model="form.catatan" x-on:input="validate()"' label="Catatan" name="catatan" %}
+        {% include "core/components/forms/button_submit.html" with type="submit" label="Kirim Disposisi" %}
+        
+        {% url 'cancel_url_name cancel_id' as back_url %}
+        
+        {% include "core/components/forms/link.html" with attrs='x-show="!loading"' label="Batal" href=back_url %}
+        
+        
+    </form>
+</div>
+
+{% include "core/components/scripts/cookie.html" %}
+
+<script>
+    function formHandlerDisposisi() {
+        return {
+            loading: false,
+            form: {
+                catatan: '',
+                permohonan_id: '{{ cancel_id }}'
+            },
+            errors: {},
+            
+            validate() {
+              this.errors = {};
+              
+              if(!this.form.catatan.trim()) {
+                this.errors.catatan = 'Catatan harus diisi';
+              };
+
+              if (this.form.catatan.length < 3) {
+                  this.errors.catatan = 'Catatan minimal 3 karakter';
+              };
+
+              return Object.keys(this.errors).length === 0;
+            },
+            async handleSubmit(event) {
+                console.log("form");
+                console.log(this.form);
+                // validasi form
+                const isValid = this.validate();
+
+                if (!isValid) {
+                    return;
+                }
+
+                const formEl = event.target;
+                
+                try {
+                    this.loading = true;
+
+                    // create disposisi
+                    const res = await axios({
+                        method: "post",
+                        url: "{% url 'disposisi:disposisi_api:disposisi_create' %}",
+                        data: this.form,
+                        headers: {
+                            'X-CSRFToken': cookieValue
+                        }
+                    })
+
+                    
+                    // simulasi loading
+                    await new Promise(
+                        resolve => setTimeout(resolve, 2500)
+                    )
+
+                    // redirect
+                    window.location.href = "{% url 'permohonan:permohonan_web:list' %}";
+                    
+                } catch (error) {
+                    console.log(error);
+                    console.log(error.response.data);
+                }
+
+                this.loading = false;
+
+                alert("Disposisi berhasil dikirim!");
+                const formData = new FormData();
+                formData.append('catatan', this.catatan);
+
+                
+            }
+        }
+    };
+
+</script>
+
+</div>

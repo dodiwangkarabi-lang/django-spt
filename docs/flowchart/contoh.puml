@@ -1,0 +1,26 @@
+@startuml contoh flowchart
+start
+    :Input data;
+
+    if (valid?) then (Oke)
+        :proses data;
+    else (No)
+        :tidak proses;
+    endif
+    repeat
+        :ulangi;
+    repeat while (data <=1?) is (tidak)
+
+    if (baik?) then (mantap)
+        :kapan;
+    elseif (dengan?) then (tidak)
+        
+    else (biasa)
+        
+    endif
+    while (b<8?) is (not val)
+        
+    endwhile (val)
+    :lao; 
+stop
+@enduml

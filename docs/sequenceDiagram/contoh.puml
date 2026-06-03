@@ -1,0 +1,17 @@
+@startuml contoh
+actor User
+participant WebApp
+participant Database
+
+User -> WebApp: Input username & password
+WebApp -> Database: Cek kredensial
+
+Database --> WebApp: Data user valid
+
+alt Login sukses
+  WebApp --> User: Masuk dashboard
+else Login gagal
+  WebApp --> User: Tampilkan error
+end
+
+@enduml

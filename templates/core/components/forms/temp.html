@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% include "components/form/wrapper.html" %}
+
+<script>
+document.addEventListener('alpine:init', () => {
+    Alpine.data('formHandler', () => ({
+        form: {
+            email: '',
+            password: ''
+        },
+
+        onSuccess(res) {
+            alert("Berhasil disimpan!");
+            this.form.email = '';
+            this.form.password = '';
+        }
+    }))
+})
+</script>
+
+<div x-data="formHandler()" class="max-w-lg mx-auto bg-white p-6 rounded-xl">
+
+    {% include "components/form/input.html" with label="Email" name="email" %}
+    {% include "components/form/input.html" with label="Password" name="password" type="password" %}
+
+    {% include "components/form/button.html" with url="/api/users/" text="Simpan" %}
+
+</div>
+
+{% endblock %}

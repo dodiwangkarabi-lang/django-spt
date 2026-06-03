@@ -1,0 +1,16 @@
+{% extends "layouts/base.html" %} 
+
+{% block head %}
+    {% include "components/scripts/csrf.html" %}
+{% endblock %}
+
+{% block content %}
+
+    
+    {% url "core_ajukan_spt" as action_url %}
+
+    <div hx-get="{% url 'permohonan:permohonan_htmx:list' %}?init=1" hx-trigger="load">Loading...</div>
+
+
+
+{% endblock %}

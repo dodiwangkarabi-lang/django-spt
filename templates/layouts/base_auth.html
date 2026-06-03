@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App</title>
+
+    {% include 'layouts/head2.html' %}
+
+    {% block head %}{% endblock %}
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
+</head>
+<body>
+    <div class="flex h-screen bg-gray-100">
+        
+
+        <main 
+            class=" bg-gray-100 min-h-screen w-full"
+        >
+            {% block content %}{% endblock %}
+        </main>
+</div>
+    <script>
+        function getCookie(name) {
+        let cookieValue = null;
+
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+
+            for (let cookie of cookies) {
+                cookie = cookie.trim();
+
+                if (cookie.startsWith(name + '=')) {
+                    cookieValue = decodeURIComponent(
+                        cookie.substring(name.length + 1)
+                    );
+                    break;
+                }
+            }
+        }
+
+        return cookieValue;
+    }
+
+    const cookieValue = getCookie('csrftoken');
+</script>
+    {% block script %}{% endblock %}
+</body>
+</html>

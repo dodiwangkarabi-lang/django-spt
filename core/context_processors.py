@@ -33,7 +33,7 @@ def sidebar_menu(request):
             # {"url": "core_kasubag_disposisi", "label": "📄 Daftar Masuk"},
             {"url": "permohonan:permohonan_web:create", "label": "➕ Ajukan Permohonan"},
             {"url": "spt_list", "label": "📄 Daftar SPT"},
-            {"url": "disposisi:disposisi_web:list", "label": "📄 Daftar Disposisi"},
+            # {"url": "disposisi:disposisi_web:list", "label": "📄 Daftar Disposisi"},
             # {"url": "disposisi_list", "label": "📄 Daftar Disposisi"},
             
         ]

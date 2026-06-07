@@ -29,7 +29,7 @@
     >
       {% for user in pegawai_list %}
         <option value="{{ user.id }}" {% if spt_form.dibuat_oleh.id == user.id %}selected{% endif %}>
-          {{ user.username }}
+          {{ user.profile.nama|title }} | {{ user.profile.nip }}
         </option>
       {% endfor %}
     </select>

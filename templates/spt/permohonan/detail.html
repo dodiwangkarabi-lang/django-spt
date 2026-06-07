@@ -60,13 +60,13 @@
       </div>
 
       {% if permohonan.dibuat_oleh %}
-      <div>
+      <!-- <div>
         <p class="text-sm text-gray-500">Diajukan Oleh</p>
         <p class="font-semibold text-gray-800">
             {{ permohonan.dibuat_oleh.profile.nama|upper }} 
             
         </p>
-      </div>
+      </div> -->
       {% endif %}
     </div>
 
@@ -97,7 +97,7 @@
 
         
         <template x-if="isFormDisposisiOpen">
-            {% include "workflow/disposisi/forms/create.html" with cancel_url_name="permohonan:permohonan_web:detail" cancel_id=permohonan.id %}
+            {% include "workflow/disposisi/forms/create.html" with permohonan=permohonan cancel_url_name="permohonan:permohonan_web:detail" cancel_id=permohonan.id %}
         </template>
     </div>
     <script>

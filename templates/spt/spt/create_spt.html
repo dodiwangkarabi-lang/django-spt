@@ -5,7 +5,7 @@
 
     {% url 'spt:spt_web:create_spt' disposisi.id as action_url %}
 
-    {% include "spt/spt/form/_form_dengan_pembuat.html" with action_url=action_url %}
+    {% include "spt/spt/form/_form_dengan_pembuat.html" with spt_form=form action_url=action_url %}
  
 
 {% endblock %}

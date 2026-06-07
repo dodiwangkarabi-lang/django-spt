@@ -48,8 +48,12 @@ def review_spt(request, spt_id):
 def create_spt(request, disposisi_id):
     
     disposisi = Disposisi.objects.get(id=disposisi_id)
+    spt = disposisi.spt
     
-    form = SPTFormWithPembuat(request.POST or None)
+    initial = {}
+    
+    form = SPTFormWithPembuat(request.POST or None, instance=spt)
+    # form = SPTFormWithPembuat(request.POST or None, initial=initial)
     
     if request.method == "POST":
         lampiran = request.FILES.getlist("lampiran")
@@ -71,7 +75,8 @@ def create_spt(request, disposisi_id):
         with transaction.atomic():
         
             # service
-            spt = SPTServices.create_spt_with_disposisi(**payload)
+            # spt = SPTServices.create_spt_with_disposisi(**payload)
+            spt = SPTServices.update_spt_with_disposisi(**payload)
             
             # messages
             # messages.success(request, "SPT berhasil dibuat")

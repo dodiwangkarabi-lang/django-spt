@@ -7,6 +7,12 @@ from spt.models import SPTStatus
 
 # services
 from spt.permohonan.services import PermohonanService
+from spt.spt.service_common import (
+    SPTServices
+)
+
+# selector
+from accounts.selectors.selectors import get_kasubag_user
 
 class DisposisiServices:
     
@@ -42,6 +48,32 @@ class DisposisiServices:
         
         # update status permohonan
         permohonan = PermohonanService.update_status(permohonan_id, SPTStatus.DISETUJUI)
+        
+        # create spt
+        kasubag_user = get_kasubag_user()
+        data_spt = {
+            # "nomor_spt": "SPT/2021/0001",
+            "judul": permohonan.judul,
+            "deskripsi": permohonan.deskripsi,
+            "tanggal_mulai": permohonan.tanggal_mulai,
+            "tanggal_selesai": permohonan.tanggal_selesai,
+            "dibuat_oleh": kasubag_user,
+        }
+        data_lampiran = [
+            {"file": file_lampiran.file, "keterangan": file_lampiran.keterangan}
+            for file_lampiran in permohonan.lampiran.all()
+        ]
+        spt = SPTServices.save_dengan_lampiran(
+            data_spt=data_spt, data_lampiran=data_lampiran
+        )
+        
+        # update permohonan
+        permohonan.spt = spt
+        permohonan.save()
+        
+        # update disposisi
+        disposisi.spt = spt
+        disposisi.save()
         
         return disposisi
     

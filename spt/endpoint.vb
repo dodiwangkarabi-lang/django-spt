@@ -169,6 +169,7 @@
 /kasubag/revisi/<int:disposisi_id>/     core.views.kasubag_views.revisi core_kasubag_revisi
 /login/ core.views.guest_views.login_view       core_login
 /media/<path>   django.views.static.serve
+/myspt/api/buat-sptku/<int:permohonan_id>/      spt.spt.api.viewsets.BuatSPTBerdasarkanPermohonan       spt:spt_api:buat_sptku
 /myspt/api/hapus-lampiran/<int:lampiran_id>/    spt.spt.api.viewsets.HapusLampiranView  spt:spt_api:hapus_lampiran
 /myspt/api/kirim-revisi-spt/<int:spt_id>/       spt.spt.api.viewsets.KirimRevisiSPT     spt:spt_api:kirim_revisi_spt
 /myspt/api/list-lampiran/<int:spt_id>/  spt.spt.api.viewsets.ListLampiranView   spt:spt_api:list_lampiran

@@ -267,13 +267,15 @@ def spt_list_diterima_htmx(request):
     
     today = timezone.now().date()
     
-    spt_list = (
-        get_spt()
-        .filter(
-            Q(status="selesai") | Q(status="disetujui_final") |
-            Q(status=SPTStatus.DISETUJUI)
-        )
-    ) # hanya permohonan
+    # spt_list = (
+    #     get_spt()
+    #     .filter(
+    #         Q(status="selesai") | Q(status="disetujui_final") |
+    #         Q(status=SPTStatus.DISETUJUI)
+    #     )
+    # ) # hanya permohonan
+    
+    spt_list = get_spt_diterima_list_by_user(request.user).order_by("-created_at")
     
     for obj in spt_list:
         obj.periode = f"{obj.tanggal_mulai:%d-%m-%Y} - {obj.tanggal_selesai:%d-%m-%Y}"
@@ -385,7 +387,7 @@ def spt_saya(request):
 @login_required
 @roles_required("pegawai")
 def spt_diterima(request):
-    spt_list = get_spt_diterima_list(request.user).order_by("-created_at")
+    spt_list = get_spt_diterima_list_by_user(request.user).order_by("-created_at")
     
     today = timezone.now().date()
 
@@ -394,7 +396,7 @@ def spt_diterima(request):
 
         spt.has_laporan = spt.tugas.exists()
         
-    print(spt_list)
+    
     context = {"spt_list": spt_list}
     return render(request, "pages/pegawai/spt-diterima.html", context)
 

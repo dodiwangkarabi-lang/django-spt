@@ -3,12 +3,13 @@ from django.urls import path
 from spt.spt.api.viewsets import (
     TolakSPTAPIView, RevisiSPTAPIView, TerimaSPTAPIView,
     SimpanBanyakLampiranView, HapusLampiranView,
-    ListLampiranView, KirimRevisiSPT
+    ListLampiranView, KirimRevisiSPT, BuatSPTBerdasarkanPermohonan
 )
 
 app_name = "spt_api"
 
 urlpatterns = [
+    path("buat-sptku/<int:permohonan_id>/", BuatSPTBerdasarkanPermohonan.as_view(), name="buat_sptku"),
     path("kirim-revisi-spt/<int:spt_id>/", KirimRevisiSPT.as_view(), name="kirim_revisi_spt"),
     path("list-lampiran/<int:spt_id>/", ListLampiranView.as_view(), name="list_lampiran"),
     path("hapus-lampiran/<int:lampiran_id>/", HapusLampiranView.as_view(), name="hapus_lampiran"),

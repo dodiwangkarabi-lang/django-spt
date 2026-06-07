@@ -28,6 +28,9 @@ from notification.services.services import NotificationService
 from spt.spt.selectors import (
     get_lampiran_by_spt
 )
+from spt.permohonan.selectors import (
+    get_permohonan_by_id
+)
 from accounts.selectors.selectors import (
     get_kasubag_user, get_pegawai_user, get_pimpinan_user
 )
@@ -99,6 +102,46 @@ class SimpanBanyakLampiranView(APIView):
 
 class SPTDetailAPIView(APIView):
     pass
+
+class BuatSPTBerdasarkanPermohonan(APIView):
+    def post(self, request, permohonan_id=None):
+        permohonan = None
+        
+        if permohonan_id:
+            permohonan = get_permohonan_by_id(permohonan_id)
+            user = request.user
+            
+            data_spt = {
+                # "nomor_spt": "SPT/2021/0001",
+                "judul": permohonan.judul,
+                "deskripsi": permohonan.deskripsi,
+                "tanggal_mulai": permohonan.tanggal_mulai,
+                "tanggal_selesai": permohonan.tanggal_selesai,
+                "dibuat_oleh": user,
+            }
+            data_lampiran = [
+                {"file": file_lampiran.file, "keterangan": file_lampiran.keterangan}
+                for file_lampiran in permohonan.lampiran.all()
+            ]
+            spt = SPTServices.save_dengan_lampiran(
+                data_spt=data_spt, data_lampiran=data_lampiran
+            )
+            
+            # update permohonan
+            permohonan.spt = spt
+            permohonan.save()
+            
+            return Response({
+                "message": "SPT berhasil dibuat",
+                "success": True,
+                "data": SPTSerializer(spt).data
+            })
+            
+        return Response({
+            "message": "Permohonan tidak ditemukan",
+            "success": False,
+            "data": None
+        })
 
 class TolakSPTAPIView(APIView):
     def post(self, request, spt_id=None):

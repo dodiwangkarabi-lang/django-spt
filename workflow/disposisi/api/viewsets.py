@@ -90,7 +90,7 @@ class DisposisiCreateView(APIView):
         with transaction.atomic():
             disposisi = DisposisiServices.create_disposisi(
                 permohonan_id=permohonan_id, **data_cleaned.validated_data
-            )
+            ) # ini akan membuat spt baru dan update status permohonan
             
             # data notifikasi
             data_notifikasi = {
@@ -110,20 +110,6 @@ class DisposisiCreateView(APIView):
                 data_notifikasi=data_notifikasi
             )
             
-            # kirim notifikasi ke kasubag
-            # notifikasi = NotificationService.create(data_notifikasi)
-            
-            # kirim notifikasi ke pegawai
-            # data_notifikasi = {
-            #     "penerima": get_pegawai_user(),
-            #     "pengirim": get_pimpinan_user(),
-            #     "pesan": f"Disposisi: {disposisi.catatan}",
-            #     "content_type": ContentType.objects.get_for_model(Disposisi),
-            #     "object_id": disposisi.id,
-            #     "event_type": NotificationEventType.DISPOSISI_CREATED,
-            #     "judul": "Disposisi"
-            # }
-            # notifikasi = NotificationService.create(data_notifikasi)
         
         return Response({
             "message": "Disposisi berhasil dibuat",

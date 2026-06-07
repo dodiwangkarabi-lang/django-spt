@@ -188,6 +188,8 @@ class SPTServices:
         # =========================
 
         if spt is None:
+            jenis_surat = JenisSurat.objects.get(kode="SPT")
+            data_spt["nomor_spt"] = generate_nomor_surat(jenis_surat=jenis_surat)
             spt = SPT.objects.create(**data_spt)
 
         else:
@@ -235,7 +237,7 @@ class SPTServices:
         # DELETE YANG TIDAK ADA
         # =========================
 
-        spt.lampirans.exclude(
+        spt.lampiran.exclude(
             id__in=lampiran_ids
         ).delete()
 
@@ -405,6 +407,54 @@ class SPTServices:
         disposisi.save()
         
         # DisposisiServices.update_penerima(disposisi, disposisi.ke_user)
+        
+        # lampiran pakai bulk
+        for l in lampiran:
+            SPTLampiran.objects.create(spt=spt, file=l)
+            
+        # notifikasi
+        data_notification = {
+            "pesan": f"SPT: {spt.judul}",
+            "content_type": ContentType.objects.get_for_model(Disposisi),
+            "object_id": disposisi.id,
+            "event_type": NotificationEventType.SPT_CREATED,
+            "judul": "Pengajuan SPT"
+        }
+        
+        NotificationService.kirim_pesan(
+            pengirim = get_kasubag_user(),
+            daftar_penerima = [get_pimpinan_user()],
+            data_notifikasi = data_notification
+        )
+        
+        return spt
+    
+    @staticmethod
+    @transaction.atomic
+    def update_spt_with_disposisi(data: dict, disposisi, lampiran=[]):
+        # jenis_surat = JenisSurat.objects.get(kode="SPT")
+        # data["nomor_spt"] = generate_nomor_surat(jenis_surat=jenis_surat)
+        # spt = SPT.objects.update(**data)
+        spt = disposisi.spt
+        
+        for field, value in data.items():
+            setattr(spt, field, value)
+        spt.save()
+        
+        # print("spt sekarang", spt)
+                
+        pimpinan = get_pimpinan_user()
+        disposisi.spt = spt
+        if pimpinan:
+            disposisi.ke_user = pimpinan
+            disposisi.status = DisposisiTipe.REQUEST
+        disposisi.save()
+        
+        # DisposisiServices.update_penerima(disposisi, disposisi.ke_user)
+        
+        if lampiran:
+            # hapus dulu semua lampiran
+            SPTLampiran.objects.filter(spt=spt).delete()
         
         # lampiran pakai bulk
         for l in lampiran:

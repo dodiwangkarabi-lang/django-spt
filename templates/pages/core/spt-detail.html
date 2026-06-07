@@ -101,7 +101,8 @@
           {% endif %}
 
           <!-- Download dokumen spt -->
-          {% if spt.status == 'disetujui_final' or spt.status == 'selesai' %}
+          {% if request.user.profile.is_pegawai and spt.is_disetujui %}
+          {# if spt.status == 'disetujui_final' or spt.status == 'selesai' #}
           <div>
             <h2 class="text-lg font-semibold text-gray-800 mb-2">
               Download Dokumen SPT

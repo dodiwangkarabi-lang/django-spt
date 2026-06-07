@@ -445,6 +445,25 @@ def get_spt_diterima_list(user):
 
     return SPT.objects.none()
 
+def get_spt_diterima_list_by_user(user):
+    if user.groups.filter(name="pegawai").exists():
+        qs = (
+            SPT.objects.filter(dibuat_oleh=user)
+            .filter(
+                Q(status=SPTStatus.DISETUJUI)
+        #         Q(status="disetujui_final") |
+        #         Q(status="selesai") |
+        #         Q(status=SPTStatus.DISETUJUI)
+            )
+        )
+        # qs = SPT.objects.all()
+        return qs
+
+    if user.groups.filter(name="pimpinan").exists():
+        return SPT.objects.filter(status=SPTStatus.DIAJUKAN)
+
+    return SPT.objects.none()
+
 
 # def get_kasubbag_spt_inbox():
 #     return SPT.objects.filter(status="diajukan")
@@ -1039,7 +1058,20 @@ def mulai_pelaksanaan_spt(spt: SPT, pegawai_user):
 # state = apply_action(state, "ajukan")
 # print(state)
 
-def get_user_role(user):
+def get_user_role(user) -> str:
+    """
+    get nama role user
+
+    Args:
+        user (_type_): _description_
+
+    Returns:
+        str: _description_
+        
+    Example:
+        >>> get_user_role(user)
+        "pegawai"
+    """
     return user.groups.first().name
 
 def get_spt_for_user(user):

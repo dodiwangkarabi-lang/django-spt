@@ -69,12 +69,22 @@
                         headers: {
                             'X-CSRFToken': cookieValue
                         }
-                    })
+                    });
+
+                    // create spt berdasarkan permohonan
+                    // const res_spt = await axios({
+                    //     method: "post",
+                    //     url: "{% url 'spt:spt_api:buat_sptku' permohonan.id %}",
+                    //     data: this.form,
+                    //     headers: {
+                    //         'X-CSRFToken': cookieValue
+                    //     }
+                    // });
 
                     
                     // simulasi loading
                     await new Promise(
-                        resolve => setTimeout(resolve, 2500)
+                        resolve => setTimeout(resolve, 1500)
                     )
 
                     // redirect

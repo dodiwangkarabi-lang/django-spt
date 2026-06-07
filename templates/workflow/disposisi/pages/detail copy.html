@@ -20,19 +20,13 @@
         </div>
     </div>
     <div class="my-4 flex flex-col justify-center items-start gap-4">
-        {% if request.user.profile.is_kasubag and disposisi.status == STATUS_DISPOSISI.INSTRUKSI %}
-        <a href="{% url 'spt:spt_web:create_spt' disposisi.id %}"
-            class="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-            Buat SPT
-        </a>
-        {% endif %}
-
+        {% include 'workflow/disposisi/actions/buat-spt.html' with d=disposisi %}
     </div>
 
 </div>
 
 <!-- spt -->
- {% if request.user.profile.is_pimpinan %}
+ {% if disposisi.has_spt %}
     {% include 'spt/spt/partials/_spt_card.html' %}
  {% endif %}
 

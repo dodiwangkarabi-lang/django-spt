@@ -1,0 +1,10 @@
+@startuml erd
+hide circle
+class SPT {}
+class PermohonanSPT {}
+class Disposisi {}
+
+SPT ||--|{ Disposisi
+SPT ||--|| PermohonanSPT
+
+@enduml

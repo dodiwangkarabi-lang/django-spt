@@ -19,4 +19,4 @@ urlpatterns = [
     path("kirim-revisi/<int:disposisi_id>/", DisposisiUpdateRevisiView.as_view(), name="kirim_revisi"),
 ]
 
-urlpatterns += router.urls
+# urlpatterns += router.urls

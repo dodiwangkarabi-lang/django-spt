@@ -22,4 +22,4 @@ urlpatterns = [
     path("create-permohonan/", PermohonanApiView.as_view(), name="create-permohonan"),
 ]
 
-urlpatterns += routers.urls
+# urlpatterns += routers.urls

@@ -131,6 +131,7 @@
 
     <span>Hal {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
     
+    <!-- menganti dari nama url menjadi view -->
     {% if page_obj.has_next %}
     <button
         hx-get="{% url request.resolver_match.view_name %}?page={{ page_obj.next_page_number }}"

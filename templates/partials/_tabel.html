@@ -121,7 +121,7 @@
 
     {% if page_obj.has_previous %}
     <button
-        hx-get="{% url request.resolver_match.url_name %}?page={{ page_obj.previous_page_number }}"
+        hx-get="{% url request.resolver_match.view_name %}?page={{ page_obj.previous_page_number }}"
         hx-target="#result"
         hx-include="[name='q'], [name='tanggal']"
         class="px-3 py-1 border">

@@ -19,31 +19,31 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
-from rest_framework.permissions import IsAdminUser
+# from rest_framework.permissions import IsAdminUser
 
 # untuk doc
-from drf_spectacular.views import (
-    SpectacularAPIView,
-    SpectacularSwaggerView,
-    SpectacularRedocView
-)
+# from drf_spectacular.views import (
+#     SpectacularAPIView,
+#     SpectacularSwaggerView,
+#     SpectacularRedocView
+# )
 
-class AdminOnlySchemaView(SpectacularAPIView):
-    # permission_classes = [IsAdminUser]
-    pass
+# class AdminOnlySchemaView(SpectacularAPIView):
+#     # permission_classes = [IsAdminUser]
+#     pass
 
-class AdminOnlySwaggerView(SpectacularSwaggerView):
-    # permission_classes = [IsAdminUser]
-    pass
+# class AdminOnlySwaggerView(SpectacularSwaggerView):
+#     # permission_classes = [IsAdminUser]
+#     pass
 
-class AdminOnlyRedocView(SpectacularRedocView):
-    # permission_classes = [IsAdminUser]
-    pass
+# class AdminOnlyRedocView(SpectacularRedocView):
+#     # permission_classes = [IsAdminUser]
+#     pass
 
 urlpatterns = [
-    path("api/schema/", AdminOnlySchemaView.as_view(), name="schema"),
-    path("api/docs/", AdminOnlySwaggerView.as_view(url_name="schema"), name="swagger-ui"),
-    path("api/redoc/", AdminOnlyRedocView.as_view(url_name="schema"), name="redoc"),
+    # path("api/schema/", AdminOnlySchemaView.as_view(), name="schema"),
+    # path("api/docs/", AdminOnlySwaggerView.as_view(url_name="schema"), name="swagger-ui"),
+    # path("api/redoc/", AdminOnlyRedocView.as_view(url_name="schema"), name="redoc"),
     
     path("spt/", include("spt.urls")),
     path("spt-web/", include("spt.web.urls", namespace="spt_web")),

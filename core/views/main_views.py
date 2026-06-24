@@ -270,6 +270,7 @@ def spt_list_htmx(request):
     if tanggal:
         spt_list = spt_list.filter(created_at__date=tanggal)
     
+    spt_list = spt_list.order_by("-created_at")
     paginator = Paginator(spt_list, 10)
     page_obj = paginator.get_page(page_number)
     

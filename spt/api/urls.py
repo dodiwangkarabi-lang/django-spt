@@ -18,4 +18,4 @@ urlpatterns = [
     path('spt/<int:spt_id>/cetak/pdf/', views.CetakLaporanPelaksaanTugas.as_view(), name='cetak_pdf'),
 ]
 
-urlpatterns += router.urls
+# urlpatterns += router.urls

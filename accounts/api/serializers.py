@@ -123,6 +123,40 @@ class ProfileSerializer(serializers.ModelSerializer):
 
         return profile
     
+    @transaction.atomic
+    def update(self, instance, validated_data):
+        password = validated_data.pop("password", None)
+        role = validated_data.pop("role", None)
+
+        nip = validated_data.get("nip")
+
+        user = instance.user
+
+        # update username jika nip berubah
+        if nip:
+            user.username = nip
+
+        # update password jika dikirim
+        if password:
+            user.set_password(password)
+
+        user.save()
+
+        # update role/group jika dikirim
+        if role:
+            group = Group.objects.get(name=role)
+
+            user.groups.clear()
+            user.groups.add(group)
+
+        # update profile
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+
+        instance.save()
+
+        return instance
+    
 class UserProfileSerializer(serializers.ModelSerializer):
     profile = ProfileSerializer(read_only=True)
     class Meta:

@@ -41,6 +41,8 @@ from notification.constants.constants import NotificationEventType
 class KirimRevisiSPT(APIView):
     def post(self, request, spt_id=None):
         data = request.data.copy()
+        # print("data")
+        # print(data)
         spt = get_object_or_404(SPT, id=spt_id)
         spt = SPTServices.kirim_revisi_spt(
             data_spt=data, spt=spt

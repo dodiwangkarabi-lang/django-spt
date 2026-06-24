@@ -41,7 +41,8 @@ def review_spt(request, spt_id):
     spt_form = SPTForm(instance=spt)
     context = {
         "spt": spt, "disposisi": disposisi,
-        "spt_form": spt_form
+        "spt_form": spt_form,
+        "pegawai_list": get_pegawai_user(many=True)
     }
     return render(request, "spt/spt/pages/review-spt.html", context)
 

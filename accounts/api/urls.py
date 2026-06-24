@@ -1,5 +1,5 @@
 from .views import UserViewSet, ProfileViewSet
-# from rest_framework.routers import DefaultRouter
+from rest_framework.routers import DefaultRouter
 
 from django.urls import path
 from . import views
@@ -10,9 +10,9 @@ from . import views
 #     TokenVerifyView
 # )
 
-# router = DefaultRouter()
-# router.register(r'users', UserViewSet, basename='user')
-# router.register(r'profiles', ProfileViewSet, basename='profile')
+router = DefaultRouter()
+router.register(r'users', UserViewSet, basename='user')
+router.register(r'profiles', ProfileViewSet, basename='profile')
 
 urlpatterns = [
     path("user-aktif/", views.UserAktifView.as_view(), name="accounts_api_user_aktif"),
@@ -27,4 +27,4 @@ urlpatterns = [
     path("akuns/me/", views.AkunMeView.as_view(), name="akuns_me"),
 ]
 
-# urlpatterns += router.urls
+urlpatterns += router.urls

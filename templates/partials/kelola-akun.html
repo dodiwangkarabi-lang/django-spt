@@ -345,7 +345,7 @@
           const res = await axios.get(
             `${this.BASE_DIR}/accounts/api/profiles/`,
           );
-          this.daftarAkun = res.data;
+          this.daftarAkun = res.data?.results;
           // console.log(this.daftarAkun);
         } catch (error) {
           console.error("Error loading daftar akun:", error);

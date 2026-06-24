@@ -14,6 +14,8 @@ from accounts.selectors.selectors import (
 )
 
 # models
+# model user
+from django.contrib.auth.models import User
 from spt.models import (
     SPT, SPTLampiran, SPTStatus, JenisSurat
 )
@@ -70,6 +72,11 @@ class SPTServices:
     @staticmethod
     @transaction.atomic
     def kirim_revisi_spt(*, data_spt: dict, spt):
+        # print("data spt")
+        # print(data_spt)
+        
+        data_spt["dibuat_oleh"] = User.objects.get(id=data_spt["dibuat_oleh"])
+        
         pimpinan_user = get_pimpinan_user()
         kasubag_user = get_kasubag_user()
         

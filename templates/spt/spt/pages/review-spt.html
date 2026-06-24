@@ -54,9 +54,10 @@
             lampirans: [],
             deleteLampiranBaseUrl: '{% url "spt:spt_api:hapus_lampiran" 0 %}',
 
-            // methods
+            // methods kirim revisi (dari kasubag ke pimpinan)
             async handleKirimRevisiSPT(data) {
                 const payload = {
+                    dibuat_oleh: data.dibuat_oleh,
                     judul: data.judul,
                     deskripsi: data.deskripsi,
                     nomor_spt: data.nomor_spt,

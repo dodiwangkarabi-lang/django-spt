@@ -9,8 +9,8 @@ app_name = 'spt_api'
 # default router
 router = DefaultRouter()
 
-router.register(r'permohonan-sptq', PermohonanSPTViewSet, basename='permohonan-sptq')
-router.register(r'sptq', SPTViewSet, basename='sptq')
+# router.register(r'permohonan-sptq', PermohonanSPTViewSet, basename='permohonan-sptq')
+# router.register(r'sptq', SPTViewSet, basename='sptq')
 
 urlpatterns = [
     # path("workflow/", include("spt.api.workflow_api.urls", namespace="workflow_api")),
@@ -18,4 +18,4 @@ urlpatterns = [
     path('spt/<int:spt_id>/cetak/pdf/', views.CetakLaporanPelaksaanTugas.as_view(), name='cetak_pdf'),
 ]
 
-# urlpatterns += router.urls
+urlpatterns += router.urls

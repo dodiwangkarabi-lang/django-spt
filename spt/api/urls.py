@@ -9,8 +9,8 @@ app_name = 'spt_api'
 # default router
 router = DefaultRouter()
 
-router.register(r'permohonan-sptq', PermohonanSPTViewSet, basename='permohonan-spt')
-router.register(r'sptq', SPTViewSet, basename='spt')
+router.register(r'permohonan-sptq', PermohonanSPTViewSet, basename='permohonan-sptq')
+router.register(r'sptq', SPTViewSet, basename='sptq')
 
 urlpatterns = [
     # path("workflow/", include("spt.api.workflow_api.urls", namespace="workflow_api")),

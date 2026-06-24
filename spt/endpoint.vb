@@ -1,12 +1,24 @@
+ini adalah file bat yang saya buat DODIMAN TAKIMPOO
+Press any key to continue . . .
 
 (globalenv) D:\PROGRAMMING\projects-skripsi\sipt\sipt>python manage.py show_urls
 /       core.views.main_views.index     core_index
 /accounts/api/  rest_framework.routers.APIRootView      api-root
 /accounts/api/<drf_format_suffix:format>        rest_framework.routers.APIRootView      api-root
+/accounts/api/akuns/    accounts.api.views.AkunListView akuns
+/accounts/api/akuns/me/ accounts.api.views.AkunMeView   akuns_me
+/accounts/api/login/    rest_framework_simplejwt.views.TokenObtainPairView      login
 /accounts/api/profiles/ accounts.api.views.ProfileViewSet       profile-list
 /accounts/api/profiles/<pk>/    accounts.api.views.ProfileViewSet       profile-detail
 /accounts/api/profiles/<pk>\.<format>/  accounts.api.views.ProfileViewSet       profile-detail
 /accounts/api/profiles\.<format>/       accounts.api.views.ProfileViewSet       profile-list
+/accounts/api/refresh/  rest_framework_simplejwt.views.TokenRefreshView refresh
+/accounts/api/token/    rest_framework_simplejwt.views.TokenObtainPairView      accounts_api_token
+/accounts/api/token/refresh/    rest_framework_simplejwt.views.TokenRefreshView accounts_api_token_refresh
+/accounts/api/token/verify/     rest_framework_simplejwt.views.TokenVerifyView  accounts_api_token_verify
+/accounts/api/user-aktif/       accounts.api.views.UserAktifView        accounts_api_user_aktif
+/accounts/api/user/     accounts.api.views.UserView     accounts_api_user
+/accounts/api/user/<int:user_id>/       accounts.api.views.UserDetailView       accounts_api_user_detail
 /accounts/api/users/    accounts.api.views.UserViewSet  user-list
 /accounts/api/users/<pk>/       accounts.api.views.UserViewSet  user-detail
 /accounts/api/users/<pk>\.<format>/     accounts.api.views.UserViewSet  user-detail
@@ -243,6 +255,7 @@
 /spt/permohonan/api/lampiran-permohonan-spt/<pk>/       spt.permohonan.api.viewsets.LampiranPermohonanSPTViewSet        permohonan:permohonan_api:lampiran-permohonan-spt-detail
 /spt/permohonan/api/lampiran-permohonan-spt/<pk>\.<format>/     spt.permohonan.api.viewsets.LampiranPermohonanSPTViewSet        permohonan:permohonan_api:lampiran-permohonan-spt-detail
 /spt/permohonan/api/lampiran-permohonan-spt\.<format>/  spt.permohonan.api.viewsets.LampiranPermohonanSPTViewSet        permohonan:permohonan_api:lampiran-permohonan-spt-list
+/spt/permohonan/api/permohonan-list/    spt.permohonan.api.viewsets.PermohonanSPTListView       permohonan:permohonan_api:permohohan-list
 /spt/permohonan/api/permohonan-spt/     spt.permohonan.api.viewsets.PermohonanSPTViewSet        permohonan:permohonan_api:permohonan-spt-list
 /spt/permohonan/api/permohonan-spt/<pk>/        spt.permohonan.api.viewsets.PermohonanSPTViewSet        permohonan:permohonan_api:permohonan-spt-detail
 /spt/permohonan/api/permohonan-spt/<pk>\.<format>/      spt.permohonan.api.viewsets.PermohonanSPTViewSet        permohonan:permohonan_api:permohonan-spt-detail

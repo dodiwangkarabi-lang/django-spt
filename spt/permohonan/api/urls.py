@@ -1,6 +1,8 @@
 from rest_framework.routers import DefaultRouter
 from django.urls import path
 
+from . import viewsets
+
 app_name = "permohonan_api"
 
 from spt.permohonan.api.viewsets import (
@@ -16,6 +18,7 @@ routers.register(r"permohonan-spt", viewset=PermohonanSPTViewSet, basename="perm
 routers.register(r"lampiran-permohonan-spt", viewset=LampiranPermohonanSPTViewSet, basename="lampiran-permohonan-spt")
 
 urlpatterns = [
+    path("permohonan-list/", viewsets.PermohonanSPTListView.as_view(), name="permohohan-list"),
     path("create-permohonan/", PermohonanApiView.as_view(), name="create-permohonan"),
 ]
 

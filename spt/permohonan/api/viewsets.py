@@ -33,6 +33,26 @@ from notification.constants.constants import (
     NotificationEventType
 )
 
+from rest_framework.generics import ListAPIView
+from rest_framework import filters
+from django_filters.rest_framework import DjangoFilterBackend
+
+class PermohonanSPTListView(ListAPIView):
+    queryset = PermohonanSPT.objects.all()
+    serializer_class = PermohonanSPTSerializer
+    # filter_backends = [
+    #     filters.SearchFilter,
+    #     filters.OrderingFilter
+    # ]
+    # search_fields = ['judul', 'deskripsi']
+    # ordering_fields = ['created_at']
+    
+    # dengan django filter
+    filter_backends = [DjangoFilterBackend]
+    filter_fields = [
+        'status', 'judul', 'deskripsi'
+    ]
+
 class PermohonanApiView(APIView):
     permission_classes = [IsAuthenticated]
     

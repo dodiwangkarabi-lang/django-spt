@@ -3,6 +3,11 @@ from rest_framework import serializers
 from accounts.models import Profile
 from django.db import transaction
 
+from accounts.models import (
+    Profile
+)
+
+
 class UserSerializer(serializers.ModelSerializer):
     ROLE_CHOICES = [
         ("pegawai", "Pegawai"),
@@ -117,3 +122,14 @@ class ProfileSerializer(serializers.ModelSerializer):
         )
 
         return profile
+    
+class UserProfileSerializer(serializers.ModelSerializer):
+    profile = ProfileSerializer(read_only=True)
+    class Meta:
+        model = User
+        fields = [
+            "id",
+            "username",
+            "email",
+            "profile"
+        ]

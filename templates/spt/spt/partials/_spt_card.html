@@ -5,6 +5,9 @@
         <div>
             <h1 class="text-2xl font-bold text-gray-800">
                 {{ judul_halaman|default:"Detail SPT" }}
+                <a href="{% url 'spt_preview' disposisi.spt.id %}" target="_blank" class="text-blue-600 text-lg hover:underline">
+                    <ion-icon name="document-text-outline"></ion-icon>
+                </a>
             </h1>
 
             <p class="text-sm text-gray-500">

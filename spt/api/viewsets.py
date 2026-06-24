@@ -20,19 +20,19 @@ class SPTViewSet(ModelViewSet):
     queryset = SPT.objects.all()
     serializer_class = SPTSerializer
     
-    @action(detail=True, methods=["post"], url_path="setujui-spt")
-    def setujui_spt(self, request, pk=None):
-        spt = self.get_object()
+    # @action(detail=True, methods=["post"], url_path="setujui-spt")
+    # def setujui_spt(self, request, pk=None):
+    #     spt = self.get_object()
         
-        service = WorkFlowService(spt)
-        result = service.setujui()
-        result = self.get_serializer(result).data
+    #     service = WorkFlowService(spt)
+    #     result = service.setujui()
+    #     result = self.get_serializer(result).data
         
-        return Response({
-            "message": "SPT berhasil disetujui",
-            "success": True,
-            "data": result
-        }, status.HTTP_200_OK)
+    #     return Response({
+    #         "message": "SPT berhasil disetujui",
+    #         "success": True,
+    #         "data": result
+    #     }, status.HTTP_200_OK)
         
     @action(detail=True, methods=["post"], url_path="tolak-spt")
     def tolak_spt(self, request, pk=None):

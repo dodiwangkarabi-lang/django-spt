@@ -292,9 +292,11 @@ class SPTServices:
             "judul": "Penolakan SPT"
         }
         
+        pegawai = spt.dibuat_oleh
+        
         NotificationService.kirim_pesan(
             pengirim=get_pimpinan_user(),
-            daftar_penerima = [get_kasubag_user(), get_pegawai_user()],
+            daftar_penerima = [get_kasubag_user(), pegawai],
             data_notifikasi=data_notifikasi
         )
         
@@ -305,6 +307,8 @@ class SPTServices:
     def terima_spt(spt, catatan=""):
         """
         Terima SPT
+        
+        terdapat juga kirim pesan
 
         Args:
             spt (_type_): _description_
@@ -326,9 +330,11 @@ class SPTServices:
             "judul": "Penerimaan SPT"
         }
         
+        pegawai = spt.dibuat_oleh
+        
         NotificationService.kirim_pesan(
             pengirim=get_pimpinan_user(),
-            daftar_penerima = [get_kasubag_user(), get_pegawai_user()],
+            daftar_penerima = [get_kasubag_user(), pegawai],
             data_notifikasi=data_notifikasi
         )
         
@@ -361,9 +367,11 @@ class SPTServices:
             "judul": "Revisi SPT"
         }
         
+        pegawai = spt.dibuat_oleh
+        
         NotificationService.kirim_pesan(
             pengirim=get_pimpinan_user(),
-            daftar_penerima = [get_kasubag_user(), get_pegawai_user()],
+            daftar_penerima = [get_kasubag_user(), pegawai],
             data_notifikasi=data_notifikasi
         )
         

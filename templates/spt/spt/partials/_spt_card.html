@@ -157,7 +157,7 @@
     <div x-show="!loading" class="flex flex-row items-center gap-2">
         {% include "spt/spt/partials/button.html" with event="setujui-spt" label="Terima" variant='default' url=terima_spt_url %}
         {% include "spt/spt/partials/button.html" with event="open-modal" label="Revisi" variant='warning' url=revisi_spt_url url_next=revisi_spt_url %}
-        {% include "spt/spt/partials/button.html" with event="open-modal" label="Tolak" variant='danger' url=tolak_spt_url %}
+        {% include "spt/spt/partials/button.html" with event="open-modal" label="Tolak" variant='danger' url=tolak_spt_url url_next=tolak_spt_url %}
     </div>
     <div x-show="loading" class="flex flex-row items-center gap-2">
         {% include "components/spinner.html" %}

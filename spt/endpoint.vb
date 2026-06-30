@@ -1,5 +1,3 @@
-ini adalah file bat yang saya buat DODIMAN TAKIMPOO
-Press any key to continue . . .
 
 (globalenv) D:\PROGRAMMING\projects-skripsi\sipt\sipt>python manage.py show_urls
 /       core.views.main_views.index     core_index
@@ -93,6 +91,12 @@ Press any key to continue . . .
 /admin/spt/sptlampiran/<path:object_id>/delete/ django.contrib.admin.options.delete_view        admin:spt_sptlampiran_delete
 /admin/spt/sptlampiran/<path:object_id>/history/        django.contrib.admin.options.history_view       admin:spt_sptlampiran_history
 /admin/spt/sptlampiran/add/     django.contrib.admin.options.add_view   admin:spt_sptlampiran_add
+/admin/spt/suratpernyataan/     django.contrib.admin.options.changelist_view    admin:spt_suratpernyataan_changelist
+/admin/spt/suratpernyataan/<path:object_id>/    django.views.generic.base.RedirectView
+/admin/spt/suratpernyataan/<path:object_id>/change/     django.contrib.admin.options.change_view        admin:spt_suratpernyataan_change
+/admin/spt/suratpernyataan/<path:object_id>/delete/     django.contrib.admin.options.delete_view        admin:spt_suratpernyataan_delete
+/admin/spt/suratpernyataan/<path:object_id>/history/    django.contrib.admin.options.history_view       admin:spt_suratpernyataan_history
+/admin/spt/suratpernyataan/add/ django.contrib.admin.options.add_view   admin:spt_suratpernyataan_add
 /admin/tugas/suratpernyataantugas/      django.contrib.admin.options.changelist_view    admin:tugas_suratpernyataantugas_changelist
 /admin/tugas/suratpernyataantugas/<path:object_id>/     django.views.generic.base.RedirectView
 /admin/tugas/suratpernyataantugas/<path:object_id>/change/      django.contrib.admin.options.change_view        admin:tugas_suratpernyataantugas_change
@@ -129,31 +133,18 @@ Press any key to continue . . .
 /admin/workflow/tandatangan/<path:object_id>/delete/    django.contrib.admin.options.delete_view        admin:workflow_tandatangan_delete
 /admin/workflow/tandatangan/<path:object_id>/history/   django.contrib.admin.options.history_view       admin:workflow_tandatangan_history
 /admin/workflow/tandatangan/add/        django.contrib.admin.options.add_view   admin:workflow_tandatangan_add
-/api/   rest_framework.routers.APIRootView      spt_api:api-root
-/api/<drf_format_suffix:format> rest_framework.routers.APIRootView      spt_api:api-root
-/api/permohonan-sptq/   spt.api.viewsets.PermohonanSPTViewSet   spt_api:permohonan-spt-list
-/api/permohonan-sptq/<pk>/      spt.api.viewsets.PermohonanSPTViewSet   spt_api:permohonan-spt-detail
-/api/permohonan-sptq/<pk>/ajukan-permohonan/    spt.api.viewsets.PermohonanSPTViewSet   spt_api:permohonan-spt-ajukan-permohonan
-/api/permohonan-sptq/<pk>/ajukan-permohonan\.<format>/  spt.api.viewsets.PermohonanSPTViewSet   spt_api:permohonan-spt-ajukan-permohonan
-/api/permohonan-sptq/<pk>/revisi-permohonan/    spt.api.viewsets.PermohonanSPTViewSet   spt_api:permohonan-spt-revisi-permohonan
-/api/permohonan-sptq/<pk>/revisi-permohonan\.<format>/  spt.api.viewsets.PermohonanSPTViewSet   spt_api:permohonan-spt-revisi-permohonan
-/api/permohonan-sptq/<pk>/setujui-permohonan/   spt.api.viewsets.PermohonanSPTViewSet   spt_api:permohonan-spt-setujui-permohonan
-/api/permohonan-sptq/<pk>/setujui-permohonan\.<format>/ spt.api.viewsets.PermohonanSPTViewSet   spt_api:permohonan-spt-setujui-permohonan
-/api/permohonan-sptq/<pk>/tolak-permohonan/     spt.api.viewsets.PermohonanSPTViewSet   spt_api:permohonan-spt-tolak-permohonan
-/api/permohonan-sptq/<pk>/tolak-permohonan\.<format>/   spt.api.viewsets.PermohonanSPTViewSet   spt_api:permohonan-spt-tolak-permohonan
-/api/permohonan-sptq/<pk>\.<format>/    spt.api.viewsets.PermohonanSPTViewSet   spt_api:permohonan-spt-detail
-/api/permohonan-sptq\.<format>/ spt.api.viewsets.PermohonanSPTViewSet   spt_api:permohonan-spt-list
+/api/permohonan-sptq/   spt.api.viewsets.PermohonanSPTViewSet
+/api/permohonan-sptq/<int:pk>/  spt.api.viewsets.PermohonanSPTViewSet
+/api/permohonan-sptq/<int:pk>/ajukan-permohonan/        spt.api.viewsets.PermohonanSPTViewSet   spt_api:permohonan-spt-ajukan
+/api/permohonan-sptq/<int:pk>/revisi-permohonan/        spt.api.viewsets.PermohonanSPTViewSet   spt_api:permohonan-spt-revisi
+/api/permohonan-sptq/<int:pk>/setujui-permohonan/       spt.api.viewsets.PermohonanSPTViewSet   spt_api:permohonan-spt-setujui
+/api/permohonan-sptq/<int:pk>/tolak-permohonan/ spt.api.viewsets.PermohonanSPTViewSet   spt_api:permohonan-spt-tolak
 /api/spt/<int:spt_id>/cetak/pdf/        spt.api.views.CetakLaporanPelaksaanTugas        spt_api:cetak_pdf
-/api/sptq/      spt.api.viewsets.SPTViewSet     spt_api:spt-list
-/api/sptq/<pk>/ spt.api.viewsets.SPTViewSet     spt_api:spt-detail
-/api/sptq/<pk>/revisi-spt/      spt.api.viewsets.SPTViewSet     spt_api:spt-revisi-spt
-/api/sptq/<pk>/revisi-spt\.<format>/    spt.api.viewsets.SPTViewSet     spt_api:spt-revisi-spt
-/api/sptq/<pk>/setujui-spt/     spt.api.viewsets.SPTViewSet     spt_api:spt-setujui-spt
-/api/sptq/<pk>/setujui-spt\.<format>/   spt.api.viewsets.SPTViewSet     spt_api:spt-setujui-spt
-/api/sptq/<pk>/tolak-spt/       spt.api.viewsets.SPTViewSet     spt_api:spt-tolak-spt
-/api/sptq/<pk>/tolak-spt\.<format>/     spt.api.viewsets.SPTViewSet     spt_api:spt-tolak-spt
-/api/sptq/<pk>\.<format>/       spt.api.viewsets.SPTViewSet     spt_api:spt-detail
-/api/sptq\.<format>/    spt.api.viewsets.SPTViewSet     spt_api:spt-list
+/api/sptq/      spt.api.viewsets.SPTViewSet
+/api/sptq/<int:pk>/     spt.api.viewsets.SPTViewSet
+/api/sptq/<int:pk>/revisi-spt/  spt.api.viewsets.SPTViewSet     spt_api:spt-revisi
+/api/sptq/<int:pk>/setujui-spt/ spt.api.viewsets.SPTViewSet     spt_api:spt-setujui
+/api/sptq/<int:pk>/tolak-spt/   spt.api.viewsets.SPTViewSet     spt_api:spt-tolak
 /api/tugas/<int:tugas_pelaksanaan_id>/tugas-pelaksanaan/        tugas.api.views.TugasPelaksanaanView    tugas_api:tugas-pelaksanaan
 /disposisi/     core.views.main_views.disposisi_list    disposisi_list
 /disposisi/<int:disposisi_id>   core.views.main_views.disposisi_detail  disposisi_detail
@@ -176,6 +167,7 @@ Press any key to continue . . .
 /kasubag/revisi/<int:disposisi_id>/     core.views.kasubag_views.revisi core_kasubag_revisi
 /login/ core.views.guest_views.login_view       core_login
 /media/<path>   django.views.static.serve
+/myspt/<int:spt_id>/surat-pernyataan/   spt.web.views.surat_pernyataan  spt:surat_pernyataan
 /myspt/api/buat-sptku/<int:permohonan_id>/      spt.spt.api.viewsets.BuatSPTBerdasarkanPermohonan       spt:spt_api:buat_sptku
 /myspt/api/hapus-lampiran/<int:lampiran_id>/    spt.spt.api.viewsets.HapusLampiranView  spt:spt_api:hapus_lampiran
 /myspt/api/kirim-revisi-spt/<int:spt_id>/       spt.spt.api.viewsets.KirimRevisiSPT     spt:spt_api:kirim_revisi_spt
@@ -184,6 +176,7 @@ Press any key to continue . . .
 /myspt/api/simpan-banyak-lampiran/<int:spt_id>/ spt.spt.api.viewsets.SimpanBanyakLampiranView   spt:spt_api:simpan_banyak_lampiran
 /myspt/api/terima-sptku/<int:spt_id>/   spt.spt.api.viewsets.TerimaSPTAPIView   spt:spt_api:terima_sptku
 /myspt/api/tolak-sptku/<int:spt_id>/    spt.spt.api.viewsets.TolakSPTAPIView    spt:spt_api:tolak_sptku
+/myspt/surat-pernyataan/<int:surat_pernyataan_id>/cetak/        spt.web.views.cetak_surat_pernyataan    spt:cetak_surat_pernyataan
 /myspt/web/<int:disposisi_id>/buat-spt/ spt.spt.web.views.create_spt    spt:spt_web:create_spt
 /myspt/web/<int:spt_id>/review/ spt.spt.web.views.review_spt    spt:spt_web:review_spt
 /notification/  notification.web.views.index    notification:notification_web:index

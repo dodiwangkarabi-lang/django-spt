@@ -10,6 +10,22 @@ from accounts.selectors.selectors import (
     get_kasubag_user, get_pegawai_user, get_pimpinan_user
 )
 
+class SuratPernyataan(models.Model):
+    spt = models.OneToOneField(
+        'spt.SPT',
+        on_delete=models.CASCADE,
+        related_name='surat_pernyataan',
+        blank=True,
+        null=True
+    )
+    isi = models.TextField()
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"{self.pk} Surat Pernyataan"
+
 class JenisSurat(models.Model):
     nama = models.CharField(max_length=100)
     kode = models.CharField(max_length=20, unique=True)
@@ -99,6 +115,11 @@ class SPT(models.Model):
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
+    
+    @property
+    def has_surat_pernyataan(self):
+        # has attribute
+        return hasattr(self, "surat_pernyataan")
     
     def get_absolute_url(self):
         return reverse('spt:spt_web:review_spt', kwargs={'spt_id': self.pk})

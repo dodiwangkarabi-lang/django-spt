@@ -1,0 +1,197 @@
+{% extends "layouts/base.html" %}
+
+{% block head %}
+<!-- <link
+    href="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.snow.css"
+    rel="stylesheet"
+/> -->
+
+<link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet">
+
+<style>
+    #editor {
+        height: 350px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div x-data="surat_pernyataan_page()" class="w-full bg-white rounded-2xl shadow p-6 space-y-6">
+    <!-- Header -->
+    <div class="flex justify-between items-center border-b pb-4">
+        <h1 class="text-2xl font-bold text-gray-800">
+            Surat Pernyataan
+        </h1>
+    </div>
+
+    {% if surat_pernyataan %}
+        <!-- Status -->
+        <div x-show="!form" x-cloak class="rounded-lg border border-green-200 bg-green-50 p-4">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-lg font-semibold text-green-700">
+                        Surat Pernyataan Sudah Tersedia
+                    </h2>
+                    <p class="mt-1 text-sm text-green-600">
+                        Surat pernyataan telah dibuat
+                    </p>
+                </div>
+
+                <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm font-medium">
+                    Tersedia
+                </span>
+            </div>
+        </div>
+
+        <!-- Aksi -->
+        <div x-show="!form" x-cloak class="flex gap-3">
+            <a href=""
+                @click.prevent="toggle_form()"
+               class="px-4 py-2 rounded-lg bg-yellow-500 text-white hover:bg-yellow-600">
+                Edit
+            </a>
+
+            <a href="{% url "spt:cetak_surat_pernyataan" surat_pernyataan.id %}"
+               target="_blank"
+               class="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700">
+                Cetak
+            </a>
+        </div>
+
+    {% else %}
+
+        <!-- Status -->
+        <div x-show="!form" x-cloak class="rounded-lg border border-yellow-200 bg-yellow-50 p-4">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-lg font-semibold text-yellow-700">
+                        Surat Pernyataan Belum Tersedia
+                    </h2>
+                    <p class="mt-1 text-sm text-yellow-600">
+                        Anda belum membuat surat pernyataan.
+                    </p>
+                </div>
+
+                <span class="px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 text-sm font-medium">
+                    Belum Ada
+                </span>
+            </div>
+        </div>
+
+        <!-- Aksi -->
+        <div x-show="!form" x-cloak>
+            <a 
+                @click.prevent="toggle_form()"
+                href=""
+                class="inline-flex items-center px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700">
+                Buat Surat Pernyataan
+            </a>
+        </div>
+
+    {% endif %}
+
+    <div class="bg-white">
+        {% comment %} <div x-show="!form" x-cloak>
+            {% if surat_pernyataan %}
+            <a target="_blank" href="{% url "spt:cetak_surat_pernyataan" surat_pernyataan.id %}">cetak</a>
+            <button @click="toggle_form()">Edit Surat Pernyataan</button>
+            {% else %}
+            <button @click="toggle_form()">Buat Surat Pernyataan</button>
+            {% endif %}
+        </div> {% endcomment %}
+
+        <div x-show="form" x-cloak>
+            {% include "spt/spt/partials/surat-pernyataan-form.html" %}
+        </div>
+    </div>
+
+</div>
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script> -->
+
+<script src="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
+
+<script>
+    console.log(Quill.version);
+    console.log(window.ImageResize);
+    // Quill.register("modules/imageResize", window.ImageResize);
+    Quill.register(
+        "modules/imageResize",
+        window.ImageResize.default
+    );
+
+
+    // Data awal dari Django
+    const initialContent = `{{ content_html|default:''|safe|escapejs }}`;
+    // const initialContent = null;
+    {% comment %} console.log(initialContent); {% endcomment %}
+
+    // Inisialisasi editor
+    const quill = new Quill("#editor", {
+
+        theme: "snow",
+
+        modules: {
+
+            toolbar: [
+                
+
+                [{ header: [1, 2, 3, false] }],
+
+                ["bold", "italic", "underline"],
+
+                ["blockquote", "code-block"],
+
+                [{ align: [] }],
+
+                [{ list: "ordered" }, { list: "bullet" }],
+
+                ["link", "image"],
+
+                ["clean"]
+
+            ],
+
+            imageResize: {
+                modules: ["Resize", "DisplaySize", "Toolbar"]
+            }
+
+        }
+
+    });
+
+    // Isi editor saat halaman dibuka
+    if (initialContent) {
+        quill.root.innerHTML = initialContent;
+    }
+
+    // Simpan isi editor ke hidden input
+    document.querySelector("form").addEventListener("submit", function () {
+
+        console.log(document.getElementById("isi").value);
+        document.getElementById("isi").value = quill.root.innerHTML;
+
+    });
+
+</script>
+
+<script>
+    function surat_pernyataan_page() {
+        return {
+            loading: false,
+            form: false,
+
+            toggle_form() {
+                this.form = !this.form;
+            },
+            
+            reload_page() {
+                window.location.reload();
+            }
+        }
+    }
+</script>
+
+{% endblock %}

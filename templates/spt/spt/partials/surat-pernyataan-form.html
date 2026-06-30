@@ -1,0 +1,29 @@
+<form method="post" class="p-2 flex flex-col gap-2">
+        {% csrf_token %}
+
+        <div id="editor">
+           
+        </div>
+
+        <input
+            type="hidden"
+            id="isi"
+            name="isi"
+        >
+
+        <div>
+            <button
+                type="submit"
+                class="bg-blue-500 text-white py-2 px-4 rounded-md"
+            >
+                Simpan
+            </button>
+            <button
+                @click.prevent="reload_page()"
+                type="button"
+                class="bg-green-500 text-white py-2 px-4 rounded-md"
+            >
+                Batal
+            </button>
+        </div>
+    </form>

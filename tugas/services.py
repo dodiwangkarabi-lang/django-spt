@@ -5,6 +5,9 @@ from .models import TugasPelaksanaan
 from spt.models import SPT
 from django.http import QueryDict
 
+# models
+from spt.models import SPTStatus
+
 from django.shortcuts import get_object_or_404
 
 @transaction.atomic
@@ -13,7 +16,8 @@ def upload_laporan_service(request, spt_id, data: dict = None):
 
     spt = get_object_or_404(SPT, id=spt_id)
     # update spt
-    spt.status = "selesai"
+    # spt.status = "selesai"
+    spt.status = SPTStatus.SELESAI
     spt.save()
 
     defaults = {

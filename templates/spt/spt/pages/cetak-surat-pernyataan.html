@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surat Pernyataan</title>
+    <link
+        href="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.snow.css"
+        rel="stylesheet"
+    />
+
+    <style>
+        @media print {
+            /* .ql-editor {
+                white-space: pre-wrap !important;
+            } */
+        }
+
+        /* .ql-editor p {
+            white-space: pre;
+        } */
+    </style>
+
+    
+
+<!-- <link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet"> -->
+
+</head>
+<body>
+    <div class="ql-editor" style="white-space: pre-wrap;">  
+        <img src="{{ kop_surat }}" alt="kop-surat" width="100%">
+        {{ surat_pernyataan.isi|safe }}
+    </div>
+
+    <script>
+        window.onload = function () {
+            window.print();
+        };
+    </script>
+</body>
+</html>

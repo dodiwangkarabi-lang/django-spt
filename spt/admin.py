@@ -1,5 +1,9 @@
 from django.contrib import admin
-from .models import SPT, SPTLampiran, NomorSuratSequence, PermohonanSPT, JenisSurat, LampiranPermohonanSPT
+from .models import (
+    SPT, SPTLampiran, NomorSuratSequence,
+    PermohonanSPT, JenisSurat, LampiranPermohonanSPT,
+    SuratPernyataan
+)
 
 admin.site.register(SPT)
 admin.site.register(SPTLampiran)
@@ -7,3 +11,4 @@ admin.site.register(NomorSuratSequence)
 admin.site.register(PermohonanSPT)
 admin.site.register(JenisSurat)
 admin.site.register(LampiranPermohonanSPT)
+admin.site.register(SuratPernyataan)

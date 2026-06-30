@@ -23,11 +23,19 @@
             </div>
 
             <!-- Status -->
-            <span
-              class="px-4 py-2 text-sm rounded-full bg-yellow-100 text-yellow-700"
-            >
-              {{ spt.status }}
-            </span>
+            <div class="px-3 flex flex-row gap-2 items-center bg-yellow-100">
+              <span
+                class="px-0 py-2 text-sm rounded-md bg-yellow-100 text-yellow-700"
+              >
+                {{ spt.status }}
+
+              {% if spt.status == "selesai" %}
+              </span>
+              <a title="surat pernyataan" href="{% url 'spt:surat_pernyataan' spt.id %}" class="text-blue-600 text-sm hover:underline">
+                <ion-icon name="document-text-outline"></ion-icon>
+              </a>
+              {% endif %}
+            </div>
           </div>
 
           <!-- Informasi Utama -->

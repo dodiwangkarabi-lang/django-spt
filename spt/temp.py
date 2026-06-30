@@ -27,7 +27,6 @@ def kasubbag_approve(disposisi: Disposisi, kasubbag_user, pimpinan_user):
     spt.status = "review_pimpinan"
     spt.save()
 
-    # create disposisi ke pimpinan
     return Disposisi.objects.create(
         spt=spt,
         dari_user=kasubbag_user,
